@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jlarrieu <jlarrieu@student.42.fr>          +#+  +:+       +#+         #
+#    By: pdubacqu <pdubacqu@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/21 16:35:42 by jlarrieu          #+#    #+#              #
-#    Updated: 2022/11/30 15:35:28 by jlarrieu         ###   ########.fr        #
+#    Updated: 2022/11/30 15:59:10 by pdubacqu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ SRC					= src/main.c \
 					  src/envp/envp_process.c
 
 LIBFT				= libft/
-CFLAGS				=  -g #-Werror -Wextra -Wall
+CFLAGS				=  -g -lreadline #-Werror -Wextra -Wall
 NAME				= minishell
 LIB					= libft/libft.a
 INCLUDE				= inc/
@@ -31,7 +31,7 @@ all: $(NAME)
 
 $(NAME):
 	@make -sC $(LIBFT) all
-	@gcc $(SRC) -o $(NAME) $(LIB) $(CFLAGS) -I $(INCLUDE)
+	@gcc $(SRC) -o $(NAME) $(LIB) $(CFLAGS) -I $(INCLUDE) 
 	@printf "[$(green)✔$(sgr0)] $(bold)$(green)Compiling Minishell finished!$(sgr0)\n"
 
 clean:
