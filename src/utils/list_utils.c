@@ -1,35 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   structs.h                                          :+:      :+:    :+:   */
+/*   list_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jlarrieu <jlarrieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/30 11:20:37 by jlarrieu          #+#    #+#             */
-/*   Updated: 2022/11/30 16:13:04 by jlarrieu         ###   ########.fr       */
+/*   Created: 2022/11/30 16:11:13 by jlarrieu          #+#    #+#             */
+/*   Updated: 2022/11/30 16:16:01 by jlarrieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef STRUCTS_H
-# define STRUCTS_H
-
-typedef struct s_cmds
+t_envp	*lstnew_envp(char *variable, char *value)
 {
-	int				idx;
-	int				fd_file;
-	char			*file_name;
-	char			*cmd;
-	char			*args;
-	char			*redir;
-	struct s_cmds	*next;
-	struct s_cmds	*prev;
-}			t_cmds;
+	t_envp	*new_node;
 
-typedef struct s_envp
-{
-	char			*variable;
-	char			*value;
-	struct s_envp	*next;
-}			t_envp;
-
-#endif
+	new_node = malloc(sizeof(t_envp) * 1);
+	if (!new_node)
+		return (NULL);
+	new_node->variable = variable;
+	new_node->value = value;
+	new_node->next = NULL;
+	return (new_node);
+}

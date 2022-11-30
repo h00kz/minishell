@@ -14,8 +14,22 @@
 
 t_envp	**save_envp(char **envp)
 {
-	int	i;
+	t_envp	**lst;
+	char	**var;
+	int		i;
+	int		j;
 
+	lst = NULL;
+	var = NULL;
 	if (!*envp || !envp)
 		return (NULL);
+	while (envp[i])
+	{
+		var = ft_split(envp[i], '=');
+		ft_lstadd_back(lst, lstnew_envp(var[0], var[1]));
+		free(*var);
+		free(var);
+		i++;
+	}
+	return (lst);
 }

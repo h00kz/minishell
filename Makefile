@@ -11,7 +11,9 @@
 # **************************************************************************** #
 
 SRC					= src/main.c \
-					  src/envp/envp_process.c
+					  src/envp/envp_process.c \
+					  src/utils/gets.c \
+					  src/utils/list_utils.c
 
 LIBFT				= libft/
 CFLAGS				=  -g -lreadline #-Werror -Wextra -Wall

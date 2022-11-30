@@ -1,35 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   structs.h                                          :+:      :+:    :+:   */
+/*   gets.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jlarrieu <jlarrieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/30 11:20:37 by jlarrieu          #+#    #+#             */
-/*   Updated: 2022/11/30 16:13:04 by jlarrieu         ###   ########.fr       */
+/*   Created: 2022/11/30 15:52:03 by jlarrieu          #+#    #+#             */
+/*   Updated: 2022/11/30 15:55:30 by jlarrieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef STRUCTS_H
-# define STRUCTS_H
+#include "../../inc/minishell.h"
 
-typedef struct s_cmds
+t_envp	*get_elem_by_idx(int index)
 {
-	int				idx;
-	int				fd_file;
-	char			*file_name;
-	char			*cmd;
-	char			*args;
-	char			*redir;
-	struct s_cmds	*next;
-	struct s_cmds	*prev;
-}			t_cmds;
-
-typedef struct s_envp
-{
-	char			*variable;
-	char			*value;
-	struct s_envp	*next;
-}			t_envp;
-
-#endif
+	t_envp
+	
+	return(NULL);
+}

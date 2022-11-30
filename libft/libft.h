@@ -6,7 +6,7 @@
 /*   By: jlarrieu <jlarrieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 14:36:42 by jlarrieu          #+#    #+#             */
-/*   Updated: 2022/10/01 11:32:25 by jlarrieu         ###   ########.fr       */
+/*   Updated: 2022/11/30 16:00:45 by jlarrieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ char	*ft_itoa(int n);
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 void	ft_striteri(char *s, void (*f)(unsigned int, char*));
 int		ft_count_word(char c, char const *str);
+char	*get_next_line(int fd);
 
 // ---------- PUT FUNCTIONS-------------------
 void	ft_putchar_fd(char c, int fd);

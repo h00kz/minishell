@@ -6,7 +6,7 @@
 #    By: jlarrieu <jlarrieu@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/26 13:39:14 by jlarrieu          #+#    #+#              #
-#    Updated: 2022/10/04 11:41:13 by jlarrieu         ###   ########.fr        #
+#    Updated: 2022/11/30 15:59:02 by jlarrieu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,6 +46,7 @@ SRC =	ft_isalpha.c \
 		ft_putnbr_fd.c \
 		ft_strmapi.c \
 		ft_striteri.c \
+		get_next_line.c
 
 BONUS = ft_lstnew.c \
 		ft_lstadd_front.c \
