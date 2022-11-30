@@ -25,4 +25,4 @@ t_envp	*lstnew_envp(char *variable, char *value)
 	return (new_node);
 }
 
-t_cmds	*lstnew_cmd(t_cmds)
+t_cmds	*lstnew_cmd(char **input_split, )
