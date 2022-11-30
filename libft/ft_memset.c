@@ -1,18 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdubacqu <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jlarrieu <jlarrieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/30 10:38:35 by pdubacqu          #+#    #+#             */
-/*   Updated: 2022/11/30 11:17:02 by jlarrieu         ###   ########.fr       */
+/*   Created: 2022/09/26 14:33:57 by jlarrieu          #+#    #+#             */
+/*   Updated: 2022/09/30 11:19:12 by jlarrieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifdef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-# include "../libft/libft.h"
+void	*ft_memset(void *s, int c, size_t n)
+{
+	size_t			i;
+	unsigned char	*mem;
 
-#endif
+	i = 0;
+	mem = (unsigned char *)s;
+	while (i < n)
+	{
+		mem[i] = c;
+		i++;
+	}
+	return (s);
+}
