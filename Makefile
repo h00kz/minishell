@@ -6,13 +6,12 @@
 #    By: pdubacqu <pdubacqu@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/21 16:35:42 by jlarrieu          #+#    #+#              #
-#    Updated: 2022/11/30 15:59:10 by pdubacqu         ###   ########.fr        #
+#    Updated: 2022/11/30 20:17:11 by pdubacqu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC					= src/main.c \
-					  src/envp/envp_process.c \
-					  src/utils/gets.c \
+					  src/parsing/parse_input.c \
 					  src/utils/list_utils.c
 
 LIBFT				= libft/

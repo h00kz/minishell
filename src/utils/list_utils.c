@@ -3,67 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   list_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlarrieu <jlarrieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pdubacqu <pdubacqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 16:11:13 by jlarrieu          #+#    #+#             */
-/*   Updated: 2022/11/30 16:16:01 by jlarrieu         ###   ########.fr       */
+/*   Updated: 2022/11/30 20:16:16 by pdubacqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	lst_print(t_envp *lst)
+t_cmds	*ft_lstnew_node(void)
 {
-	t_envp *cur;
+	t_cmds	*new_node;
 
-	cur = lst;
-	while (cur)
-	{
-		printf("VAR = %s VALUE = %s", cur->variable, cur->value);
-		cur = cur->next;
-	}
-}
-
-t_envp	*lstnew_envp(char *variable, char *value)
-{
-	t_envp	*new_node;
-
-	new_node = malloc(sizeof(t_envp) * 1);
+	new_node = malloc(sizeof(t_cmds) * 1);
 	if (!new_node)
 		return (NULL);
-	new_node->variable = variable;
-	new_node->value = value;
 	new_node->next = NULL;
 	return (new_node);
 }
 
-t_cmds	*lstnew_cmd(char **input_split, char **envp)
+void	ft_lstadd_back_cmd(t_cmds **lst, t_cmds *new)
 {
-	int		i;
-	t_cmds	*cmd;
-
-	cmd = malloc(sizeof(t_cmds) * 1);
-	if (cmd == NULL)
-		return (NULL);
-	i = 0;
-	while (input_split[i] != NULL)
-	{
-		if (ft_strcmp(input_split[i], "<"))
-			cmd->redir = L_REDIR;
-		else if (ft_strcmp(input_split[i], "<<"))
-			cmd->redir = L_HEREDOC;
-		else if (ft_strcmp(input_split[i], "|"))
-			cmd->redir = PIPE;
-		else if (ft_strcmp(input_split[i], ">"))
-			cmd->redir = R_REDIR;
-		else if (ft_strcmp(input_split[i], ">>"))
-			cmd->redir = R_HEREDOC;
-	}
-}
-
-void	lstadd_back_envp(t_envp **lst, t_envp *new)
-{
-	t_envp	*current;
+	t_cmds	*current;
 
 	if (!lst || !new)
 		return ;
@@ -71,16 +33,87 @@ void	lstadd_back_envp(t_envp **lst, t_envp *new)
 		*lst = new;
 	else
 	{
-		current = lstlast_envp(*lst);
+		while (current->next != NULL)
+			current = current->next;
 		current->next = new;
 	}
 }
 
-t_envp	*lstlast_envp(t_envp *lst)
+t_cmds	*lstnew_cmd(char **input_split, char **envp)
 {
-	if (!lst)
+	int		i;
+	int		j;
+	int		whats_next;
+	t_cmds	*cmd;
+
+	j = 0;
+	cmd = malloc(sizeof(t_cmds) * 1);
+	if (cmd == NULL)
 		return (NULL);
-	while (lst->next)
-		lst = lst->next;
-	return (lst);
+	i = 0;
+	if (ft_strcmp(input_split[0], "<")== 0)
+	{
+		cmd->redir = L_REDIR;
+		cmd->file_name[0] = input_split[1];
+		whats_next = CMD;
+		i = 2;
+	}	
+	while (input_split[i] != NULL)
+	{
+		if (cmd->cmd != NULL && ft_strcmp(input_split[i], "<") == 0
+			&& ft_strcmp(input_split[i], "<<") == 0
+			&& ft_strcmp(input_split[i], "|") == 0
+			&& ft_strcmp(input_split[i], ">") == 0
+			&& ft_strcmp(input_split[i], ">>") == 0)
+		{
+			ft_lstadd_back_cmd(&cmd, ft_lstnew_node());
+			cmd = cmd->next;
+		}
+		if (ft_strcmp(input_split[i], "<") == 0)
+		{
+			cmd->redir = L_REDIR;
+			i++;
+			whats_next = FILES;
+		}
+		else if (ft_strcmp(input_split[i], "<<") == 0)
+		{
+			cmd->redir = L_HEREDOC;
+			i++;
+			whats_next = FILES;
+		}
+		else if (ft_strcmp(input_split[i], "|") == 0)
+		{
+			cmd->redir = PIPE;
+			i++;
+			whats_next = CMD;
+		}
+		else if (ft_strcmp(input_split[i], ">") == 0)
+		{
+			cmd->redir = R_REDIR;
+			i++;
+			whats_next = FILES;
+		}
+		else if (ft_strcmp(input_split[i], ">>") == 0)
+		{
+			cmd->redir = R_HEREDOC;
+			i++;
+			whats_next = FILES;
+		}
+		if (cmd->cmd == NULL && whats_next == CMD)
+		{
+			cmd->cmd = input_split[i];
+			i++;
+		}
+		if (cmd->cmd != NULL && whats_next == CMD)
+		{
+			cmd->args = input_split[i];
+			whats_next = FILES;
+			i++;
+		}
+		if (whats_next == FILES)
+		{
+			cmd->file_name[j] = input_split[i];
+			j++;
+		}
+	}
 }
