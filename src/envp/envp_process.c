@@ -1,40 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   envp_process.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jlarrieu <jlarrieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/30 11:53:04 by jlarrieu          #+#    #+#             */
-/*   Updated: 2022/11/30 15:39:30 by jlarrieu         ###   ########.fr       */
+/*   Created: 2022/11/30 15:21:06 by jlarrieu          #+#    #+#             */
+/*   Updated: 2022/11/30 15:41:32 by jlarrieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "../../inc/minishell.h"
 
-int	set_prompt(char **envp)
+t_envp	**save_envp(char **envp)
 {
 	int	i;
 
-	i = 0;
-	while (envp[i])
-	{
-		if (ft_strncmp(envp[i], "USER=", (long unsigned int)5) != 0)
-		i++;
-	}
-	printf("%s >", envp[i] + 5);
-}
-
-int main(int ac, char const **av, char const **envp)
-{
-	char	*input;
-
-	if (ac != 1)
-		return (1);
-	while (1)
-	{
-		set_prompt(envp);
-		input = readline();
-	}
-	return 0;
+	if (!*envp || !envp)
+		return (NULL);
 }
