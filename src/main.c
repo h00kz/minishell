@@ -6,7 +6,7 @@
 /*   By: jlarrieu <jlarrieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 11:53:04 by jlarrieu          #+#    #+#             */
-/*   Updated: 2022/11/30 15:39:30 by jlarrieu         ###   ########.fr       */
+/*   Updated: 2022/11/30 15:49:40 by jlarrieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	set_prompt(char **envp)
 	printf("%s >", envp[i] + 5);
 }
 
-int main(int ac, char const **av, char const **envp)
+int main(int ac, char **av, char **envp)
 {
 	char	*input;
 

@@ -6,12 +6,14 @@
 #    By: jlarrieu <jlarrieu@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/21 16:35:42 by jlarrieu          #+#    #+#              #
-#    Updated: 2022/11/30 15:35:28 by jlarrieu         ###   ########.fr        #
+#    Updated: 2022/11/30 16:22:10 by jlarrieu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC					= src/main.c \
-					  src/envp/envp_process.c
+					  src/envp/envp_process.c \
+					  src/utils/gets.c \
+					  src/utils/list_utils.c
 
 LIBFT				= libft/
 CFLAGS				=  -g #-Werror -Wextra -Wall

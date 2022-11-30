@@ -1,35 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   structs.h                                          :+:      :+:    :+:   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jlarrieu <jlarrieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/30 11:20:37 by jlarrieu          #+#    #+#             */
-/*   Updated: 2022/11/30 16:13:04 by jlarrieu         ###   ########.fr       */
+/*   Created: 2022/10/21 11:14:40 by jlarrieu          #+#    #+#             */
+/*   Updated: 2022/11/30 16:00:53 by jlarrieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef STRUCTS_H
-# define STRUCTS_H
+#include "libft.h"
 
-typedef struct s_cmds
+char	*get_next_line(int fd)
 {
-	int				idx;
-	int				fd_file;
-	char			*file_name;
-	char			*cmd;
-	char			*args;
-	char			*redir;
-	struct s_cmds	*next;
-	struct s_cmds	*prev;
-}			t_cmds;
+	char	*s;
+	char	*c;
+	int		ret;
 
-typedef struct s_envp
-{
-	char			*variable;
-	char			*value;
-	struct s_envp	*next;
-}			t_envp;
-
-#endif
+	s = ft_calloc(sizeof(char), 10000);
+	c = s;
+	ret = read(fd, c, 1);
+	while (ret > 0 && *c != '\n')
+	{
+		c++;
+		ret = read(fd, c, 1);
+	}
+	if (*c == '\n')
+		c++;
+	if (c > s)
+	{
+		*c = 0;
+		return (s);
+	}
+	free(s);
+	return (NULL);
+}
