@@ -1,22 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   parse_input.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pdubacqu <pdubacqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/30 10:38:35 by pdubacqu          #+#    #+#             */
-/*   Updated: 2022/11/30 15:53:08 by pdubacqu         ###   ########.fr       */
+/*   Created: 2022/11/30 16:16:09 by pdubacqu          #+#    #+#             */
+/*   Updated: 2022/11/30 16:20:20 by pdubacqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "../../inc/minishell.h"
 
-# include "../libft/libft.h"
-# include "structs.h"
-# include <stdio.h>
-# include <readline/readline.h>
-# include <readline/history.h>
+void	parse_input(char *input)
+{
+	char **input_split;
 
-#endif
+	input_split = ft_split(input, " ");
+	
+	
+}

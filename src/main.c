@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlarrieu <jlarrieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pdubacqu <pdubacqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 11:53:04 by jlarrieu          #+#    #+#             */
-/*   Updated: 2022/11/30 15:39:30 by jlarrieu         ###   ########.fr       */
+/*   Updated: 2022/11/30 16:15:29 by pdubacqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,16 @@ int	set_prompt(char **envp)
 	int	i;
 
 	i = 0;
-	while (envp[i])
+	while (envp[i] != NULL)
 	{
-		if (ft_strncmp(envp[i], "USER=", (long unsigned int)5) != 0)
+		if (ft_strncmp(envp[i], "PWD=", (long unsigned int)4) == 0)
+			break ;
 		i++;
 	}
-	printf("%s >", envp[i] + 5);
+	printf("%s > ", envp[i] + 8);
 }
 
-int main(int ac, char const **av, char const **envp)
+int main(int ac, char **av, char **envp)
 {
 	char	*input;
 
@@ -34,7 +35,9 @@ int main(int ac, char const **av, char const **envp)
 	while (1)
 	{
 		set_prompt(envp);
-		input = readline();
+		input = readline(NULL);
+		parse_input(input);
+		
 	}
 	return 0;
 }
