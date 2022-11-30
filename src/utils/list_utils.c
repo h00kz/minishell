@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../inc/minishell.h"
+
 t_envp	*lstnew_envp(char *variable, char *value)
 {
 	t_envp	*new_node;
@@ -22,3 +24,5 @@ t_envp	*lstnew_envp(char *variable, char *value)
 	new_node->next = NULL;
 	return (new_node);
 }
+
+t_cmds	*lstnew_cmd(t_cmds)
