@@ -14,7 +14,5 @@
 
 t_envp	*get_elem_by_idx(int index)
 {
-	t_envp
-	
 	return(NULL);
 }

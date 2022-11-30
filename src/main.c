@@ -29,15 +29,18 @@ int	set_prompt(char **envp)
 int main(int ac, char **av, char **envp)
 {
 	char	*input;
+	t_envp	*envp_lst;
 
-	if (ac != 1)
-		return (1);
-	while (1)
-	{
-		set_prompt(envp);
-		input = readline(NULL);
-		parse_input(input);
+	// if (ac != 1)
+		// exit(1);
+	envp_lst = save_envp(envp);
+	lst_print(envp_lst);
+	// while (1)
+	// {
+	// 	set_prompt(envp);
+	// 	input = readline(NULL);
+	// 	// parse_input(input, envp);
 		
-	}
+	// }
 	return 0;
 }

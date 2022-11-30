@@ -17,7 +17,7 @@ void	parse_input(char *input, char **envp)
 	char **input_split;
 
 	input_split = ft_split(input, " ");
-	ft
+	// lst
 	
 	
 }

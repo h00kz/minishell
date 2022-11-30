@@ -15,12 +15,12 @@
 
 typedef struct s_cmds
 {
-	int				idx;
 	int				fd_file;
+	int				redir;
 	char			*file_name;
 	char			*cmd;
 	char			*args;
-	char			*redir;
+	char			**envp;
 	struct s_cmds	*next;
 	struct s_cmds	*prev;
 }			t_cmds;

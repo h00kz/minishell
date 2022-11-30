@@ -13,11 +13,20 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "../libft/libft.h"
-# include "structs.h"
-# include "lists.h"
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include "../libft/libft.h"
+# include "structs.h"
+# include "lists.h"
+
+enum    e_redir
+{
+    L_REDIR = 1,
+    R_REDIR = 2,
+    L_HEREDOC = 3,
+    R_HEREDOC = 4,
+    PIPE = 5,
+};
 
 #endif

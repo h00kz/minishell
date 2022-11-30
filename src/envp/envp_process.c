@@ -12,9 +12,9 @@
 
 #include "../../inc/minishell.h"
 
-t_envp	**save_envp(char **envp)
+t_envp	*save_envp(char **envp)
 {
-	t_envp	**lst;
+	t_envp	*lst;
 	char	**var;
 	int		i;
 	int		j;
@@ -26,7 +26,7 @@ t_envp	**save_envp(char **envp)
 	while (envp[i])
 	{
 		var = ft_split(envp[i], '=');
-		ft_lstadd_back(lst, lstnew_envp(var[0], var[1]));
+		lstadd_back_envp(&lst, lstnew_envp(var[0], var[1]));
 		free(*var);
 		free(var);
 		i++;
