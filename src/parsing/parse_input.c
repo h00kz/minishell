@@ -1,35 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   envp_process.c                                     :+:      :+:    :+:   */
+/*   parse_input.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pdubacqu <pdubacqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/30 15:21:06 by jlarrieu          #+#    #+#             */
-/*   Updated: 2022/11/30 15:46:47 by pdubacqu         ###   ########.fr       */
+/*   Created: 2022/11/30 16:16:09 by pdubacqu          #+#    #+#             */
+/*   Updated: 2022/11/30 16:20:20 by pdubacqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-t_envp	**save_envp(char **envp)
+void	parse_input(char *input)
 {
-	t_envp	**lst;
-	char	**var;
-	int		i;
-	int		j;
+	char **input_split;
 
-	lst = NULL;
-	var = NULL;
-	if (!*envp || !envp)
-		return (NULL);
-	while (envp[i])
-	{
-		var = ft_split(envp[i], '=');
-		ft_lstadd_back(lst, lstnew_envp(var[0], var[1]));
-		free(*var);
-		free(var);
-		i++;
-	}
-	return (lst);
+	input_split = ft_split(input, " ");
+	
+	
 }
