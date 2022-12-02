@@ -6,7 +6,7 @@
 /*   By: pdubacqu <pdubacqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:38:35 by pdubacqu          #+#    #+#             */
-/*   Updated: 2022/11/30 20:09:52 by pdubacqu         ###   ########.fr       */
+/*   Updated: 2022/12/02 15:37:20 by pdubacqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,18 @@ enum	e_redir
 	R_HEREDOC = 4,
 	PIPE = 5,
 };
-
+	
 enum	e_parsing
 {
 	FILES = 0,
 	CMD = 1,
+	ARGS_OR_FILE = 2,
 };
 
 /********************************parsing************************************/
 
-void	parse_input(char *input, char **envp);
+t_cmds	*lstnew_cmd(char **input_split, char **envp);
+t_cmds	*parse_input(char *input, char **envp);
+void	free_cmd(t_cmds *cmd);
 
 #endif
