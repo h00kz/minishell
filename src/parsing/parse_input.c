@@ -6,7 +6,7 @@
 /*   By: pdubacqu <pdubacqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 16:16:09 by pdubacqu          #+#    #+#             */
-/*   Updated: 2022/12/02 14:29:06 by pdubacqu         ###   ########.fr       */
+/*   Updated: 2022/12/02 17:49:11 by pdubacqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ t_cmds	*parse_input(char *input, char **envp)
 		exit(0);
 	input_split = ft_split(input, ' ');
 	cmd = lstnew_cmd(input_split, envp);
-	free(input);
 	free(input_split);
 	return (cmd);
 }

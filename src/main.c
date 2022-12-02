@@ -6,7 +6,7 @@
 /*   By: pdubacqu <pdubacqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 11:53:04 by jlarrieu          #+#    #+#             */
-/*   Updated: 2022/12/02 15:11:59 by pdubacqu         ###   ########.fr       */
+/*   Updated: 2022/12/02 17:49:57 by pdubacqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,12 @@ void	ft_print_lst(t_cmds *cmd)
 	
 	while (cmd != NULL)
 	{
+		printf ("\n");
 		tmp = cmd->next;
 		printf("\ncmd->cmd = %s", cmd->cmd);
 		printf("\ncmd->args = %s", cmd->args);
 		printf("\ncmd->redir = %d", cmd->redir);
+		printf("\ncmd->infile = %s", cmd->infile);
 		int i = 0;
 		while (cmd->file_name[i])
 		{
@@ -58,13 +60,17 @@ int main(int ac, char **av, char **envp)
 	{
 		set_prompt(envp);
 		input = readline(NULL);
+		if (input == NULL)
+			exit(0);
 		if (ft_strncmp(input, "exit", 4) == 0)
 			exit(0);
-		if (input && input[0] != '\0')
+		if (input && input[0])
 			cmd = parse_input(input, envp);
-		ft_print_lst(cmd);
-		if (cmd)
+		if (input && input[0])
+			ft_print_lst(cmd);
+		if (input && input[0])
 			free_cmd(cmd);
+		free(input);
 	}
 	return 0;
 }
