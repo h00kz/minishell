@@ -6,7 +6,7 @@
 /*   By: pdubacqu <pdubacqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 16:11:13 by jlarrieu          #+#    #+#             */
-/*   Updated: 2022/12/02 17:55:08 by pdubacqu         ###   ########.fr       */
+/*   Updated: 2022/12/03 15:59:39 by pdubacqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,24 +84,25 @@ t_cmds	*lstnew_cmd(char **input_split, char **envp)
 	cmd = ft_lstnew_node();
 	save = cmd;
 	if (cmd == NULL)
-		return (NULL);
-	if (ft_strcmp(input_split[0], "<")== 0)
+		return (NULL);/*
+	if (ft_strcmp(input_split[0], "<") == 0)
 	{
-		cmd->redir = L_REDIR;
+		cmd->redir_in = L_REDIR;
 		free(cmd->infile);
-		cmd->infile = input_split[1];
+		cmd->infile = input_split[1];		FAIRE CA A LA MANO PARCE QUE CE CAS C'EST DE LA MERDE
 		free(input_split[0]);
 		whats_next = CMD;
 		i = 2;
-	}
+	}*/
 	while (input_split && input_split[i])
 	{
 		if (cmd && cmd->cmd && ft_strcmp(input_split[i], "|") == 0)
 		{
-			cmd->redir = PIPE;
+			cmd->redir_out = PIPE;
 			whats_next = CMD;
 			ft_lstadd_back_cmd(&cmd, ft_lstnew_node());
 			cmd = cmd->next;
+			cmd->redir_in = PIPE;
 			free(input_split[i]);
 			j = 0;
 			i++;
@@ -137,25 +138,25 @@ t_cmds	*lstnew_cmd(char **input_split, char **envp)
 		else if (ft_strcmp(input_split[i], "<") == 0)
 		{
 			free(input_split[i]);
-			cmd->redir = L_REDIR;
+			cmd->redir_in = L_REDIR;
 			whats_next = INFILE;
 		}
 		else if (ft_strcmp(input_split[i], "<<") == 0)
 		{
 			free(input_split[i]);
-			cmd->redir = L_HEREDOC;
+			cmd->redir_in = L_HEREDOC;
 			whats_next = INFILE;
 		}
 		else if (ft_strcmp(input_split[i], ">") == 0)
 		{
 			free(input_split[i]);
-			cmd->redir = R_REDIR;
+			cmd->redir_out = R_REDIR;
 			whats_next = FILES;
 		}
 		else if (ft_strcmp(input_split[i], ">>") == 0)
 		{
 			free(input_split[i]);
-			cmd->redir = R_HEREDOC;
+			cmd->redir_out = R_HEREDOC;
 			whats_next = FILES;
 		}
 		i++;

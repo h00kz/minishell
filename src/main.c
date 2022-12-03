@@ -6,15 +6,16 @@
 /*   By: pdubacqu <pdubacqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 11:53:04 by jlarrieu          #+#    #+#             */
-/*   Updated: 2022/12/02 17:49:57 by pdubacqu         ###   ########.fr       */
+/*   Updated: 2022/12/03 15:01:25 by pdubacqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-int	set_prompt(char **envp)
+char	*set_prompt(char **envp)
 {
-	int	i;
+	int		i;
+	char	*prompt;
 
 	i = 0;
 	while (envp[i] != NULL)
@@ -23,21 +24,22 @@ int	set_prompt(char **envp)
 			break ;
 		i++;
 	}
-	printf("\n%s > ", envp[i] + 8);
+	prompt = ft_strjoin(envp[i] + 8, "/:> ");
+	return (prompt);
 }
 
 void	ft_print_lst(t_cmds *cmd)
 {
-	t_cmds *tmp;
+	t_cmds	*tmp;
 
-	
 	while (cmd != NULL)
 	{
 		printf ("\n");
 		tmp = cmd->next;
 		printf("\ncmd->cmd = %s", cmd->cmd);
 		printf("\ncmd->args = %s", cmd->args);
-		printf("\ncmd->redir = %d", cmd->redir);
+		printf("\ncmd->redir_in = %d", cmd->redir_in);
+		printf("\ncmd->redir_out = %d", cmd->redir_out);
 		printf("\ncmd->infile = %s", cmd->infile);
 		int i = 0;
 		while (cmd->file_name[i])
@@ -53,13 +55,15 @@ int main(int ac, char **av, char **envp)
 {
 	char	*input;
 	t_cmds	*cmd;
+	char	*prompt;
 
 	if (ac != 1)
 		exit(1);
 	while (1)
 	{
-		set_prompt(envp);
-		input = readline(NULL);
+		prompt = set_prompt(envp);
+		input = readline(prompt);
+		free(prompt);
 		if (input == NULL)
 			exit(0);
 		if (ft_strncmp(input, "exit", 4) == 0)

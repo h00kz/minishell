@@ -6,7 +6,7 @@
 /*   By: pdubacqu <pdubacqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:38:35 by pdubacqu          #+#    #+#             */
-/*   Updated: 2022/12/02 17:06:07 by pdubacqu         ###   ########.fr       */
+/*   Updated: 2022/12/03 15:53:50 by pdubacqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ enum	e_parsing
 	INFILE = 1,
 	CMD = 2,
 	ARGS_OR_FILE = 3,
+	FILES_OR_CMD = 4,
 };
 
 /********************************parsing************************************/
@@ -42,5 +43,6 @@ enum	e_parsing
 t_cmds	*lstnew_cmd(char **input_split, char **envp);
 t_cmds	*parse_input(char *input, char **envp);
 void	free_cmd(t_cmds *cmd);
+char	**ft_split_input(char const *s, char c);
 
 #endif
