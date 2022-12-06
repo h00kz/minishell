@@ -6,7 +6,7 @@
 /*   By: pdubacqu <pdubacqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 16:11:13 by jlarrieu          #+#    #+#             */
-/*   Updated: 2022/12/03 15:59:39 by pdubacqu         ###   ########.fr       */
+/*   Updated: 2022/12/05 15:39:12 by pdubacqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ t_cmds	*ft_lstnew_node(void)
 	new_node->cmd = ft_calloc(sizeof(char), 1);
 	new_node->args = ft_calloc(sizeof(char), 1);
 	new_node->infile = ft_calloc(sizeof(char), 1);
-	new_node->file_name = ft_calloc(sizeof(char*), 10);
+	new_node->file_name = ft_calloc(sizeof(char *), 10);
+	new_node->outfile = ft_calloc(sizeof(char *), 10);
 	return (new_node);
 }
 
@@ -81,19 +82,16 @@ t_cmds	*lstnew_cmd(char **input_split, char **envp)
 	j = 0;
 	i = 0;
 	whats_next = 100;
-	cmd = ft_lstnew_node();
-	save = cmd;
-	if (cmd == NULL)
-		return (NULL);/*
-	if (ft_strcmp(input_split[0], "<") == 0)
+	if (ft_strcmp(input_split[0], "<") == 0 || ft_strcmp(input_split[0], ">") == 0
+		|| ft_strcmp(input_split[0], "<<") == 0 || ft_strcmp(input_split[0], ">>") == 0)
 	{
-		cmd->redir_in = L_REDIR;
-		free(cmd->infile);
-		cmd->infile = input_split[1];		FAIRE CA A LA MANO PARCE QUE CE CAS C'EST DE LA MERDE
-		free(input_split[0]);
-		whats_next = CMD;
-		i = 2;
-	}*/
+		cmd = ft_make_first_arg(input_split, envp);
+		while (input_split[i] && ft_strcmp(input_split[i], "|") != 0)
+			i++;
+	}
+	else
+		cmd = ft_lstnew_node();
+	save = cmd;
 	while (input_split && input_split[i])
 	{
 		if (cmd && cmd->cmd && ft_strcmp(input_split[i], "|") == 0)
@@ -113,7 +111,7 @@ t_cmds	*lstnew_cmd(char **input_split, char **envp)
 			cmd->cmd = input_split[i];
 			whats_next = ARGS_OR_FILE;
 		}
-		else if (input_split[i][0] == '-' && whats_next == ARGS_OR_FILE)
+		else if (input_split[i][0] == '-')
 		{
 			free(cmd->args);
 			cmd->args = input_split[i];

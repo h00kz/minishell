@@ -6,7 +6,7 @@
 /*   By: pdubacqu <pdubacqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:38:35 by pdubacqu          #+#    #+#             */
-/*   Updated: 2022/12/03 15:53:50 by pdubacqu         ###   ########.fr       */
+/*   Updated: 2022/12/05 14:07:31 by pdubacqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <fcntl.h>
 # include "../libft/libft.h"
 # include "structs.h"
 # include "lists.h"
@@ -40,9 +43,14 @@ enum	e_parsing
 
 /********************************parsing************************************/
 
-t_cmds	*lstnew_cmd(char **input_split, char **envp);
+t_cmds	*ft_make_first_arg(char **input_split, char **envp);
 t_cmds	*parse_input(char *input, char **envp);
-void	free_cmd(t_cmds *cmd);
+
+/*********************************utils*************************************/
+
+t_cmds	*ft_lstnew_node(void);
+t_cmds	*lstnew_cmd(char **input_split, char **envp);
 char	**ft_split_input(char const *s, char c);
+void	free_cmd(t_cmds *cmd);
 
 #endif
