@@ -3,14 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   split_for_input.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdubacqu <pdubacqu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlarrieu <jlarrieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 13:27:26 by jlarrieu          #+#    #+#             */
-/*   Updated: 2022/12/03 15:54:01 by pdubacqu         ###   ########.fr       */
+/*   Updated: 2022/12/06 18:48:03 by jlarrieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+void    ft_free_split(char **strs)
+{
+    int    i;
+
+    i = 0;
+    if (!strs)
+        return ;
+    while (strs[i])
+    {
+        free(strs[i]);
+        i++;
+    }
+    free(strs);
+}
 
 int	ft_count_word_split(char c, char const *str)
 {

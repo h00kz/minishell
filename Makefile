@@ -3,17 +3,18 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: pdubacqu <pdubacqu@student.42.fr>          +#+  +:+       +#+         #
+#    By: jlarrieu <jlarrieu@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/21 16:35:42 by jlarrieu          #+#    #+#              #
-#    Updated: 2022/12/03 14:11:23 by pdubacqu         ###   ########.fr        #
+#    Updated: 2022/12/06 18:48:02 by jlarrieu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC					= src/main.c \
 					  src/parsing/parse_input.c \
 					  src/utils/list_utils.c \
-					  src/split/split_for_input.c
+					  src/split/split_for_input.c \
+					  src/builtins/echo.c
 
 LIBFT				= libft/
 CFLAGS				=  -g -lreadline #-Werror -Wextra -Wall

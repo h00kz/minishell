@@ -1,19 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lists.h                                            :+:      :+:    :+:   */
+/*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jlarrieu <jlarrieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/30 16:16:36 by jlarrieu          #+#    #+#             */
+/*   Created: 2022/12/06 16:33:38 by jlarrieu          #+#    #+#             */
 /*   Updated: 2022/12/06 18:48:02 by jlarrieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LISTS_H
-# define LISTS_H
+#ifndef BUILTINS_H
+# define BUILTINS_H
 
-void	ft_lstadd_back_cmd(t_cmds **lst, t_cmds *new);
+/*********************************** ECHO *************************************/
 
+int	ft_check_echo(char *input_split);
 
 #endif

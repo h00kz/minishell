@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlarrieu <jlarrieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pdubacqu <pdubacqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 14:36:42 by jlarrieu          #+#    #+#             */
-/*   Updated: 2022/11/30 16:00:45 by jlarrieu         ###   ########.fr       */
+/*   Updated: 2022/12/06 18:31:16 by pdubacqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 void	ft_striteri(char *s, void (*f)(unsigned int, char*));
 int		ft_count_word(char c, char const *str);
 char	*get_next_line(int fd);
+char	*ft_strjoin_free(char *s1, char *s2);
 
 // ---------- PUT FUNCTIONS-------------------
 void	ft_putchar_fd(char c, int fd);

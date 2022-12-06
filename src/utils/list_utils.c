@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdubacqu <pdubacqu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlarrieu <jlarrieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 16:11:13 by jlarrieu          #+#    #+#             */
-/*   Updated: 2022/12/05 15:39:12 by pdubacqu         ###   ########.fr       */
+/*   Updated: 2022/12/06 18:48:02 by jlarrieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ t_cmds	*ft_lstnew_node(void)
 	if (!new_node)
 		return (NULL);
 	new_node->next = NULL;
+	new_node->redir_in = PIPE;
+	new_node->redir_out = PIPE;
 	new_node->cmd = ft_calloc(sizeof(char), 1);
 	new_node->args = ft_calloc(sizeof(char), 1);
 	new_node->infile = ft_calloc(sizeof(char), 1);
@@ -61,103 +63,9 @@ void	free_cmd(t_cmds *cmd)
 			free(tmp->cmd);
 		if (tmp->infile)
 			free(tmp->infile);
-		while (tmp->file_name && tmp->file_name[i])
-		{
-			free(tmp->file_name[i]);
-			i++;
-		}
-		free(tmp->file_name);
+		if (tmp->outfile)
+			free(tmp->outfile);
+		ft_free_split(tmp->file_name);
 		free(tmp);
 	}
-}
-
-t_cmds	*lstnew_cmd(char **input_split, char **envp)
-{
-	int		i;
-	int		j;
-	int		whats_next;
-	t_cmds	*cmd;
-	t_cmds	*save;
-
-	j = 0;
-	i = 0;
-	whats_next = 100;
-	if (ft_strcmp(input_split[0], "<") == 0 || ft_strcmp(input_split[0], ">") == 0
-		|| ft_strcmp(input_split[0], "<<") == 0 || ft_strcmp(input_split[0], ">>") == 0)
-	{
-		cmd = ft_make_first_arg(input_split, envp);
-		while (input_split[i] && ft_strcmp(input_split[i], "|") != 0)
-			i++;
-	}
-	else
-		cmd = ft_lstnew_node();
-	save = cmd;
-	while (input_split && input_split[i])
-	{
-		if (cmd && cmd->cmd && ft_strcmp(input_split[i], "|") == 0)
-		{
-			cmd->redir_out = PIPE;
-			whats_next = CMD;
-			ft_lstadd_back_cmd(&cmd, ft_lstnew_node());
-			cmd = cmd->next;
-			cmd->redir_in = PIPE;
-			free(input_split[i]);
-			j = 0;
-			i++;
-		}
-		if (cmd->cmd && (whats_next == CMD | whats_next == 100))
-		{
-			free(cmd->cmd);
-			cmd->cmd = input_split[i];
-			whats_next = ARGS_OR_FILE;
-		}
-		else if (input_split[i][0] == '-')
-		{
-			free(cmd->args);
-			cmd->args = input_split[i];
-			whats_next = FILES;
-		}
-		else if ((whats_next == ARGS_OR_FILE || whats_next == FILES)
-		&& (ft_strcmp(input_split[i], "<") != 0
-		&& ft_strcmp(input_split[i], "<<") != 0
-		&& ft_strcmp(input_split[i], ">") != 0
-		&& ft_strcmp(input_split[i], ">>") != 0))
-		{
-			cmd->file_name[j] = input_split[i];
-			cmd->file_name[j+1] = NULL;
-			whats_next = FILES;
-			j++;
-		}
-		else if (whats_next == INFILE)
-		{
-			free(cmd->infile);
-			cmd->infile = input_split[i];
-		}
-		else if (ft_strcmp(input_split[i], "<") == 0)
-		{
-			free(input_split[i]);
-			cmd->redir_in = L_REDIR;
-			whats_next = INFILE;
-		}
-		else if (ft_strcmp(input_split[i], "<<") == 0)
-		{
-			free(input_split[i]);
-			cmd->redir_in = L_HEREDOC;
-			whats_next = INFILE;
-		}
-		else if (ft_strcmp(input_split[i], ">") == 0)
-		{
-			free(input_split[i]);
-			cmd->redir_out = R_REDIR;
-			whats_next = FILES;
-		}
-		else if (ft_strcmp(input_split[i], ">>") == 0)
-		{
-			free(input_split[i]);
-			cmd->redir_out = R_HEREDOC;
-			whats_next = FILES;
-		}
-		i++;
-	}
-	return (save);
 }
