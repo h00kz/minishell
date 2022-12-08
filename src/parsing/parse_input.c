@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   parse_input.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdubacqu <pdubacqu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlarrieu <jlarrieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 16:16:09 by pdubacqu          #+#    #+#             */
 /*   Updated: 2022/12/08 12:46:56 by pdubacqu         ###   ########.fr       */
@@ -228,7 +228,7 @@ t_cmds	*make_arg(char **input_split, char **envp)
 
 	i = 0;
 	n = 0;
-	cmd = ft_lstnew_node();
+	cmd = ft_lstnew_node(envp);
 	while (input_split[i] && input_split[i] != "|")
 	{
 		if (ft_strcmp(input_split[i], "<") == 0)

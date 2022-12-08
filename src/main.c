@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdubacqu <pdubacqu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlarrieu <jlarrieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 11:53:04 by jlarrieu          #+#    #+#             */
 /*   Updated: 2022/12/08 10:33:55 by pdubacqu         ###   ########.fr       */
@@ -28,6 +28,16 @@ char	*set_prompt(char **envp)
 	return (prompt);
 }
 
+static void	ft_print_lst_e(t_envp *envp)
+{
+	while (envp != NULL)
+	{
+		printf("\ncmd->envp->variable = %s", envp->variable);
+		printf("\ncmd->envp->value = %s\n", envp->value);
+		envp = envp->next;
+	}
+}
+
 void	ft_print_lst(t_cmds *cmd)
 {
 	t_cmds	*tmp;
@@ -48,6 +58,7 @@ void	ft_print_lst(t_cmds *cmd)
 			printf("\ncmd->files = %s", cmd->file_name[i]);
 			i++;
 		}
+		ft_print_lst_e(cmd->lst_envp);
 		printf ("\n");
 		cmd = tmp;
 	}

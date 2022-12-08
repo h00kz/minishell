@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdubacqu <pdubacqu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlarrieu <jlarrieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:38:35 by pdubacqu          #+#    #+#             */
 /*   Updated: 2022/12/07 14:29:06 by pdubacqu         ###   ########.fr       */
@@ -51,7 +51,7 @@ char	*translate_env_vars(char *input, char **envp);
 
 /*********************************utils****************************************/
 
-t_cmds	*ft_lstnew_node(void);
+t_cmds	*ft_lstnew_node(char **envp);
 t_cmds	*lstnew_cmd(char **input_split, char **envp);
 void	free_cmd(t_cmds *cmd);
 

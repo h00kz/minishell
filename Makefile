@@ -3,7 +3,7 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: pdubacqu <pdubacqu@student.42.fr>          +#+  +:+       +#+         #
+#    By: jlarrieu <jlarrieu@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/21 16:35:42 by jlarrieu          #+#    #+#              #
 #    Updated: 2022/12/07 14:27:36 by pdubacqu         ###   ########.fr        #
@@ -11,10 +11,13 @@
 # **************************************************************************** #
 
 SRC					= src/main.c \
+					  src/list_envp/process_envp.c \
 					  src/parsing/parse_input.c \
 					  src/utils/list_utils.c \
 					  src/split/split_for_input.c \
 					  src/builtins/echo.c \
+					  src/builtins/cd.c \
+					  src/builtins/export.c \
 					  src/parsing/env_interpretation.c
 
 LIBFT				= libft/
