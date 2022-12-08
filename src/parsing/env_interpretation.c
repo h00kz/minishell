@@ -6,7 +6,7 @@
 /*   By: pdubacqu <pdubacqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 14:09:17 by pdubacqu          #+#    #+#             */
-/*   Updated: 2022/12/08 11:24:36 by pdubacqu         ###   ########.fr       */
+/*   Updated: 2022/12/08 14:58:39 by pdubacqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ char	*translate_env_vars(char *input, char **envp)
 	str = NULL;
 	while (input && input[i])
 	{
-		if (input[i] == '"' && (boolean == 0 || boolean == 2))
+		if (input[i] == '"' && boolean == 0)
 		{
 			boolean = 1;
 			i++;
@@ -79,11 +79,20 @@ char	*translate_env_vars(char *input, char **envp)
 			i++;
 		}
 		else if (input[i] == '\'' && boolean == 0)
+		{
 			boolean = 2;
-		if (input[i] == '$')
+			i++;
+		}
+		else if (input[i] == '\'' && boolean == 2)
+		{
+			boolean = 0;
+			i++;
+		}
+		if (input[i] == '$' && boolean != 2)
 		{
 			tmp = translate_vars(input, &i, envp, &boolean);
-			while (input[i] && input[i] != '"' && input[i] != '\'')
+			i++;
+			while (input[i] && ft_isalnum(input[i]))
 				i++;
 			if (!tmp)
 				i += 2;
@@ -93,14 +102,16 @@ char	*translate_env_vars(char *input, char **envp)
 				free(tmp);
 			}
 		}
-		else if (input[i] && input[i] != '"')
+		else if (input[i])
 		{
-			tmp = ft_calloc(sizeof(char), 2);
-			tmp[0] = input[i];
-			str = ft_strjoin_free_choice(str, tmp, 3);
+			if (input[i] != '"')
+			{
+				tmp = ft_calloc(sizeof(char), 2);
+				tmp[0] = input[i];
+				str = ft_strjoin_free_choice(str, tmp, 3);
+			}
 			i++;
 		}
-		printf("\nstr = %s\n", str);
 	}
 	return (str);
 }

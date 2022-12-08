@@ -6,7 +6,7 @@
 /*   By: jlarrieu <jlarrieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 11:53:04 by jlarrieu          #+#    #+#             */
-/*   Updated: 2022/12/08 15:59:40 by jlarrieu         ###   ########.fr       */
+/*   Updated: 2022/12/08 10:33:55 by pdubacqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ void	ft_print_lst(t_cmds *cmd)
 	}
 }
 
-
 static void	sig_handler(int sig)
 {
 	if (sig == SIGINT)
@@ -112,8 +111,6 @@ int main(int ac, char **av, char **envp)
 			cmd = parse_input(input, envp);
 			if (cmd != NULL)
 			{
-				char **dfd = rebuild_envp(cmd->lst_envp);
-				printf("OUI\n\n\n%s\n%s\nNON", dfd[0], dfd[1]);
 				ft_print_lst(cmd);
 				free_cmd(cmd);
 			}

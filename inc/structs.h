@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlarrieu <jlarrieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pdubacqu <pdubacqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 11:20:37 by jlarrieu          #+#    #+#             */
-/*   Updated: 2022/12/08 14:20:18 by jlarrieu         ###   ########.fr       */
+/*   Updated: 2022/12/07 13:56:55 by pdubacqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,5 @@ typedef struct s_cmds
 	struct s_envp	*lst_envp;
 	struct s_cmds	*next;
 }			t_cmds;
-
 
 #endif
