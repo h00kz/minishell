@@ -6,7 +6,7 @@
 /*   By: pdubacqu <pdubacqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 16:16:09 by pdubacqu          #+#    #+#             */
-/*   Updated: 2022/12/07 13:14:46 by pdubacqu         ###   ########.fr       */
+/*   Updated: 2022/12/08 10:40:52 by pdubacqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,8 @@ void	make_right_redir(t_cmds *cmd, char **input_split, int *i)
 	{
 		cmd->redir_out = R_REDIR;
 		cmd->outfile = ft_strdup(input_split[*i + 1]);
-		cmd->fd_file = open(input_split[*i + 1], O_CREAT | O_TRUNC | O_WRONLY, 0644);
+		cmd->fd_file = open(input_split[*i + 1],
+				O_CREAT | O_TRUNC | O_WRONLY, 0644);
 		if (cmd->fd_file < 0)
 		{
 			printf("cannot open file : %s\n", cmd->infile);
@@ -80,7 +81,8 @@ void	make_right_heredoc(t_cmds *cmd, char **input_split, int *i)
 {
 	cmd->redir_out = R_HEREDOC;
 	cmd->infile = ft_strdup(input_split[*i + 1]);
-	cmd->fd_file = open(input_split[*i + 1], O_CREAT | O_APPEND | O_WRONLY, 0644);
+	cmd->fd_file = open(input_split[*i + 1],
+			O_CREAT | O_APPEND | O_WRONLY, 0644);
 	if (cmd->fd_file < 0)
 	{
 		printf("cannot open file : %s\n", cmd->outfile);
@@ -101,6 +103,7 @@ void	make_left_heredoc(t_cmds *cmd, char **input_split, int *i)
 void	make_args(t_cmds *cmd, char **input_split, int *i)
 {
 	char	*tmp;
+
 	if (ft_strcmp(cmd->cmd, "echo") == 0)
 	{
 		if (ft_check_echo(input_split[(*i)]) == 1)
@@ -109,7 +112,6 @@ void	make_args(t_cmds *cmd, char **input_split, int *i)
 	tmp = ft_strjoin(cmd->args, " ");
 	free(cmd->args);
 	cmd->args = ft_strjoin_free(tmp, input_split[(*i)]);
-	free(tmp);
 	(*i)++;
 }
 
@@ -223,7 +225,7 @@ t_cmds	*make_arg(char **input_split, char **envp)
 	t_cmds	*cmd;
 	int		i;
 	int		n;
-	
+
 	i = 0;
 	n = 0;
 	cmd = ft_lstnew_node();
@@ -239,25 +241,29 @@ t_cmds	*make_arg(char **input_split, char **envp)
 			make_right_redir_implicit(cmd, input_split, &i);
 		else if (ft_strcmp(input_split[i], ">>") == 0)
 			make_right_heredoc(cmd, input_split, &i);
-		else 
+		else
 			make_args_next(cmd, input_split, &i, &n);
 	}
 	return (cmd);
 }
 
-
 t_cmds	*parse_input(char *input, char **envp)
 {
-	char	**cmd_split;
 	char	**input_split;
-	t_cmds	*cmd;
+	char	**cmd_split;
 	t_cmds	*save;
-	int	i;
+	t_cmds	*cmd;
+	int		i;
 
 	i = 0;
 	if (ft_check_pipe(input) == 1)
 		exit(1);
+	input = translate_env_vars(input, envp);
+	if (input == NULL)
+		return (NULL);
+	// ft_make_here_doc(input);
 	cmd_split = ft_split_input(input, '|');
+	free(input);
 	while (cmd_split && cmd_split[i])
 	{
 		input_split = ft_split_input(cmd_split[i], ' ');

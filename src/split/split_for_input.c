@@ -3,28 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   split_for_input.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlarrieu <jlarrieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pdubacqu <pdubacqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/27 13:27:26 by jlarrieu          #+#    #+#             */
-/*   Updated: 2022/12/06 18:48:03 by jlarrieu         ###   ########.fr       */
+/*   Updated: 2022/12/07 13:44:47 by pdubacqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void    ft_free_split(char **strs)
+void	ft_free_split(char **strs)
 {
-    int    i;
+	int	i;
 
-    i = 0;
-    if (!strs)
-        return ;
-    while (strs[i])
-    {
-        free(strs[i]);
-        i++;
-    }
-    free(strs);
+	i = 0;
+	if (!strs)
+		return ;
+	while (strs[i])
+	{
+		free(strs[i]);
+		i++;
+	}
+	free(strs);
 }
 
 int	ft_count_word_split(char c, char const *str)
@@ -72,6 +72,18 @@ static size_t	ft_count_char_split(char c, char const *str)
 	return (count);
 }
 
+void	ft_skip_char(char const *s, size_t *i, int *boolean, char c)
+{
+	while (s[(*i)] && (s[(*i)] != c || (*boolean) == 1))
+	{
+		if (s[(*i)] == '"' && (*boolean) == 0)
+			(*boolean) = 1;
+		else if (s[(*i)] == '"' && (*boolean) == 1)
+			(*boolean) = 0;
+		(*i)++;
+	}
+}
+
 char	**ft_split_input(char const *s, char c)
 {
 	size_t	i;
@@ -95,14 +107,7 @@ char	**ft_split_input(char const *s, char c)
 		word_len = ft_count_char_split(c, s + i);
 		if (s[i] != c && s[i])
 			strs[j++] = ft_substr(s, i, word_len);
-		while (s[i] && (s[i] != c || boolean == 1))
-		{
-			if (s[i] == '"' && boolean == 0)
-				boolean = 1;
-			else if (s[i] == '"' && boolean == 1)
-				boolean = 0;
-			i++;
-		}
+		ft_skip_char(s, &i, &boolean, c);
 	}
 	return (strs);
 }

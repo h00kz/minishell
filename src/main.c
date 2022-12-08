@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlarrieu <jlarrieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pdubacqu <pdubacqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 11:53:04 by jlarrieu          #+#    #+#             */
-/*   Updated: 2022/12/06 18:49:16 by jlarrieu         ###   ########.fr       */
+/*   Updated: 2022/12/08 10:33:55 by pdubacqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,9 +98,12 @@ int main(int ac, char **av, char **envp)
 		if (input && input[0])
 		{
 			cmd = parse_input(input, envp);
-			ft_print_lst(cmd);
-			free_cmd(cmd);
-			free(input);
+			if (cmd != NULL)
+			{
+				ft_print_lst(cmd);
+				free_cmd(cmd);
+			}
+			free(input);	
 		}
 	}
 	return 0;

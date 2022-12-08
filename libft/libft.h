@@ -6,7 +6,7 @@
 /*   By: pdubacqu <pdubacqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 14:36:42 by jlarrieu          #+#    #+#             */
-/*   Updated: 2022/12/06 18:31:16 by pdubacqu         ###   ########.fr       */
+/*   Updated: 2022/12/07 14:50:49 by pdubacqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void	ft_striteri(char *s, void (*f)(unsigned int, char*));
 int		ft_count_word(char c, char const *str);
 char	*get_next_line(int fd);
 char	*ft_strjoin_free(char *s1, char *s2);
+char	*ft_strjoin_free_choice(char *s1, char *s2, int who_free);
 
 // ---------- PUT FUNCTIONS-------------------
 void	ft_putchar_fd(char c, int fd);

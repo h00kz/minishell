@@ -6,7 +6,7 @@
 /*   By: pdubacqu <pdubacqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 11:20:37 by jlarrieu          #+#    #+#             */
-/*   Updated: 2022/12/06 14:51:52 by pdubacqu         ###   ########.fr       */
+/*   Updated: 2022/12/07 13:56:55 by pdubacqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ typedef struct s_cmds
 	char			*outfile;
 	char			**envp;
 	struct s_cmds	*next;
-	struct s_cmds	*prev;
 }			t_cmds;
 
 #endif

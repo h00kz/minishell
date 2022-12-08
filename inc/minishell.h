@@ -6,7 +6,7 @@
 /*   By: pdubacqu <pdubacqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 10:38:35 by pdubacqu          #+#    #+#             */
-/*   Updated: 2022/12/06 18:31:16 by pdubacqu         ###   ########.fr       */
+/*   Updated: 2022/12/07 14:29:06 by pdubacqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ enum	e_parsing
 
 t_cmds	*make_arg(char **input_split, char **envp);
 t_cmds	*parse_input(char *input, char **envp);
+char	*translate_env_vars(char *input, char **envp);
 
 /*********************************utils****************************************/
 
