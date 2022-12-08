@@ -1,18 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   gets.c                                             :+:      :+:    :+:   */
+/*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jlarrieu <jlarrieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/30 15:52:03 by jlarrieu          #+#    #+#             */
-/*   Updated: 2022/11/30 15:55:30 by jlarrieu         ###   ########.fr       */
+/*   Created: 2022/12/06 16:33:38 by jlarrieu          #+#    #+#             */
+/*   Updated: 2022/12/06 18:48:02 by jlarrieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/minishell.h"
+#ifndef BUILTINS_H
+# define BUILTINS_H
 
-t_envp	*get_elem_by_idx(int index)
-{
-	return(NULL);
-}
+/*********************************** ECHO *************************************/
+
+int	ft_check_echo(char *input_split);
+
+#endif

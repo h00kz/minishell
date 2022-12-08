@@ -6,14 +6,16 @@
 #    By: pdubacqu <pdubacqu@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/21 16:35:42 by jlarrieu          #+#    #+#              #
-#    Updated: 2022/11/30 15:59:10 by pdubacqu         ###   ########.fr        #
+#    Updated: 2022/12/07 14:27:36 by pdubacqu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC					= src/main.c \
-					  src/envp/envp_process.c \
-					  src/utils/gets.c \
-					  src/utils/list_utils.c
+					  src/parsing/parse_input.c \
+					  src/utils/list_utils.c \
+					  src/split/split_for_input.c \
+					  src/builtins/echo.c \
+					  src/parsing/env_interpretation.c
 
 LIBFT				= libft/
 CFLAGS				=  -g -lreadline #-Werror -Wextra -Wall

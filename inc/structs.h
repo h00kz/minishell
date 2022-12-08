@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jlarrieu <jlarrieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pdubacqu <pdubacqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 11:20:37 by jlarrieu          #+#    #+#             */
-/*   Updated: 2022/11/30 16:13:04 by jlarrieu         ###   ########.fr       */
+/*   Updated: 2022/12/07 13:56:55 by pdubacqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,15 @@
 typedef struct s_cmds
 {
 	int				fd_file;
-	int				redir;
-	char			*file_name;
+	int				redir_in;
+	int				redir_out;
 	char			*cmd;
 	char			*args;
+	char			*infile;
+	char			**file_name;
+	char			*outfile;
 	char			**envp;
 	struct s_cmds	*next;
-	struct s_cmds	*prev;
 }			t_cmds;
-
-typedef struct s_envp
-{
-	char			*variable;
-	char			*value;
-	struct s_envp	*next;
-}			t_envp;
 
 #endif
