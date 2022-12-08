@@ -1,0 +1,6 @@
+si > le fichier n'est pas pipe il est juste envoye dans le dernier 
+fichier cible.
+si < le fichier d'entre est le dernier fichier cibler par < 
+mais si un seul d'entre tout les fichier cible en entre n'existe pas 
+il faut afficher une erreur et auitte la commande en cour pour passer au
+prochain pipe.
