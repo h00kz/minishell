@@ -28,20 +28,23 @@ int	ft_check_pipe(char *input)
 void	make_left_redir(t_cmds *cmd, char **input_split, int *i)
 {
 	free(cmd->infile);
-	cmd->fd_file = open(input_split[(*i) + 1], O_RDONLY);
-	if (cmd->redir_in != L_HEREDOC)
+	if (input_split[(*i) +1])
 	{
-		cmd->infile = ft_strdup(input_split[(*i) + 1]);
-		cmd->redir_in = L_REDIR;
+		cmd->fd_file = open(input_split[(*i) + 1], O_RDONLY);
+		if (cmd->redir_in != L_HEREDOC)
+		{
+			cmd->infile = ft_strdup(input_split[(*i) + 1]);
+			cmd->redir_in = L_REDIR;
+		}
+		if (cmd->fd_file < 0)
+		{
+			printf("cannot open file : %s\n", cmd->infile);
+			free_cmd(cmd);
+			exit(1);
+		}
+		close(cmd->fd_file);
+		(*i) += 2;
 	}
-	if (cmd->fd_file < 0)
-	{
-		printf("cannot open file : %s\n", cmd->infile);
-		free_cmd(cmd);
-		exit(1);
-	}
-	close(cmd->fd_file);
-	(*i) += 2;
 }
 
 void	make_right_redir(t_cmds *cmd, char **input_split, int *i)
@@ -51,12 +54,34 @@ void	make_right_redir(t_cmds *cmd, char **input_split, int *i)
 	if (cmd->redir_in != R_HEREDOC)
 	{
 		cmd->redir_out = R_REDIR;
-		cmd->outfile = ft_strdup(input_split[*i + 1]);
+		if (input_split[(*i) +1])
+		{
+			cmd->outfile = ft_strdup(input_split[*i + 1]);
+			cmd->fd_file = open(input_split[*i + 1],
+					O_CREAT | O_TRUNC | O_WRONLY, 0644);
+			if (cmd->fd_file < 0)
+			{
+				printf("cannot open file : %s\n", cmd->infile);
+				free_cmd(cmd);
+				exit(1);
+			}
+			close(cmd->fd_file);
+			(*i) += 2;
+		}
+	}
+}
+
+void	make_right_heredoc(t_cmds *cmd, char **input_split, int *i)
+{
+	cmd->redir_out = R_HEREDOC;
+	if (input_split[(*i) +1])
+	{
+		cmd->infile = ft_strdup(input_split[*i + 1]);
 		cmd->fd_file = open(input_split[*i + 1],
-				O_CREAT | O_TRUNC | O_WRONLY, 0644);
+				O_CREAT | O_APPEND | O_WRONLY, 0644);
 		if (cmd->fd_file < 0)
 		{
-			printf("cannot open file : %s\n", cmd->infile);
+			printf("cannot open file : %s\n", cmd->outfile);
 			free_cmd(cmd);
 			exit(1);
 		}
@@ -65,26 +90,11 @@ void	make_right_redir(t_cmds *cmd, char **input_split, int *i)
 	(*i) += 2;
 }
 
-void	make_right_heredoc(t_cmds *cmd, char **input_split, int *i)
-{
-	cmd->redir_out = R_HEREDOC;
-	cmd->infile = ft_strdup(input_split[*i + 1]);
-	cmd->fd_file = open(input_split[*i + 1],
-			O_CREAT | O_APPEND | O_WRONLY, 0644);
-	if (cmd->fd_file < 0)
-	{
-		printf("cannot open file : %s\n", cmd->outfile);
-		free_cmd(cmd);
-		exit(1);
-	}
-	close(cmd->fd_file);
-	(*i) += 2;
-}
-
 void	make_left_heredoc(t_cmds *cmd, char **input_split, int *i)
 {
 	cmd->redir_out = L_HEREDOC;
-	cmd->infile = ft_strdup(input_split[(*i) + 1]);
+	if (input_split[(*i) +1])
+		cmd->infile = ft_strdup(input_split[(*i) + 1]);
 	(*i) += 2;
 }
 
