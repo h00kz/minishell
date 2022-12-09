@@ -15,6 +15,21 @@ void	ft_free_split(char **strs)
 	free(strs);
 }
 
+void	ft_nfree_split(char **strs, int n)
+{
+	int	i;
+
+	i = 0;
+	if (!strs)
+		return ;
+	while (i < n)
+	{
+		free(strs[i]);
+		i++;
+	}
+	free(strs);
+}
+
 int	ft_count_word_split(char c, char const *str)
 {
 	int	count;
@@ -30,11 +45,15 @@ int	ft_count_word_split(char c, char const *str)
 			i++;
 		if (str[i] != c && str[i])
 			count++;
-		while ((str[i] != c || boolean == 1) && str[i])
+		while ((str[i] != c || boolean == 1 || boolean == 3) && str[i])
 		{
 			if (str[i] == '"' && boolean == 0)
 				boolean = 1;
 			else if (str[i] == '"' && boolean == 1)
+				boolean = 0;
+			else if (str[i] == '\'' && boolean == 0)
+				boolean = 3;
+			else if (str[i] == '\'' && boolean == 3)
 				boolean = 0;
 			i++;
 		}
@@ -49,12 +68,16 @@ static size_t	ft_count_char_split(char c, char const *str)
 
 	boolean = 0;
 	count = 0;
-	while ((str[count] != c || boolean == 1) && str[count])
+	while ((str[count] != c || boolean == 1 || boolean == 3) && str[count])
 	{
 		if (str[count] == '"' && boolean == 0)
 			boolean = 1;
 		else if (str[count] == '"' && boolean == 1)
 			boolean = 0;
+		else if (str[count] == '\'' && boolean == 0)
+			boolean = 3;
+		else if (str[count] == '\'' && boolean == 3)
+				boolean = 0;
 		count++;
 	}
 	return (count);
@@ -62,11 +85,15 @@ static size_t	ft_count_char_split(char c, char const *str)
 
 void	ft_skip_char(char const *s, size_t *i, int *boolean, char c)
 {
-	while (s[(*i)] && (s[(*i)] != c || (*boolean) == 1))
+	while (s[(*i)] && (s[(*i)] != c || (*boolean) == 1 || (*boolean) == 3))
 	{
 		if (s[(*i)] == '"' && (*boolean) == 0)
 			(*boolean) = 1;
 		else if (s[(*i)] == '"' && (*boolean) == 1)
+			(*boolean) = 0;
+		else if (s[(*i)] == '\'' && (*boolean) == 0)
+			(*boolean) = 3;
+		else if (s[(*i)] == '\'' && (*boolean) == 3)
 			(*boolean) = 0;
 		(*i)++;
 	}
@@ -97,5 +124,6 @@ char	**ft_split_input(char const *s, char c)
 			strs[j++] = ft_substr(s, i, word_len);
 		ft_skip_char(s, &i, &boolean, c);
 	}
+	strs[j] = NULL;
 	return (strs);
 }

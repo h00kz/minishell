@@ -42,7 +42,7 @@ void	ft_print_lst(t_cmds *cmd)
 			printf("\ncmd->files = %s", cmd->file_name[i]);
 			i++;
 		}
-		ft_print_lst_e(cmd->lst_envp);
+		// ft_print_lst_e(cmd->lst_envp);
 		printf ("\n");
 		cmd = tmp;
 	}
@@ -92,7 +92,7 @@ int main(int ac, char **av, char **envp)
 				ft_print_lst(cmd);
 				free_cmd(cmd);
 			}
-			free(input);	
+			free(input);
 		}
 	}
 	return 0;
