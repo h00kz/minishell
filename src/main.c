@@ -5,11 +5,14 @@ int	g_exit_code = 0;
 char	*set_prompt(char **envp)
 {
 	char	*prompt;
+	char	*tmp;
 	char	*cwd;
 
 	cwd = NULL;
 	cwd = getcwd(cwd, 0);
-	prompt = ft_strjoin(cwd, " > ");
+	tmp = ft_strjoin("\033[0;36m[\033[0;32m", cwd);
+	prompt = ft_strjoin(tmp, "\033[0;36m]\033[0m> ");
+	free(tmp);
 	free(cwd);
 	return (prompt);
 }
@@ -90,8 +93,8 @@ int main(int ac, char **av, char **envp)
 			cmd = parse_input(input, envp);
 			if (cmd != NULL)
 			{
-				if (!ft_strncmp(input, "cd", 2))
-					ft_cd(cmd->file_name[0], cmd);
+				if (!ft_strncmp(input, "export", 2))
+					ft_export(cmd->file_name[0], cmd);
 				ft_print_lst(cmd);
 				free_cmd(cmd);
 			}
