@@ -10,5 +10,6 @@ void	ft_lst_free(t_envp *lst);
 int		ft_lst_size_env(t_envp *lst_envp);
 t_envp	*ch_var_lst_envp(t_envp *lst_envp, char *var, char *value);
 char	**rebuild_envp(t_envp *lst_envp);
+void	update_cmds_env(t_cmds *cmds);
 
 #endif

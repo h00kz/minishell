@@ -85,6 +85,7 @@ void	free_cmd(t_cmds *cmd)
 			free(tmp->outfile);
 		ft_free_split(tmp->file_name);
 		ft_lst_free(tmp->lst_envp);
+		ft_free_split(tmp->envp);
 		free(tmp);
 	}
 }
@@ -127,4 +128,17 @@ int	ft_lst_size_env(t_envp *lst_envp)
 		lst_envp = lst_envp->next;
 	}
 	return (i);
+}
+
+void	update_cmds_env(t_cmds *cmds)
+{
+	if (!cmds)
+		return ;
+	while (cmds)
+	{
+		if (cmds->envp)
+			ft_free_split(cmds->envp);
+		cmds->envp = rebuild_envp(cmds->lst_envp);
+		cmds = cmds->next;
+	}
 }

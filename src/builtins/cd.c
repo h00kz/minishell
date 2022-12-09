@@ -1,43 +1,40 @@
 #include "../../inc/minishell.h"
 
-static t_envp	*update_pwd(t_envp *envp, char *dir, char *pwd)
+static void	*update_pwd(t_cmds *cmds)
 {
-	char	*str_update;
-
-	str_update = ft_strjoin(pwd, dir);
-	envp = ch_var_lst_envp(envp, "PWD", str_update);
-	free(str_update);
-	return (envp);
-}
-
-int	ft_cd(char *argv, t_envp *lst_envp)
-{
-	const char	*home;
 	char		*cur_path;
 	t_envp		*envp;
 
-	envp = lst_envp;
+	envp = cmds->lst_envp;
+	cur_path = NULL;
+	cur_path = getcwd(cur_path, 0);
+	envp = ch_var_lst_envp(envp, "PWD", cur_path);
+	free(cur_path);
+	update_cmds_env(cmds);
+}
+
+static int	put_error(const char *file_name)
+{
+	ft_putstr_fd("minishell: ", 2);
+	perror(file_name);
+	return (1);
+}
+
+int	ft_cd(char *argv, t_cmds *cmds)
+{
+	const char	*home;
+
 	if (!argv)
 	{
 		home = getenv("HOME");
 		if (chdir(home) < 0)
-		{
-			perror("cd");
-			return (1);
-		}
+			return (put_error(home));
+		else
+			update_pwd(cmds);
 	}
 	if (chdir(argv) < 0)
-	{
-		perror("cd");
-		return (1);
-	}
+		return (put_error(argv));
 	else
-	{
-		cur_path = NULL;
-		cur_path = getcwd(cur_path, 0);
-		envp = ch_var_lst_envp(envp, "OLD_PWD", cur_path);
-		envp = update_pwd(envp, argv, cur_path);
-		free(cur_path);
-	}
+		update_pwd(cmds);
 	return (0);
 }

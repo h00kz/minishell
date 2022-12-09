@@ -37,7 +37,7 @@ t_envp	*ch_var_lst_envp(t_envp *lst_envp, char *var, char *value)
 		}
 		lst = lst->next;
 	}
-	return (lst);
+	return (lst_envp);
 }
 
 char	**rebuild_envp(t_envp *lst_envp)
