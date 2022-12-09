@@ -30,7 +30,11 @@ t_envp	*ch_var_lst_envp(t_envp *lst_envp, char *var, char *value)
 	while (lst)
 	{
 		if (!ft_strcmp(lst->variable, var))
+		{
+			if (lst->value)
+				free(lst->value);
 			lst->value = ft_strdup(value);
+		}
 		lst = lst->next;
 	}
 	return (lst);
@@ -50,8 +54,6 @@ char	**rebuild_envp(t_envp *lst_envp)
 		return (NULL);
 	while (lst_envp)
 	{
-		ret_envp[i] = ft_calloc((ft_strlen(lst_envp->variable) + \
-								ft_strlen(lst_envp->value)) + 1, sizeof(char));
 		tmp = ft_strjoin(lst_envp->variable, "=");
 		ret_envp[i] = ft_strjoin(tmp, lst_envp->value);
 		free(tmp);
