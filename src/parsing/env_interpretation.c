@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   env_interpretation.c                               :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: pdubacqu <pdubacqu@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/07 14:09:17 by pdubacqu          #+#    #+#             */
-/*   Updated: 2022/12/08 14:58:39 by pdubacqu         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 char	*ft_translate(char **envp, char *input)
@@ -88,14 +76,14 @@ char	*translate_env_vars(char *input, char **envp)
 			boolean = 0;
 			i++;
 		}
-		if (input[i] == '$' && boolean != 2)
+		else if (input[i] == '$' && boolean != 2)
 		{
 			tmp = translate_vars(input, &i, envp, &boolean);
 			i++;
+			if (!tmp)
+				i ++;
 			while (input[i] && ft_isalnum(input[i]))
 				i++;
-			if (!tmp)
-				i += 2;
 			if (tmp)
 			{
 				str = ft_strjoin_free(str, tmp);
@@ -104,7 +92,7 @@ char	*translate_env_vars(char *input, char **envp)
 		}
 		else if (input[i])
 		{
-			if (input[i] != '"')
+			if (input[i] != '"' || boolean == 2)
 			{
 				tmp = ft_calloc(sizeof(char), 2);
 				tmp[0] = input[i];
@@ -113,5 +101,6 @@ char	*translate_env_vars(char *input, char **envp)
 			i++;
 		}
 	}
+	printf("%s", str);
 	return (str);
 }
