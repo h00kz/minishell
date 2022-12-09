@@ -1,4 +1,3 @@
-
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -40,7 +39,7 @@ char	*translate_env_vars(char *input, char **envp);
 
 /*********************************utils****************************************/
 
-t_cmds	*ft_lstnew_node(void);
+t_cmds	*ft_lstnew_node(char **envp);
 t_cmds	*lstnew_cmd(char **input_split, char **envp);
 void	free_cmd(t_cmds *cmd);
 

@@ -2,6 +2,13 @@
 #ifndef STRUCTS_H
 # define STRUCTS_H
 
+typedef struct s_envp
+{
+	char			*variable;
+	char			*value;
+	struct s_envp	*next;
+}			t_envp;
+
 typedef struct s_cmds
 {
 	int				fd_file;
@@ -13,6 +20,7 @@ typedef struct s_cmds
 	char			**file_name;
 	char			*outfile;
 	char			**envp;
+	struct s_envp	*lst_envp;
 	struct s_cmds	*next;
 }			t_cmds;
 

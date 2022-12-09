@@ -1,4 +1,3 @@
-
 #include "../inc/minishell.h"
 
 char	*set_prompt(char **envp)
@@ -15,6 +14,16 @@ char	*set_prompt(char **envp)
 	}
 	prompt = ft_strjoin(envp[i] + 8, "/:> ");
 	return (prompt);
+}
+
+static void	ft_print_lst_e(t_envp *envp)
+{
+	while (envp != NULL)
+	{
+		printf("\ncmd->envp->variable = %s", envp->variable);
+		printf("\ncmd->envp->value = %s\n", envp->value);
+		envp = envp->next;
+	}
 }
 
 void	ft_print_lst(t_cmds *cmd)
@@ -37,6 +46,7 @@ void	ft_print_lst(t_cmds *cmd)
 			printf("\ncmd->files = %s", cmd->file_name[i]);
 			i++;
 		}
+		ft_print_lst_e(cmd->lst_envp);
 		printf ("\n");
 		cmd = tmp;
 	}

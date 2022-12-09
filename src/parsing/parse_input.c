@@ -216,7 +216,7 @@ t_cmds	*make_arg(char **input_split, char **envp)
 
 	i = 0;
 	n = 0;
-	cmd = ft_lstnew_node();
+	cmd = ft_lstnew_node(envp);
 	while (input_split[i] && input_split[i] != "|")
 	{
 		if (ft_strcmp(input_split[i], "<") == 0)
