@@ -1,20 +1,14 @@
 #include "../inc/minishell.h"
 
-
-
 char	*set_prompt(char **envp)
 {
-	int		i;
 	char	*prompt;
+	char	*cwd;
 
-	i = 0;
-	while (envp[i] != NULL)
-	{
-		if (ft_strncmp(envp[i], "PWD=", (long unsigned int)4) == 0)
-			break ;
-		i++;
-	}
-	prompt = ft_strjoin(envp[i] + 8, "/:> ");
+	cwd = NULL;
+	cwd = getcwd(cwd, 0);
+	prompt = ft_strjoin(cwd, " > ");
+	free(cwd);
 	return (prompt);
 }
 
@@ -48,7 +42,7 @@ void	ft_print_lst(t_cmds *cmd)
 			printf("\ncmd->files = %s", cmd->file_name[i]);
 			i++;
 		}
-		// ft_print_lst_e(cmd->lst_envp);
+		ft_print_lst_e(cmd->lst_envp);
 		printf ("\n");
 		cmd = tmp;
 	}
@@ -63,12 +57,6 @@ static void	sig_handler(int sig)
 		rl_replace_line("", 0); // Clear the previous text
 		rl_redisplay();
 	}
-	else if (sig == SIGQUIT)
-	{
-		rl_redisplay();
-		rl_replace_line("", 0); // Clear the previous text
-		return ;
-	}
 }
 
 int main(int ac, char **av, char **envp)
@@ -77,10 +65,8 @@ int main(int ac, char **av, char **envp)
 	t_cmds	*cmd;
 	char	*prompt;
 
-	if (signal(SIGINT, sig_handler) == SIG_ERR)
-		ft_putendl_fd("SIGNAL INTR CTRL C ERROR DEBILE", 2); //wrEFUHWEIUFHRIUGHETHGSRT
-	if (signal(SIGQUIT, sig_handler) == SIG_ERR)
-		ft_putendl_fd("SIGNAL QUIT CTRL \\ ERROR DEBILE", 2); // UIWHEFIWUEFHIWUHEF
+	signal(SIGINT, sig_handler);
+	signal(SIGQUIT, SIG_IGN);
 	if (ac != 1)
 		exit(1);
 	while (1)
@@ -101,6 +87,8 @@ int main(int ac, char **av, char **envp)
 			cmd = parse_input(input, envp);
 			if (cmd != NULL)
 			{
+				if (!ft_strncmp(input, "cd", 2))
+					ft_cd(cmd->file_name[0], cmd);
 				ft_print_lst(cmd);
 				free_cmd(cmd);
 			}
