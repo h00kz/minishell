@@ -22,8 +22,14 @@ static int	put_error(const char *file_name)
 
 int	ft_cd(char *argv, t_cmds *cmds)
 {
-	const char	*home;
+	char	*home;
+	char	*old_pwd;
 
+	old_pwd = NULL;
+	old_pwd = getcwd(old_pwd, 0);
+	cmds->lst_envp = ch_var_lst_envp(cmds->lst_envp, "OLDPWD", old_pwd);
+	free(old_pwd);
+	update_cmds_env(cmds);
 	if (!argv)
 	{
 		home = getenv("HOME");
@@ -32,9 +38,12 @@ int	ft_cd(char *argv, t_cmds *cmds)
 		else
 			update_pwd(cmds);
 	}
-	if (chdir(argv) < 0)
-		return (put_error(argv));
 	else
-		update_pwd(cmds);
+	{
+		if (chdir(argv) < 0)
+			return (put_error(argv));
+		else
+			update_pwd(cmds);
+	}
 	return (0);
 }
