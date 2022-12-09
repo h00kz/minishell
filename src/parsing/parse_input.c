@@ -194,21 +194,23 @@ void	make_left_here_doc_implicit(t_cmds *cmd, char **input_split, int *i)
 
 void	make_args_next(t_cmds *cmd, char **input_split, int *i, int *n)
 {
-	if (ft_strncmp(input_split[(*i)], ">>", 2) == 0)
+	if (input_split[*i] && ft_strncmp(input_split[(*i)], ">>", 2) == 0)
 		make_right_here_doc_implicit(cmd, input_split, i);
-	else if (ft_strcmp(input_split[(*i)], "<<") == 0)
+	else if (input_split[*i] && ft_strcmp(input_split[(*i)], "<<") == 0)
 		make_left_heredoc(cmd, input_split, i);
-	else if (ft_strncmp(input_split[(*i)], "<<", 2) == 0)
+	else if (input_split[*i] && ft_strncmp(input_split[(*i)], "<<", 2) == 0)
 		make_left_here_doc_implicit(cmd, input_split, i);
-	else if (ft_strncmp(input_split[(*i)], "-", 1) == 0)
+	else if (input_split[*i] && ft_strncmp(input_split[(*i)], "-", 1) == 0)
 		make_args(cmd, input_split, i);
-	else if (cmd->cmd[0] == '\0')
+	else if (input_split[*i] && cmd->cmd[0] == '\0')
 		make_cmd(cmd, input_split, i);
-	else
+	else if (input_split[*i])
 		make_file(cmd, input_split, i, n);
+	else if (!(input_split[*i]))
+		(*i)++;
 }
 
-t_cmds	*make_arg(char **input_split, char **envp)
+t_cmds	*make_arg(char **input_split, char **envp, int j)
 {
 	t_cmds	*cmd;
 	int		i;
@@ -217,22 +219,44 @@ t_cmds	*make_arg(char **input_split, char **envp)
 	i = 0;
 	n = 0;
 	cmd = ft_lstnew_node(envp);
-	while (input_split[i] && input_split[i] != "|")
+	while (i < j)
 	{
-		if (ft_strcmp(input_split[i], "<") == 0)
+		if (input_split[i] && ft_strcmp(input_split[i], "<") == 0)
 			make_left_redir(cmd, input_split, &i);
-		else if (ft_strncmp(input_split[i], "<", 1) == 0)
+		else if (input_split[i] && ft_strncmp(input_split[i], "<", 1) == 0)
 			make_left_redir_implicit(cmd, input_split, &i);
-		else if (ft_strcmp(input_split[i], ">") == 0)
+		else if (input_split[i] && ft_strcmp(input_split[i], ">") == 0)
 			make_right_redir(cmd, input_split, &i);
-		else if (ft_strncmp(input_split[i], ">", 1) == 0)
+		else if (input_split[i] && ft_strncmp(input_split[i], ">", 1) == 0)
 			make_right_redir_implicit(cmd, input_split, &i);
-		else if (ft_strcmp(input_split[i], ">>") == 0)
+		else if (input_split[i] && ft_strcmp(input_split[i], ">>") == 0)
 			make_right_heredoc(cmd, input_split, &i);
 		else
 			make_args_next(cmd, input_split, &i, &n);
 	}
 	return (cmd);
+}
+
+char	**vars(char **envp, char **input_split)
+{
+	int		i;
+	char	**tmp;
+	int		j;
+
+	i = 0;
+	j = 0;
+	while (input_split[j])
+		j++;
+	tmp = malloc(sizeof(char *) * (j + 1));
+	while (input_split[i])
+	{
+		tmp[i] = translate_env_vars(input_split[i], envp);
+		free(input_split[i]);
+		i++;
+	}
+	tmp[i] = NULL;
+	free(input_split);
+	return (tmp);
 }
 
 t_cmds	*parse_input(char *input, char **envp)
@@ -242,25 +266,39 @@ t_cmds	*parse_input(char *input, char **envp)
 	t_cmds	*save;
 	t_cmds	*cmd;
 	int		i;
+	int		j;
 
 	i = 0;
 	if (ft_check_pipe(input) == 1)
 		exit(1);
-	input = translate_env_vars(input, envp);
 	if (input == NULL)
 		return (NULL);
 	// ft_make_here_doc(input);
 	cmd_split = ft_split_input(input, '|');
-	free(input);
 	while (cmd_split && cmd_split[i])
 	{
+		j = 0;
 		input_split = ft_split_input(cmd_split[i], ' ');
+		while (input_split[j])
+			j++;
+		input_split = vars(envp, input_split);
+		if (input_split == NULL)
+		{
+			printf("Error idx = %d\n", i);
+			ft_nfree_split(input_split, j);
+			return (NULL);
+		}
 		if (i == 0)
-			cmd = make_arg(input_split, envp);
+			cmd = make_arg(input_split, envp, j);
 		else
-			ft_lstadd_back_cmd(&cmd, make_arg(input_split, envp));
-		ft_free_split(input_split);
+			ft_lstadd_back_cmd(&cmd, make_arg(input_split, envp, j));
+		ft_nfree_split(input_split, j);
 		i++;
+	}
+	if (cmd->cmd == NULL)
+	{
+		printf("Error\n");
+		return (cmd);
 	}
 	ft_free_split(cmd_split);
 	return (cmd);

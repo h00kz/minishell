@@ -33,7 +33,7 @@ enum	e_parsing
 
 /********************************parsing***************************************/
 
-t_cmds	*make_arg(char **input_split, char **envp);
+t_cmds	*make_arg(char **input_split, char **envp, int j);
 t_cmds	*parse_input(char *input, char **envp);
 char	*translate_env_vars(char *input, char **envp);
 
@@ -47,6 +47,7 @@ void	free_cmd(t_cmds *cmd);
 
 char	**ft_split_input(char const *s, char c);
 void    ft_free_split(char **strs);
+void	ft_nfree_split(char **strs, int n);
 
 
 

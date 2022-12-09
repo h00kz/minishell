@@ -85,6 +85,7 @@ void	free_cmd(t_cmds *cmd)
 			free(tmp->outfile);
 		ft_free_split(tmp->file_name);
 		ft_lst_free(tmp->lst_envp);
+		ft_free_split(tmp->envp);
 		free(tmp);
 	}
 }

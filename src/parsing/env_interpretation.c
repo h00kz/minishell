@@ -99,8 +99,13 @@ char	*translate_env_vars(char *input, char **envp)
 				str = ft_strjoin_free_choice(str, tmp, 3);
 			}
 			i++;
-		}
+		}	
 	}
-	printf("%s", str);
+	if (boolean == 2 || boolean == 1)
+	{
+		printf("Error quote non ferme : %s\n", str	);
+		free(str);
+		return (NULL);
+	}
 	return (str);
 }
