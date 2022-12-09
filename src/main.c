@@ -1,5 +1,7 @@
 #include "../inc/minishell.h"
 
+int	g_exit_code = 0;
+
 char	*set_prompt(char **envp)
 {
 	char	*prompt;
@@ -56,6 +58,7 @@ static void	sig_handler(int sig)
 		rl_on_new_line(); // Regenerate the prompt on a newline
 		rl_replace_line("", 0); // Clear the previous text
 		rl_redisplay();
+		g_exit_code = 128 + sig;
 	}
 }
 
@@ -80,7 +83,7 @@ int main(int ac, char **av, char **envp)
 			printf("exit\n");
 			rl_clear_history();
 			free(input);
-			exit(0); 
+			exit(g_exit_code); 
 		}
 		if (input && input[0])
 		{

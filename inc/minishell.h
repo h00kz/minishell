@@ -13,6 +13,8 @@
 # include "lists.h"
 # include "builtins.h"
 
+extern int g_exit_code;
+
 enum	e_redir
 {
 	L_REDIR = 1,
