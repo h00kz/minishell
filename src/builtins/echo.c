@@ -1,6 +1,3 @@
-
-
-
 #include "../../inc/minishell.h"
 
 int	ft_check_echo(char *input_split)
