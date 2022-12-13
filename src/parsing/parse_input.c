@@ -5,19 +5,60 @@ int	ft_check_pipe(char *input)
 	int	i;
 
 	i = 0;
-	while (input[i])
+	while (i < ft_strlen(input))
 	{
-		if (input[i] == '|')
+		if (input && input[i] == '|')
 		{
 			i++;
-			while (input[i] == ' ' || input[i] == '\t')
+			while (input && input[i] && (input[i] == ' ' || input[i] == '\t'))
 			{
 				i++;
-				if (input[i] == '|')
+				if (input && input[i] && input[i] == '|')
 				{
-					printf("\nya 2 pipe zebi\n\n");
+					printf("\nsyntax error\n");
 					return (1);
 				}
+			}
+			if (!(input[i]))
+			{
+				printf("\nsyntax error\n");
+				return (1);
+			}
+		}
+		if (input && input[i] == '<')
+		{
+			i++;
+			while (input && input[i] && (input[i] == ' ' || input[i] == '\t'))
+			{
+				i++;
+				if (input && input[i] && input[i] == '<')
+				{
+					printf("\nsyntax error\n");
+					return (1);
+				}
+			}
+			if (!(input[i]))
+			{
+				printf("\nsyntax error\n");
+				return (1);
+			}
+		}
+		if (input && input[i] == '>')
+		{
+			i++;
+			while (input && input[i] && (input[i] == ' ' || input[i] == '\t'))
+			{
+				i++;
+				if (input && input[i] && input[i] == '>')
+				{
+					printf("\nsyntax error\n");
+					return (1);
+				}
+			}
+			if (!(input[i]))
+			{
+				printf("\nsyntax error\n");
+				return (1);
 			}
 		}
 		i++;
@@ -280,7 +321,7 @@ t_cmds	*parse_input(char *input, char **envp)
 
 	i = 0;
 	if (ft_check_pipe(input) == 1)
-		exit(1);
+		return (NULL);
 	if (input == NULL)
 		return (NULL);
 	// ft_make_here_doc(input);
