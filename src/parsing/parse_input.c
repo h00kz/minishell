@@ -1,6 +1,6 @@
 #include "../../inc/minishell.h"
 
-int	ft_check_pipe(char *input)
+int	ft_check_redir(char *input)
 {
 	int	i;
 
@@ -25,7 +25,7 @@ int	ft_check_pipe(char *input)
 				return (1);
 			}
 		}
-		if (input && input[i] == '<')
+		else if (input && input[i] == '<')
 		{
 			i++;
 			while (input && input[i] && (input[i] == ' ' || input[i] == '\t'))
@@ -43,7 +43,7 @@ int	ft_check_pipe(char *input)
 				return (1);
 			}
 		}
-		if (input && input[i] == '>')
+		else if (input && input[i] == '>')
 		{
 			i++;
 			while (input && input[i] && (input[i] == ' ' || input[i] == '\t'))
@@ -61,9 +61,90 @@ int	ft_check_pipe(char *input)
 				return (1);
 			}
 		}
-		i++;
+		else
+			i++;
 	}
 	return (0);
+}
+
+int	ft_strlen_sep(char *str)
+{
+	int	i;
+	int	j;
+	int	boolean;
+
+	i = 0;
+	j = 0;
+	boolean = 0;
+	while (str[i])
+	{
+		if (str[i] == '\"' && boolean == 0)
+			boolean = 1;
+		else if (str[i] == '\'' && boolean == 0)
+			boolean = 2;
+		else if (str[i] == '\'' && boolean == 2)
+			boolean = 0;
+		else if (str[i] == '\"' && boolean == 1)
+			boolean == 0;
+		if ((boolean == 0 || boolean == 2) && (str[i] == '<' || str[i] == '>' || str[i] == '|'))
+			j += 2;
+		i++;
+		j++;
+	}
+	return (j);
+}
+
+char	*ft_str_add_space(char *str)
+{
+	int		i;
+	int		j;
+	int		len;
+	char	*s;
+	int		boolean;
+
+	boolean = 0;
+	i = 0;
+	j = 0;
+	if (!str)
+		return (NULL);
+	len = ft_strlen_sep(str);
+	s = ft_calloc(sizeof(char), len + 2);
+	while (str[i])
+	{
+		if (str[i] == '\"' && boolean == 0)
+			boolean = 1;
+		else if (str[i] == '\'' && boolean == 0)
+			boolean = 2;
+		else if (str[i] == '\'' && boolean == 2)
+			boolean = 0;
+		else if (str[i] == '\"' && boolean == 1)
+			boolean == 0;
+		if ((boolean == 0 || boolean == 2) && ((str[i] == '<' && str[i + 1] == '<') || (str[i] == '>' && str[i + 1] == '>')))
+		{
+			s[j] = ' ';
+			j++;
+			s[j] = str[i];
+			j++;
+			i++;
+			s[j] = str[i];
+			j++;
+			s[j] = ' ';
+		}
+		else if ((boolean == 0 || boolean == 2) && (str[i] == '<' || str[i] == '>' || str[i] == '|'))
+		{
+			s[j] = ' ';
+			j++;
+			s[j] = str[i];
+			j++;
+			s[j] = ' ';
+		}
+		else
+			s[j] = str[i];
+		j++;
+		i++;
+	}
+	s[len + 1] = '\0';
+	return (s);
 }
 
 void	make_left_redir(t_cmds *cmd, char **input_split, int *i)
@@ -95,7 +176,7 @@ void	make_right_redir(t_cmds *cmd, char **input_split, int *i)
 	if (cmd->redir_in != R_HEREDOC)
 	{
 		cmd->redir_out = R_REDIR;
-		if (input_split[(*i) +1])
+		if (input_split[(*i) + 1])
 		{
 			cmd->outfile = ft_strdup(input_split[*i + 1]);
 			cmd->fd_file = open(input_split[*i + 1],
@@ -245,12 +326,8 @@ void	make_left_here_doc_implicit(t_cmds *cmd, char **input_split, int *i)
 
 void	make_args_next(t_cmds *cmd, char **input_split, int *i, int *n)
 {
-	if (input_split[*i] && ft_strncmp(input_split[(*i)], ">>", 2) == 0)
-		make_right_here_doc_implicit(cmd, input_split, i);
-	else if (input_split[*i] && ft_strcmp(input_split[(*i)], "<<") == 0)
+	if (input_split[*i] && ft_strcmp(input_split[(*i)], "<<") == 0)
 		make_left_heredoc(cmd, input_split, i);
-	else if (input_split[*i] && ft_strncmp(input_split[(*i)], "<<", 2) == 0)
-		make_left_here_doc_implicit(cmd, input_split, i);
 	else if (input_split[*i] && ft_strncmp(input_split[(*i)], "-", 1) == 0)
 		make_args(cmd, input_split, i);
 	else if (input_split[*i] && cmd->cmd[0] == '\0')
@@ -274,12 +351,8 @@ t_cmds	*make_arg(char **input_split, char **envp, int j)
 	{
 		if (input_split[i] && ft_strcmp(input_split[i], "<") == 0)
 			make_left_redir(cmd, input_split, &i);
-		else if (input_split[i] && ft_strncmp(input_split[i], "<", 1) == 0)
-			make_left_redir_implicit(cmd, input_split, &i);
 		else if (input_split[i] && ft_strcmp(input_split[i], ">") == 0)
 			make_right_redir(cmd, input_split, &i);
-		else if (input_split[i] && ft_strncmp(input_split[i], ">", 1) == 0)
-			make_right_redir_implicit(cmd, input_split, &i);
 		else if (input_split[i] && ft_strcmp(input_split[i], ">>") == 0)
 			make_right_heredoc(cmd, input_split, &i);
 		else
@@ -320,10 +393,17 @@ t_cmds	*parse_input(char *input, char **envp)
 	int		j;
 
 	i = 0;
-	if (ft_check_pipe(input) == 1)
+	input = ft_str_add_space(input);
+	if (ft_check_redir(input) == 1)
+	{
+		free(input);
 		return (NULL);
+	}
 	if (input == NULL)
+	{
+		free(input);
 		return (NULL);
+	}
 	// ft_make_here_doc(input);
 	cmd_split = ft_split_input(input, '|');
 	while (cmd_split && cmd_split[i])
@@ -337,6 +417,7 @@ t_cmds	*parse_input(char *input, char **envp)
 		{
 			printf("Error idx = %d\n", i);
 			ft_nfree_split(input_split, j);
+			free(input);
 			return (NULL);
 		}
 		if (i == 0)
@@ -348,9 +429,11 @@ t_cmds	*parse_input(char *input, char **envp)
 	}
 	if (cmd->cmd == NULL)
 	{
+		free(input);
 		printf("Error\n");
 		return (cmd);
 	}
+	free(input);
 	ft_free_split(cmd_split);
 	return (cmd);
 }
