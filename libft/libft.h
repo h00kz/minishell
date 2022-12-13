@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pdubacqu <pdubacqu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jlarrieu <jlarrieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 14:36:42 by jlarrieu          #+#    #+#             */
-/*   Updated: 2022/12/07 14:50:49 by pdubacqu         ###   ########.fr       */
+/*   Updated: 2022/12/13 13:12:01 by jlarrieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ typedef struct s_list
 
 // ---------- STRING / CHAR -------------------
 int		ft_isalpha(int c);
+int		ft_export_isalnum(const char *s);
 int		ft_isalnum(int c);
 int		ft_isprint(int c);
 int		ft_isdigit(int c);

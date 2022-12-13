@@ -47,7 +47,7 @@ void	ft_print_lst(t_cmds *cmd)
 			printf("\ncmd->files = %s", cmd->file_name[i]);
 			i++;
 		}
-		ft_print_lst_e(cmd->lst_envp);
+		// ft_print_lst_e(cmd->lst_envp);
 		printf ("\n");
 		cmd = tmp;
 	}
@@ -94,9 +94,11 @@ int main(int ac, char **av, char **envp)
 			if (cmd != NULL)
 			{
 				if (!ft_strncmp(input, "export", 6))
-					ft_export(cmd->file_name[0], cmd);
+					ft_export(cmd->file_name[0], cmd->args, cmd);
 				if (!ft_strncmp(input, "cd", 2))
-					ft_cd(cmd->file_name[0], cmd);
+					ft_cd(cmd->file_name[0], cmd->args, cmd);
+				if (!ft_strncmp(input, "echo", 4))
+					ft_echo(cmd->file_name, cmd->args, cmd);
 				ft_print_lst(cmd);
 				free_cmd(cmd);
 			}

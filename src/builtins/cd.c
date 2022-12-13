@@ -20,7 +20,7 @@ static int	put_error(const char *file_name)
 	return (1);
 }
 
-int	ft_cd(char *argv, t_cmds *cmds)
+int	ft_cd(char *argv, char *opt, t_cmds *cmds)
 {
 	char	*home;
 	char	*old_pwd;
