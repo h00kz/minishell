@@ -76,12 +76,27 @@ char	*translate_env_vars(char *input, char **envp)
 			boolean = 0;
 			i++;
 		}
+		else if (ft_strncmp(&input[i], "$\"", 2) == 0)
+		{
+			str = ft_strjoin_free(str, "$");
+			i++;
+		}
+		else if (ft_strncmp(&input[i], "$?", 2) == 0)
+		{
+			str = ft_strjoin_free_choice(str, ft_itoa(g_exit_code), 3);
+			i+=2;
+		}
+		else if (ft_strncmp(&input[i], "$", 1) == 0 && ft_isalnum(input[i + 1]) == 0)
+		{
+			str = ft_strjoin_free(str, "$");
+			i++;
+		}
 		else if (input[i] == '$' && boolean != 2)
 		{
 			tmp = translate_vars(input, &i, envp, &boolean);
 			i++;
-			if (!tmp)
-				i ++;
+			if (tmp)
+				i++;
 			while (input[i] && ft_isalnum(input[i]))
 				i++;
 			if (tmp)
