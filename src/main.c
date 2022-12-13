@@ -33,9 +33,8 @@ void	ft_print_lst(t_cmds *cmd)
 
 	while (cmd != NULL)
 	{
-		printf ("\n");
 		tmp = cmd->next;
-		printf("\ncmd->cmd = %s", cmd->cmd);
+		printf("cmd->cmd = %s", cmd->cmd);
 		printf("\ncmd->args = %s", cmd->args);
 		printf("\ncmd->redir_in = %d", cmd->redir_in);
 		printf("\ncmd->redir_out = %d", cmd->redir_out);
@@ -57,9 +56,9 @@ static void	sig_handler(int sig)
 {
 	if (sig == SIGINT)
 	{
-		printf("\n"); // Move to a new line
-		rl_on_new_line(); // Regenerate the prompt on a newline
-		rl_replace_line("", 0); // Clear the previous text
+		printf("\n");
+		rl_on_new_line();
+		rl_replace_line("", 0);
 		rl_redisplay();
 		g_exit_code = 128 + sig;
 	}
@@ -94,7 +93,7 @@ int main(int ac, char **av, char **envp)
 			if (cmd != NULL)
 			{
 				if (!ft_strncmp(input, "export", 6))
-					ft_export(cmd->file_name[0], cmd->args, cmd);
+					ft_export(cmd->file_name, cmd->args, cmd);
 				if (!ft_strncmp(input, "cd", 2))
 					ft_cd(cmd->file_name[0], cmd->args, cmd);
 				if (!ft_strncmp(input, "echo", 4))

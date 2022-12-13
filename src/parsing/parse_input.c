@@ -224,11 +224,6 @@ void	make_args(t_cmds *cmd, char **input_split, int *i)
 {
 	char	*tmp;
 
-	if (ft_strcmp(cmd->cmd, "echo") == 0)
-	{
-		// if (ft_check_echo(input_split[(*i)]) == 1)
-		// 	exit(1);
-	}
 	tmp = ft_strjoin(cmd->args, " ");
 	free(cmd->args);
 	cmd->args = ft_strjoin_free(tmp, input_split[(*i)]);
