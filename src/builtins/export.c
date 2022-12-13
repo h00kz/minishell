@@ -32,20 +32,38 @@ static void print_env(t_envp *envp)
 		}
 		a = a->next;
 	}
-	while (envp)
+	while (save)
 	{
 		ft_putstr_fd("declare -x ", 1);
-		printf("%s=\"%s\"\n", envp->variable, envp->value);
-		envp = envp->next;
+		printf("%s=\"%s\"\n", save->variable, save->value);
+		save = save->next;
 	}
 }
 
-int ft_export(char *argv, t_cmds *cmds)
+int ft_export(char *argv, char *opt, t_cmds *cmds)
 {
-	// update_cmds_env(cmds);
-	if (!argv)
+	if (!argv && !*opt)
 	{
 		print_env(cmds->lst_envp);
+	}
+	else if (!argv && opt[0] != 0)
+	{
+		g_exit_code = 1;
+		ft_putstr_fd("minishell: export: ", 2);
+		ft_putstr_fd(opt, 2);
+		ft_putendl_fd(": invalid option", 2);
+		return (1);
+	}
+	else
+	{
+		if (!ft_export_isalnum(argv))
+		{
+			g_exit_code = 2;
+			ft_putstr_fd("minishell: export: ", 2);
+			ft_putstr_fd(argv, 2);
+			ft_putendl_fd(": not a valid identifier", 2);
+			return (2);
+		}
 	}
 	return (0);
 }

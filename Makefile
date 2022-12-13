@@ -8,6 +8,7 @@ SRC					= src/main.c \
 					  src/builtins/echo.c \
 					  src/builtins/cd.c \
 					  src/builtins/export.c \
+					  src/builtins/export_utils.c \
 					  src/parsing/env_interpretation.c
 
 LIBFT				= libft/

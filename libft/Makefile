@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: pdubacqu <pdubacqu@student.42.fr>          +#+  +:+       +#+         #
+#    By: jlarrieu <jlarrieu@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/26 13:39:14 by jlarrieu          #+#    #+#              #
-#    Updated: 2022/12/06 18:31:16 by pdubacqu         ###   ########.fr        #
+#    Updated: 2022/12/13 13:12:17 by jlarrieu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,8 @@ SRC =	ft_isalpha.c \
 		ft_strmapi.c \
 		ft_striteri.c \
 		get_next_line.c \
-		ft_strjoin_free.c
+		ft_strjoin_free.c \
+		ft_export_isalnum.c
 
 BONUS = ft_lstnew.c \
 		ft_lstadd_front.c \
