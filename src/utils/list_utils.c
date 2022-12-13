@@ -67,14 +67,12 @@ void	ft_lstadd_back_cmd(t_cmds **lst, t_cmds *new)
 
 void	free_cmd(t_cmds *cmd)
 {
-	int		i;
 	t_cmds	*tmp;
 
 	while (cmd != NULL)
 	{
 		tmp = cmd;
 		cmd = cmd->next;
-		i = 0;
 		if (tmp->args)
 			free(tmp->args);
 		if (tmp->cmd)
