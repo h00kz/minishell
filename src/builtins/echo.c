@@ -28,11 +28,6 @@ static void	ft_pecho(char **argv)
 	int i;
 
 	i = 0;
-	if (!ft_strncmp(argv[i], "$?", 2))
-	{
-		ft_putnbr_fd(g_exit_code, 1);
-		i++;
-	}
 	while (argv[i])
 	{
 		ft_putstr_fd(argv[i], 1);
@@ -65,6 +60,7 @@ int ft_echo(char **argv, char *opt, t_cmds *cmds)
 	else if (*argv && !ft_echo_opt(opt))
 	{
 		ft_putstr_fd(opt, 1);
+		ft_putstr_fd(" ", 1);
 		ft_pecho(argv);
 		ft_putendl_fd("", 1);
 		return (1);
