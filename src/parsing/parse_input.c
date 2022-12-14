@@ -225,7 +225,7 @@ int	make_left_heredoc(t_cmds *cmd, char **input_split, int *i)
 int	make_args(t_cmds *cmd, char **input_split, int *i, int *n)
 {
 	char	*tmp;
-
+  
 	if ((ft_strncmp(cmd->cmd, "echo", 4) == 0 && cmd->args[0] != '\0') || cmd->file_name[0] != NULL)
 	{
 		cmd->file_name[(*n)] = input_split[(*i)];
