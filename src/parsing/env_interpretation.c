@@ -81,7 +81,7 @@ char	*translate_env_vars(char *input, char **envp)
 			str = ft_strjoin_free(str, "$");
 			i++;
 		}
-		else if (ft_strncmp(&input[i], "$?", 2) == 0)
+		else if (ft_strncmp(&input[i], "$?", 2) == 0 && boolean != 2)
 		{
 			str = ft_strjoin_free_choice(str, ft_itoa(g_exit_code), 3);
 			i+=2;
