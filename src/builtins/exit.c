@@ -17,7 +17,7 @@ int	ft_exit(char **argv, char *opt, t_cmds *cmd)
 		free_cmd(cmd);
 		exit(g_exit_code);
 	}
-	else if (*argv[0] == '+' || *argv[0] == '-')
+	else if (*argv[0] == '+')
 		i++;
 	if ((int)ft_strlen(*argv) >= 19 || !ft_str_isdigits(&argv[0][i]))
 	{
@@ -30,5 +30,10 @@ int	ft_exit(char **argv, char *opt, t_cmds *cmd)
 		g_exit_code = 1;
 	}
 	else
-		exit_free(cmd, ft_atoi(&argv[0][i]) % 256);
+	{
+		if (opt[0] != '-')
+			exit_free(cmd, (ft_atoi(&argv[0][i]) % 256));
+		else
+			exit_free(cmd, (ft_atoi(&opt[0]) % 256));
+	}
 }
