@@ -33,7 +33,6 @@ static void	ft_pecho(char **argv)
 
 int ft_echo(char **argv, char *opt, t_cmds *cmds)
 {
-
 	if (!*argv && !*opt)
 	{
 		ft_putendl_fd("", 1);
@@ -64,5 +63,6 @@ int ft_echo(char **argv, char *opt, t_cmds *cmds)
 		ft_pecho(argv);
 		return (1);
 	}
+	g_exit_code = 1;
 	return (0);
 }
