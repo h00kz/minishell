@@ -3,11 +3,33 @@
 int	ft_check_redir(char *input)
 {
 	int	i;
+	int	boolean;
 
+	boolean = 0;
 	i = 0;
 	while (i < ft_strlen(input))
 	{
-		if (input && input[i] == '|')
+		if (input[i] == '"' && boolean == 0)
+		{
+			boolean = 1;
+			i++;
+		}
+		else if (input[i] == '"' && boolean == 1)
+		{
+			boolean = 0;
+			i++;
+		}
+		else if (input[i] == '\'' && boolean == 0)
+		{
+			boolean = 2;
+			i++;
+		}
+		else if (input[i] == '\'' && boolean == 2)
+		{
+			boolean = 0;
+			i++;
+		}
+		if (input && input[i] == '|' && boolean != 2 && boolean != 1)
 		{
 			i++;
 			while (input && input[i] && (input[i] == ' ' || input[i] == '\t'))
@@ -25,7 +47,7 @@ int	ft_check_redir(char *input)
 				return (1);
 			}
 		}
-		else if (input && input[i] == '<')
+		else if (input && input[i] == '<' && boolean != 2 && boolean != 1)
 		{
 			i++;
 			while (input && input[i] && (input[i] == ' ' || input[i] == '\t'))
@@ -43,7 +65,7 @@ int	ft_check_redir(char *input)
 				return (1);
 			}
 		}
-		else if (input && input[i] == '>')
+		else if (input && input[i] == '>' && boolean != 2 && boolean != 1)
 		{
 			i++;
 			while (input && input[i] && (input[i] == ' ' || input[i] == '\t'))
