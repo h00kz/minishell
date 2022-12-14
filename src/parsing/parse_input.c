@@ -240,7 +240,10 @@ int	make_args(t_cmds *cmd, char **input_split, int *i, int *n)
 		(*n)++;
 		return (0);
 	}
-	tmp = ft_strjoin(cmd->args, " ");
+	if (cmd->args[0] != '\0')
+		tmp = ft_strjoin(cmd->args, " ");
+	else
+		tmp = ft_calloc(sizeof(char), 1);
 	free(cmd->args);
 	cmd->args = ft_strjoin_free(tmp, input_split[(*i)]);
 	(*i)++;
