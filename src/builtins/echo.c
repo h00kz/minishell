@@ -2,24 +2,18 @@
 
 static int	ft_echo_opt(char *opt)
 {
-	int		i;
-	char	*tmp;
+	int	i;
 
 	i = 1;
-	tmp = ft_strtrim(opt, " ");
-	if (tmp[0] == '-')
+	if (opt[0] == '-')
 	{
-		while (tmp[i])
+		while (opt[i])
 		{
-			if (tmp[i] != 'n')
-			{
-				free(tmp);
+			if (opt[i] != 'n')
 				return (0);
-			}
 			i++;
 		}
 	}
-	free(tmp);
 	return (1);
 }
 
