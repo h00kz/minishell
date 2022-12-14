@@ -80,9 +80,9 @@ int main(int ac, char **av, char **envp)
 		input = readline(prompt);
 		add_history(input);
 		free(prompt);
-		if (input == NULL || !ft_strncmp(input, "exit", 4))
+		if (!input)
 		{
-			printf("exit\n");
+			ft_putendl_fd("exit", 1);
 			rl_clear_history();
 			free(input);
 			exit(g_exit_code); 
@@ -98,6 +98,8 @@ int main(int ac, char **av, char **envp)
 					ft_cd(cmd->file_name[0], cmd->args, cmd);
 				if (!ft_strncmp(input, "echo", 4))
 					ft_echo(cmd->file_name, cmd->args, cmd);
+				if (!ft_strncmp(input, "exit", 4))
+					ft_exit(cmd->file_name, cmd->args, cmd);
 				ft_print_lst(cmd);
 				free_cmd(cmd);
 			}

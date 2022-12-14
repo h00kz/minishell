@@ -6,7 +6,7 @@
 /*   By: jlarrieu <jlarrieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/26 14:36:42 by jlarrieu          #+#    #+#             */
-/*   Updated: 2022/12/13 13:12:01 by jlarrieu         ###   ########.fr       */
+/*   Updated: 2022/12/14 16:41:41 by jlarrieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int		ft_export_isalnum(const char *s);
 int		ft_isalnum(int c);
 int		ft_isprint(int c);
 int		ft_isdigit(int c);
+int		ft_str_isdigits(const char *s);
 int		ft_isascii(int c);
 int		ft_tolower(int c);
 int		ft_toupper(int c);
