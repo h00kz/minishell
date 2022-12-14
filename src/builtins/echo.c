@@ -28,11 +28,6 @@ static void	ft_pecho(char **argv)
 	int i;
 
 	i = 0;
-	if (!ft_strncmp(argv[i], "$?", 2))
-	{
-		ft_putnbr_fd(g_exit_code, 1);
-		i++;
-	}
 	while (argv[i])
 	{
 		ft_putstr_fd(argv[i], 1);
