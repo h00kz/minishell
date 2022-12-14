@@ -116,11 +116,5 @@ char	*translate_env_vars(char *input, char **envp)
 			i++;
 		}	
 	}
-	if (boolean == 2 || boolean == 1)
-	{
-		printf("Error quote non ferme : %s\n", str	);
-		free(str);
-		return (NULL);
-	}
 	return (str);
 }

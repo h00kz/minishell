@@ -13,8 +13,8 @@ t_cmds	*ft_lstnew_node(char **envp)
 	new_node->cmd = ft_calloc(sizeof(char), 1);
 	new_node->args = ft_calloc(sizeof(char), 1);
 	new_node->infile = ft_calloc(sizeof(char), 1);
-	new_node->file_name = ft_calloc(sizeof(char *), 10);
-	new_node->outfile = ft_calloc(sizeof(char *), 10);
+	new_node->file_name = ft_calloc(sizeof(char *), 50);
+	new_node->outfile = ft_calloc(sizeof(char), 1);
 	new_node->lst_envp = save_envp(envp);
 	new_node->envp = rebuild_envp(new_node->lst_envp);
 	return (new_node);
