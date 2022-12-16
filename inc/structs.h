@@ -16,6 +16,8 @@ typedef struct s_cmds
 	char			*cmd;
 	char			*args;
 	char			*infile;
+	char			*heredoc_in;
+	char			*heredoc_out;
 	char			**file_name;
 	char			*outfile;
 	char			**envp;
