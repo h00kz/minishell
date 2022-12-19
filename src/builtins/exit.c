@@ -12,28 +12,29 @@ int	ft_exit(char **argv, char *opt, t_cmds *cmd)
 	int	i;
 
 	i = 0;
-	if (!*argv)
+	if (!*argv && !*opt)
 	{
 		free_cmd(cmd);
 		exit(g_exit_code);
 	}
-	else if (*argv[0] == '+')
-		i++;
-	if ((int)ft_strlen(*argv) >= 19 || !ft_str_isdigits(&argv[0][i]))
+	else if (*argv)
+		if (*argv[0] == '+' && !*opt)
+			i++;
+	if ((int)ft_strlen(*argv) >= 19 || !ft_str_isdigits(&argv[0][i]) && !*opt)
 	{
 		ft_putendl_fd("NEED NUM ARG", 2);
 		exit_free(cmd, 2);
 	}
-	if (argv[1] != NULL)
+	if (argv[1] != NULL && !*opt)
 	{
 		ft_putendl_fd("TOO MANY ARG", 2);
 		g_exit_code = 1;
 	}
 	else
 	{
-		if (opt[0] != '-')
-			exit_free(cmd, (ft_atoi(&argv[0][i]) % 256));
+		if (*opt && !*argv)
+			exit_free(cmd, (ft_atoi(opt) % 256));
 		else
-			exit_free(cmd, (ft_atoi(&opt[0]) % 256));
+			exit_free(cmd, (ft_atoi(&argv[0][i]) % 256));
 	}
 }
