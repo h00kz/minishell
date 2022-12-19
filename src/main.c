@@ -81,7 +81,7 @@ int main(int ac, char **av, char **envp)
 		input = readline(prompt);
 		free(prompt);
 		add_history(input);
-		if (input == NULL || !ft_strncmp(input, "exit", 4))
+		if (input == NULL)
 		{
 			ft_putendl_fd("exit", 1);
 			rl_clear_history();
@@ -100,7 +100,10 @@ int main(int ac, char **av, char **envp)
 				if (!ft_strncmp(input, "echo", 4))
 					ft_echo(cmd->file_name, cmd->args, cmd);
 				if (!ft_strncmp(input, "exit", 4))
+				{
+					ft_print_lst(cmd);
 					ft_exit(cmd->file_name, cmd->args, cmd);
+				}
 				ft_print_lst(cmd);
 				free_cmd(cmd);
 			}
