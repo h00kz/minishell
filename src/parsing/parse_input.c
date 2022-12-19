@@ -234,7 +234,7 @@ int	make_right_heredoc(t_cmds *cmd, char **input_split, int *i)
 
 int	make_left_heredoc(t_cmds *cmd, char **input_split, int *i)
 {
-	cmd->redir_out = L_HEREDOC;
+	cmd->redir_in = L_HEREDOC;
 	if (input_split[(*i) +1])
 	{
 		free(cmd->infile);
@@ -306,9 +306,8 @@ int	make_args_next(t_cmds *cmd, char **input_split, int *i, int *n)
 	return (error);
 }
 
-t_cmds	*make_arg(char **input_split, char **envp, int j)
+t_cmds	*make_arg(char **input_split, char **envp, int j, t_cmds *cmd)
 {
-	t_cmds	*cmd;
 	int		i;
 	int		n;
 	int		error;
@@ -316,7 +315,6 @@ t_cmds	*make_arg(char **input_split, char **envp, int j)
 	i = 0;
 	n = 0;
 	error = 0;
-	cmd = ft_lstnew_node(envp);
 	while (i < j)
 	{
 		if (error != 0)
@@ -355,21 +353,86 @@ char	**vars(char **envp, char **input_split)
 	return (tmp);
 }
 
-void	ft_make_here_doc(char *input, char **envp)
+void	ft_create_heredoc_in(char *str, int i)
+{
+	int		fd;
+	char	*tmp;
+	char	*name;
+
+	name = ft_strjoin_free_choice(".heredoc", ft_itoa(i), 2);
+	fd = open(name , O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	free(name);
+	tmp = get_next_line(0);
+	name = ft_strjoin(str, "\n");
+	while ((ft_strncmp(name, tmp, ft_strlen(name))) != 0)
+	{
+		ft_putstr_fd(tmp, fd);
+		free(tmp);
+		tmp = get_next_line(0);
+	}
+	free(tmp);
+	free(name);
+	close(fd);
+}
+
+void	ft_create_heredoc_out(char *str, int i)
+{
+	int		fd;
+	char	*tmp;
+	char	*name;
+
+	name = ft_strjoin_free_choice(".heredoc", ft_itoa(i), 2);
+	fd = open(name , O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	free(name);
+	tmp = get_next_line(0);
+	name = ft_strjoin(str, "\n");
+	while ((ft_strncmp(name, tmp, ft_strlen(name))) != 0)
+	{
+		ft_putstr_fd(tmp, fd);
+		free(tmp);
+		tmp = get_next_line(0);
+	}
+	free(tmp);
+	free(name);
+	close(fd);
+}
+
+t_cmds	*ft_make_here_doc(char *input, char **envp)
 {
 	int		i;
 	char	**input_split;
 	int		output;
+	char	*tmp_in;
+	char	*tmp_out;
+	t_cmds	*cmd;
+	t_cmds	*save;
 
 	i = 0;
 	output = 0;
 	input_split = ft_split_input(input, ' ');
 	input_split = vars(envp, input_split);
+	cmd = ft_lstnew_node(envp);
+	save = cmd;
+	tmp_in = ft_calloc(sizeof(char), 1);
+	tmp_out = ft_calloc(sizeof(char), 1);
 	while (input_split && input_split[i])
 	{
-		if (ft_strncmp(input_split[i], "<<", 2) == 0)
+		if (ft_strcmp(input_split[i], "|") == 0)
 		{
-			// ft_create_heredoc_in(input_split[i + 1]);
+			ft_lstadd_back_cmd(&cmd, ft_lstnew_node(envp));
+			cmd = cmd->next;
+		}
+		else if (ft_strncmp(input_split[i], "<<", 2) == 0)
+		{
+			if (tmp_in)
+			{
+				unlink(cmd->heredoc_in);
+				free(tmp_in);
+			}
+			ft_create_heredoc_in(input_split[i + 1], i);
+			tmp_in = ft_strjoin_free_choice(".heredoc", ft_itoa(i), 2);
+			free(cmd->heredoc_in);
+			cmd->heredoc_in = tmp_in;
 			i++;
 		}
 		else if (ft_strncmp(input_split[i], "<", 1) == 0)
@@ -377,16 +440,18 @@ void	ft_make_here_doc(char *input, char **envp)
 			output = open(input_split[i + 1], O_RDONLY);
 			if (output != -1)
 				close (output);
-			i++;
-		}
-		else if (ft_strncmp(input_split[i], ">>", 2) == 0 && output != -1)
-		{
-			// ft_create_heredoc_out(input_split[i + 1]);
+			else
+				return (NULL);
 			i++;
 		}
 		i++;
 	}
+	if (cmd->heredoc_in[0] == '\0')
+		free(tmp_in);
+	if (cmd->heredoc_out[0] == '\0')
+		free(tmp_out);
 	ft_free_split(input_split);
+	return (save);
 }
 
 t_cmds	*parse_input(char *input, char **envp)
@@ -410,9 +475,10 @@ t_cmds	*parse_input(char *input, char **envp)
 		free(input);
 		return (NULL);
 	}
-	ft_make_here_doc(input, envp);
+	cmd = ft_make_here_doc(input, envp);
+	save = cmd;
 	cmd_split = ft_split_input(input, '|');
-	while (cmd_split && cmd_split[i])
+	while (cmd)
 	{
 		j = 0;
 		input_split = ft_split_input(cmd_split[i], ' ');
@@ -426,23 +492,12 @@ t_cmds	*parse_input(char *input, char **envp)
 			free(input);
 			return (NULL);
 		}
-		if (i == 0)
-		{
-			cmd = make_arg(input_split, envp, j);
-			if (!(cmd))
-			{
-				ft_free_split(cmd_split);
-				ft_nfree_split(input_split, j);
-				free(input);
-				return (NULL);
-			}
-		}
-		else
-			ft_lstadd_back_cmd(&cmd, make_arg(input_split, envp, j));
+		cmd = make_arg(input_split, envp, j, cmd);
 		ft_nfree_split(input_split, j);
 		i++;
+		cmd = cmd->next;
 	}
 	free(input);
 	ft_free_split(cmd_split);
-	return (cmd);
+	return (save);
 }

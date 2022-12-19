@@ -41,13 +41,14 @@ void	ft_print_lst(t_cmds *cmd)
 		printf("\ncmd->infile = %s", cmd->infile);
 		printf("\ncmd->outfile = %s", cmd->outfile);
 		int i = 0;
+		printf("\nheredoc_in = %s", cmd->heredoc_in);
 		while (cmd->file_name[i])
 		{
 			printf("\ncmd->files = %s", cmd->file_name[i]);
 			i++;
 		}
 		// ft_print_lst_e(cmd->lst_envp);
-		printf ("\n");
+		printf ("\n\n");
 		cmd = tmp;
 	}
 }
@@ -78,9 +79,9 @@ int main(int ac, char **av, char **envp)
 	{
 		prompt = set_prompt(envp);
 		input = readline(prompt);
-		add_history(input);
 		free(prompt);
-		if (!input)
+		add_history(input);
+		if (input == NULL || !ft_strncmp(input, "exit", 4))
 		{
 			ft_putendl_fd("exit", 1);
 			rl_clear_history();

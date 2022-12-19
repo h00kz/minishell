@@ -35,7 +35,7 @@ enum	e_parsing
 
 /********************************parsing***************************************/
 
-t_cmds	*make_arg(char **input_split, char **envp, int j);
+t_cmds	*make_arg(char **input_split, char **envp, int j, t_cmds *cmd);
 t_cmds	*parse_input(char *input, char **envp);
 char	*translate_env_vars(char *input, char **envp);
 

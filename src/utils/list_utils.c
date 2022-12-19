@@ -17,6 +17,8 @@ t_cmds	*ft_lstnew_node(char **envp)
 	new_node->outfile = ft_calloc(sizeof(char), 1);
 	new_node->lst_envp = save_envp(envp);
 	new_node->envp = rebuild_envp(new_node->lst_envp);
+	new_node->heredoc_in = ft_calloc(sizeof(char), 1);
+	new_node->heredoc_out = ft_calloc(sizeof(char), 1);
 	return (new_node);
 }
 
@@ -81,6 +83,10 @@ void	free_cmd(t_cmds *cmd)
 			free(tmp->infile);
 		if (tmp->outfile)
 			free(tmp->outfile);
+		if (tmp->heredoc_in)
+			free(tmp->heredoc_in);
+		if (tmp->heredoc_out)
+			free(tmp->heredoc_out);
 		ft_free_split(tmp->file_name);
 		ft_lst_free(tmp->lst_envp);
 		ft_free_split(tmp->envp);
