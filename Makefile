@@ -10,10 +10,12 @@ SRC					= src/main.c \
 					  src/builtins/exit.c \
 					  src/builtins/export.c \
 					  src/builtins/export_utils.c \
+					  src/builtins/pwd.c \
+					  src/builtins/unset.c \
 					  src/parsing/env_interpretation.c
 
 LIBFT				= libft/
-CFLAGS				=  -g -lreadline #-Werror -Wextra -Wall
+CFLAGS				=  -g -lreadline -Werror -Wextra -Wall
 NAME				= minishell
 LIB					= libft/libft.a
 INCLUDE				= inc/

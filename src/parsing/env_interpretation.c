@@ -48,10 +48,8 @@ char	*translate_env_vars(char *input, char **envp)
 	char	*tmp;
 	int		boolean;
 	int		i;
-	int		j;
 
 	i = 0;
-	j = 0;
 	boolean = 0;
 	str = NULL;
 	while (input && input[i])
