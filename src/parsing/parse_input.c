@@ -7,7 +7,7 @@ int	ft_check_redir(char *input)
 
 	boolean = 0;
 	i = 0;
-	while (i < ft_strlen(input))
+	while (i < (int)ft_strlen(input))
 	{
 		if (input[i] == '"' && boolean == 0)
 		{
@@ -107,7 +107,7 @@ int	ft_strlen_sep(char *str)
 		else if (str[i] == '\'' && boolean == 2)
 			boolean = 0;
 		else if (str[i] == '\"' && boolean == 1)
-			boolean == 0;
+			boolean = 0;
 		if ((boolean == 0 || boolean == 2) && (str[i] == '<' || str[i] == '>' || str[i] == '|'))
 			j += 2;
 		i++;
@@ -140,7 +140,7 @@ char	*ft_str_add_space(char *str)
 		else if (str[i] == '\'' && boolean == 2)
 			boolean = 0;
 		else if (str[i] == '\"' && boolean == 1)
-			boolean == 0;
+			boolean = 0;
 		if ((boolean == 0 || boolean == 2) && ((str[i] == '<' && str[i + 1] == '<') || (str[i] == '>' && str[i + 1] == '>')))
 		{
 			s[j] = ' ';
@@ -171,7 +171,7 @@ char	*ft_str_add_space(char *str)
 
 int	make_left_redir(t_cmds *cmd, char **input_split, int *i)
 {
-	if (input_split[(*i) +1])
+	if (input_split[(*i) + 1])
 	{
 		cmd->fd_file = open(input_split[(*i) + 1], O_RDONLY);
 		free(cmd->infile);
@@ -306,7 +306,7 @@ int	make_args_next(t_cmds *cmd, char **input_split, int *i, int *n)
 	return (error);
 }
 
-t_cmds	*make_arg(char **input_split, char **envp, int j, t_cmds *cmd)
+t_cmds	*make_arg(char **input_split, int j, t_cmds *cmd)
 {
 	int		i;
 	int		n;
@@ -492,7 +492,7 @@ t_cmds	*parse_input(char *input, char **envp)
 			free(input);
 			return (NULL);
 		}
-		cmd = make_arg(input_split, envp, j, cmd);
+		cmd = make_arg(input_split, j, cmd);
 		ft_nfree_split(input_split, j);
 		i++;
 		cmd = cmd->next;

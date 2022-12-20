@@ -13,7 +13,7 @@
 # include "lists.h"
 # include "builtins.h"
 
-extern int g_exit_code;
+extern int	g_exit_code;
 
 enum	e_redir
 {
@@ -23,7 +23,7 @@ enum	e_redir
 	R_HEREDOC = 4,
 	PIPE = 5,
 };
-	
+
 enum	e_parsing
 {
 	FILES = 0,
@@ -35,7 +35,7 @@ enum	e_parsing
 
 /********************************parsing***************************************/
 
-t_cmds	*make_arg(char **input_split, char **envp, int j, t_cmds *cmd);
+t_cmds	*make_arg(char **input_split, int j, t_cmds *cmd);
 t_cmds	*parse_input(char *input, char **envp);
 char	*translate_env_vars(char *input, char **envp);
 
@@ -48,9 +48,7 @@ void	free_cmd(t_cmds *cmd);
 /*********************************split****************************************/
 
 char	**ft_split_input(char const *s, char c);
-void    ft_free_split(char **strs);
+void	ft_free_split(char **strs);
 void	ft_nfree_split(char **strs, int n);
-
-
 
 #endif

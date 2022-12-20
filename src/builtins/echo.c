@@ -31,38 +31,31 @@ static void	ft_pecho(char **argv)
 	}
 }
 
-int ft_echo(char **argv, char *opt, t_cmds *cmds)
+int ft_echo(char **argv, char *opt)
 {
 	if (!*argv && !*opt)
-	{
 		ft_putendl_fd("", 1);
-		return (1);
-	}
 	else if (*argv && !*opt)
 	{
 		ft_pecho(argv);
 		ft_putendl_fd("", 1);
-		return (1);
 	}
 	else if (!*argv && ft_echo_opt(opt))
-		return (1);
+		return (0);
 	else if (!*argv && !ft_echo_opt(opt))
-	{
-		ft_putstr_fd(opt, 1);
-	}
+		ft_putendl_fd(opt, 1);
 	else if (*argv && !ft_echo_opt(opt))
 	{
 		ft_putstr_fd(opt, 1);
 		ft_putstr_fd(" ", 1);
 		ft_pecho(argv);
 		ft_putendl_fd("", 1);
-		return (1);
 	}
-	else if (*argv && ft_echo_opt(opt))
+	else
 	{
 		ft_pecho(argv);
-		return (1);
+		return (0);
 	}
-	g_exit_code = 1;
+	g_exit_code = 0;
 	return (0);
 }

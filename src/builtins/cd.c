@@ -1,6 +1,6 @@
 #include "../../inc/minishell.h"
 
-static void	*update_pwd(t_cmds *cmds)
+static void	update_pwd(t_cmds *cmds)
 {
 	char		*cur_path;
 	t_envp		*envp;
@@ -25,6 +25,7 @@ int	ft_cd(char *argv, char *opt, t_cmds *cmds)
 	char	*home;
 	char	*old_pwd;
 
+	(void)opt;
 	old_pwd = NULL;
 	old_pwd = getcwd(old_pwd, 0);
 	cmds->lst_envp = ch_var_lst_envp(cmds->lst_envp, "OLDPWD", old_pwd);
