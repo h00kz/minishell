@@ -19,4 +19,7 @@ int		ft_pwd(char *opt);
 /******************** UNSET ************************/
 int		ft_unset(char **argv, char *opt, t_cmds cmd);
 
+int	ft_env(char **argv, char *opt, t_cmds *cmd);
+
+
 #endif
