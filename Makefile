@@ -12,6 +12,7 @@ SRC					= src/main.c \
 					  src/builtins/export_utils.c \
 					  src/builtins/pwd.c \
 					  src/builtins/unset.c \
+					  src/builtins/env.c \
 					  src/parsing/env_interpretation.c
 
 LIBFT				= libft/

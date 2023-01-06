@@ -47,7 +47,7 @@ char	*set_prompt(void)
 // 			printf("\ncmd->files = %s", cmd->file_name[i]);
 // 			i++;
 // 		}
-// 		// ft_print_lst_e(cmd->lst_envp);
+// 		ft_print_lst_e(cmd->lst_envp);
 // 		printf ("\n\n");
 // 		cmd = tmp;
 // 	}
@@ -70,10 +70,12 @@ int	main(int ac, char **av, char **envp)
 	char	*input;
 	t_cmds	*cmd;
 	char	*prompt;
+	char	**env_cp;
 
 	(void)**av;
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, SIG_IGN);
+	env_cp = ft_cpy_envp(envp);
 	if (ac != 1)
 		exit(1);
 	while (1)
@@ -86,12 +88,15 @@ int	main(int ac, char **av, char **envp)
 		{
 			ft_putendl_fd("exit", 1);
 			rl_clear_history();
+			ft_free_split(env_cp);
 			free(input);
 			exit(g_exit_code); 
 		}
 		if (input && input[0])
 		{
-			cmd = parse_input(input, envp);
+			if (cmd)
+				free_cmd(cmd);
+			cmd = parse_input(input, env_cp);
 			if (cmd != NULL)
 			{
 				if (!ft_strncmp(input, "export", 6))
@@ -102,10 +107,12 @@ int	main(int ac, char **av, char **envp)
 					ft_echo(cmd->file_name, cmd->args);
 				if (!ft_strncmp(input, "exit", 4))
 					ft_exit(cmd->file_name, cmd->args, cmd);
+				if (!ft_strncmp(input, "env", 3))
+					ft_env(cmd->file_name, cmd->args, cmd);
 				if (!ft_strncmp(input, "pwd", 3))
 					ft_pwd(cmd->args);
-				// ft_print_lst(cmd);
-				free_cmd(cmd);
+				ft_free_split(env_cp);
+				env_cp = rebuild_envp(cmd->lst_envp);
 			}
 			free(input);
 		}
