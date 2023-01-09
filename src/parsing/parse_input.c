@@ -225,7 +225,8 @@ int	make_left_redir(t_cmds *cmd, char **input_split, int *i)
 		cmd->redir_in = L_REDIR;
 		if (cmd->fd_file < 0)
 		{
-			printf("cannot open file : %s\n", cmd->infile);
+			ft_putstr_fd("cannot open file : ", 2);
+			ft_putendl_fd(cmd->infile, 2);
 			free_cmd(cmd);
 			return (1);
 		}

@@ -62,27 +62,27 @@ int	ft_check_bool_vars(char *input, int *i, int *boolean, int verif)
 	return (check);
 }
 
-int	ft_check(char *input, int *i, char *str, int boolean)
+int	ft_check(char **input, int *i, char **str, int boolean)
 {
 	int	check;
 
 	check = 0;
-	if (ft_strncmp(&input[(*i)], "$\"", 2) == 0)
+	if (ft_strncmp(&(*input)[(*i)], "$\"", 2) == 0)
 	{
-		str = ft_strjoin_free(str, "$");
+		(*str) = ft_strjoin_free((*str), "$");
 		(*i)++;
 		check = 1;
 	}
-	else if (ft_strncmp(&input[(*i)], "$?", 2) == 0 && boolean != 2)
+	else if (ft_strncmp(&(*input)[(*i)], "$?", 2) == 0 && boolean != 2)
 	{
-		str = ft_strjoin_free_choice(str, ft_itoa(g_exit_code), 3);
+		(*str) = ft_strjoin_free_choice((*str), ft_itoa(g_exit_code), 3);
 		(*i) += 2;
 		check = 1;
 	}
-	else if (ft_strncmp(&input[(*i)], "$", 1) == 0
-		&& ft_isalnum(input[(*i) + 1]) == 0)
+	else if (ft_strncmp(&(*input)[(*i)], "$", 1) == 0
+		&& ft_isalnum((*input)[(*i) + 1]) == 0)
 	{
-		str = ft_strjoin_free(str, "$");
+		(*str) = ft_strjoin_free((*str), "$");
 		(*i)++;
 		check = 1;
 	}
@@ -107,7 +107,7 @@ int	ft_last_check(char *input, int boolean, char **tmp, int *i)
 	return (check);
 }
 
-void	ft_translate_env_next(int *i, char *tmp, char *input, char *str)
+void	ft_translate_env_next(int *i, char *tmp, char *input, char **str)
 {
 	(*i)++;
 	if (tmp)
@@ -116,7 +116,7 @@ void	ft_translate_env_next(int *i, char *tmp, char *input, char *str)
 		(*i)++;
 	if (tmp)
 	{
-		str = ft_strjoin_free(str, tmp);
+		(*str) = ft_strjoin_free((*str), tmp);
 		free(tmp);
 	}
 }
@@ -135,12 +135,12 @@ char	*translate_env_vars(char *input, char **envp)
 	{
 		if (ft_check_bool_vars(input, &i, &boolean, boolean) == 0)
 		{
-			if (ft_check(input, &i, str, boolean) == 0)
+			if (ft_check(&input, &i, &str, boolean) == 0)
 			{
 				if (input[i] == '$' && boolean != 2)
 				{
 					tmp = translate_vars(input, &i, envp, &boolean);
-					ft_translate_env_next(&i, tmp, input, str);
+					ft_translate_env_next(&i, tmp, input, &str);
 				}
 				else if (ft_last_check(input, boolean, &tmp, &i) == 1)
 					str = ft_strjoin_free_choice(str, tmp, 3);
