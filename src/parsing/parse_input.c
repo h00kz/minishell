@@ -534,7 +534,6 @@ t_cmds	*ft_make_here_doc(char *input, char **envp)
 	t_cmds	*save;
 
 	i = 0;
-	
 	input_split = ft_make_input_split(input, envp);
 	cmd = ft_lstnew_node(envp);
 	save = cmd;
@@ -597,7 +596,7 @@ int	ft_parse_input_next(char **cmd_split, t_cmds *cmd,
 
 void	ft_get_here_doc_in(t_cmds *cmd, int *i)
 {
-	char * tmp_in;
+	char	*tmp_in;
 
 	tmp_in = ft_strjoin_free_choice(".heredoc", ft_itoa((*i)), 2);
 	free(cmd->heredoc_in);
@@ -618,7 +617,6 @@ int	ft_get_heredoc_in_next(char **input_split, t_cmds *cmd, int *i)
 		}
 	}
 	return (0);
-
 }
 
 t_cmds	*ft_get_heredoc_in(char *input, char **envp)
@@ -629,7 +627,6 @@ t_cmds	*ft_get_heredoc_in(char *input, char **envp)
 	t_cmds	*save;
 
 	i = 0;
-	
 	input_split = ft_make_input_split(input, envp);
 	cmd = ft_lstnew_node(envp);
 	save = cmd;
@@ -648,14 +645,25 @@ t_cmds	*ft_get_heredoc_in(char *input, char **envp)
 	return (save);
 }
 
+void	ft_fork(t_cmds *cmd, char *input, char **envp)
+{
+	free_cmd(cmd);
+	signal(SIGINT, sig_handler_child);
+	cmd = ft_make_here_doc(input, envp);
+	free_cmd(cmd);
+	free(input);
+	ft_free_split(envp);
+	exit(g_exit_code);
+}
+
 t_cmds	*parse_input(char *input, char **envp)
 {
 	char	**cmd_split;
-	t_cmds	*save;
 	t_cmds	*cmd;
 	int		pid;
 
 	input = ft_str_add_space(input);
+	cmd = ft_lstnew_node(envp);
 	if (ft_check_redir(input) == 1 || input == NULL)
 	{
 		free(input);
@@ -663,22 +671,15 @@ t_cmds	*parse_input(char *input, char **envp)
 	}
 	pid = fork();
 	if (pid == 0)
-	{
-		signal(SIGINT, sig_handler_child);
-		cmd = ft_make_here_doc(input, envp);
-		if (cmd)
-			free_cmd(cmd);
-		free(input);
-		exit(g_exit_code);
-	}
+		ft_fork(cmd, input, envp);
 	else
 	{
+		free_cmd(cmd);
 		cmd = ft_get_heredoc_in(input, envp);
 		waitpid(pid, NULL, 0);
 	}
-	save = cmd;
 	cmd_split = ft_split_input(input, '|');
 	if (ft_parse_input_next(cmd_split, cmd, input, envp) == 1)
 		return (NULL);
-	return (save);
+	return (cmd);
 }

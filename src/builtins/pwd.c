@@ -2,7 +2,7 @@
 
 int	ft_pwd(char *opt)
 {
-	char *pwd;
+	char	*pwd;
 
 	if (*opt)
 	{
