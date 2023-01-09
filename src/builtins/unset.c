@@ -7,12 +7,40 @@ static void	ft_free_node(t_envp **node)
 	free(*node);
 }
 
+static void	ft_remove_var(t_envp *cur, t_envp *save, char **argv, int i)
+{
+	t_envp	*prev;
+
+	while (argv[i])
+	{
+		while (cur)
+		{
+			if (!strcmp(cur->variable, argv[i]))
+			{
+				if (cur == save)
+					save = save->next;
+				else
+				{
+					prev = save;
+					while (prev->next != cur)
+						prev = prev->next;
+					prev->next = cur->next;
+				}
+				ft_free_node(&cur);
+				cur = save;
+				break ;
+			}
+			cur = cur->next;
+		}
+		i++;
+	}
+}
+
 t_envp	*ft_unset(char **argv, char *opt, t_cmds *cmd)
 {
 	int		i;
 	t_envp	*cur;
 	t_envp	*save;
-	t_envp	*prev;
 
 	i = 0;
 	save = cmd->lst_envp;
@@ -28,29 +56,7 @@ t_envp	*ft_unset(char **argv, char *opt, t_cmds *cmd)
 	{
 		g_exit_code = 0;
 		cur = cmd->lst_envp;
-		while (argv[i])
-		{
-			while(cur)
-			{
-				if (!strcmp(cur->variable, argv[i]))
-				{
-					if (cur == save)
-						save = save->next;
-					else
-					{
-						prev = save;
-						while (prev->next != cur)
-							prev = prev->next;
-						prev->next = cur->next;
-					}
-					ft_free_node(&cur);
-					cur = save;
-					break ;
-				}
-				cur = cur->next;
-			}
-			i++;
-		}
+		ft_remove_var(cur, save, argv, i);
 	}
 	return (save);
 }

@@ -3,7 +3,6 @@
 static void	exit_free(t_cmds *cmd, int exit_code)
 {
 	g_exit_code = exit_code;
-	// ft_free_split(cmd->envp);
 	free_cmd(cmd);
 	exit(g_exit_code);
 }
