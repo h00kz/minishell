@@ -7,7 +7,7 @@ static void	exit_free(t_cmds *cmd, int exit_code)
 	exit(g_exit_code);
 }
 
-static void	exit_opt_err(char **argv, char *opt, int i, t_cmds *cmd)
+static void	ft_check_overflow(char **argv, char *opt, t_cmds *cmd, int i)
 {
 	if (!*argv && ((int)ft_strlen(opt) > 20
 			|| ft_strncmp(opt, "-9223372036854775809", 20) >= 0
@@ -23,6 +23,11 @@ static void	exit_opt_err(char **argv, char *opt, int i, t_cmds *cmd)
 		ft_putendl_fd("NEED NUM ARG", 2);
 		exit_free(cmd, 2);
 	}
+}
+
+static void	exit_opt_err(char **argv, char *opt, int i, t_cmds *cmd)
+{
+	ft_check_overflow(argv, opt, cmd, i);
 	if (!*opt && argv[1] != NULL)
 	{
 		ft_putendl_fd("TOO MANY ARG", 2);
