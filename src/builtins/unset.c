@@ -7,12 +7,12 @@ static void	ft_free_node(t_envp **node)
 	free(*node);
 }
 
-int	ft_unset(char **argv, char *opt, t_cmds *cmd)
+t_envp	*ft_unset(char **argv, char *opt, t_cmds *cmd)
 {
 	int		i;
 	t_envp	*cur;
 	t_envp	*save;
-	t_envp *prev;
+	t_envp	*prev;
 
 	i = 0;
 	save = cmd->lst_envp;
@@ -22,7 +22,7 @@ int	ft_unset(char **argv, char *opt, t_cmds *cmd)
 		ft_putstr_fd("unset: ", 2);
 		ft_putstr_fd(opt, 2);
 		ft_putendl_fd(": invalid option", 2);
-		return (g_exit_code);
+		return (save);
 	}
 	else if (argv[i])
 	{
@@ -52,5 +52,5 @@ int	ft_unset(char **argv, char *opt, t_cmds *cmd)
 			i++;
 		}
 	}
-	return (g_exit_code);
+	return (save);
 }
