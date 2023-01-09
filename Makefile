@@ -1,8 +1,8 @@
 SRC					= src/main.c \
 					  src/list_envp/process_envp.c \
-					  src/parsing/parse_input.c \
 					  src/utils/list_utils.c \
 					  src/split/split_for_input.c \
+					  src/split/split_utils.c \
 					  src/builtins/echo.c \
 					  src/builtins/cd.c \
 					  src/builtins/exit.c \
@@ -11,7 +11,16 @@ SRC					= src/main.c \
 					  src/builtins/pwd.c \
 					  src/builtins/unset.c \
 					  src/builtins/env.c \
-					  src/parsing/env_interpretation.c
+					  src/parsing/arguments.c \
+					  src/parsing/parse_input.c \
+					  src/parsing/env_interpretation.c \
+					  src/parsing/exec/redir_check.c \
+					  src/parsing/exec/redir_utils.c \
+					  src/parsing/exec/heredocs.c \
+					  src/parsing/exec/heredoc_fork.c \
+					  src/parsing/exec/heredocs_utils.c \
+					  src/parsing/exec/r_utils.c \
+					  src/parsing/exec/free_some_s.c
 
 LIBFT				= libft/
 CFLAGS				=  -g -lreadline -Werror -Wextra -Wall
