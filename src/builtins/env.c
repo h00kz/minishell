@@ -1,9 +1,18 @@
 #include "../../inc/minishell.h"
 
+static int	ft_exit_perror(char *msg, char *av, int exit_code)
+{
+	g_exit_code = exit_code;
+	ft_putstr_fd("env: ", 2);
+	ft_putstr_fd(av, 2);
+	ft_putendl_fd(msg, 2);
+	return (exit_code);
+}
+
 char	**ft_cpy_envp(char **envp)
 {
-	char **new_envp;
-	int	i;
+	char	**new_envp;
+	int		i;
 
 	i = 0;
 	while (envp[i])
@@ -36,20 +45,8 @@ int	ft_env(char **argv, char *opt, t_cmds *cmd)
 		return (0);
 	}
 	if (*opt)
-	{
-		g_exit_code = 125;
-		ft_putstr_fd("env: ", 2);
-		ft_putstr_fd(opt, 2);
-		ft_putendl_fd(": invalid option", 2);
-		return (125);
-	}
+		return (ft_exit_perror(": Invalid option", opt, 125));
 	else if (*argv)
-	{
-		g_exit_code = 127;
-		ft_putstr_fd("env: ", 2);
-		ft_putstr_fd(argv[0], 2);
-		ft_putendl_fd(": No such file or directory", 2);
-		return (127);
-	}
+		return (ft_exit_perror(": No such file or directory", argv[0], 127));
 	return (0);
 }
