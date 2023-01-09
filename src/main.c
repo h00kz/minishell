@@ -103,7 +103,10 @@ int	main(int ac, char **av, char **envp)
 				if (!ft_strncmp(input, "echo", 4))
 					ft_echo(cmd->file_name, cmd->args);
 				if (!ft_strncmp(input, "exit", 4))
+				{
+					ft_free_split(env_cp);
 					ft_exit(cmd->file_name, cmd->args, cmd);
+				}
 				if (!ft_strncmp(input, "env", 3))
 					ft_env(cmd->file_name, cmd->args, cmd);
 				if (!ft_strncmp(input, "unset", 5))
