@@ -307,8 +307,7 @@ int	make_args(t_cmds *cmd, char **input_split, int *i, int *n)
 		ft_increment(i, n);
 		return (0);
 	}
-	else if (ft_strncmp(cmd->cmd, "unset", 5) == 0
-		|| ft_strncmp(cmd->cmd, "export", 6) == 0)
+	else if (ft_strncmp(cmd->cmd, "export", 6) == 0)
 	{
 		cmd->file_name[(*n)] = ft_strdup(input_split[(*i)]);
 		ft_increment(i, n);
