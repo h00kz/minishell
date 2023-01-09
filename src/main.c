@@ -107,14 +107,12 @@ int	main(int ac, char **av, char **envp)
 				if (!ft_strncmp(input, "env", 3))
 					ft_env(cmd->file_name, cmd->args, cmd);
 				if (!ft_strncmp(input, "unset", 5))
-					ft_unset(cmd->file_name, cmd->args, cmd);
+					cmd->lst_envp = ft_unset(cmd->file_name, cmd->args, cmd);
 				if (!ft_strncmp(input, "pwd", 3))
 					ft_pwd(cmd->args);
 				ft_free_split(env_cp);
-				ft_print_lst(cmd);
 				env_cp = rebuild_envp(cmd->lst_envp);
 			}
-			ft_print_lst(cmd);
 			free(input);
 			free_cmd(cmd);
 		}
