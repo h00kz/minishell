@@ -246,8 +246,7 @@ int	make_right_redir(t_cmds *cmd, char **input_split, int *i)
 				O_CREAT | O_TRUNC | O_WRONLY, 0644);
 		if (cmd->fd_file < 0)
 		{
-			printf("cannot open file : %s\n", cmd->infile);
-			free_cmd(cmd);
+			printf("cannot open file : %s\n", cmd->outfile);
 			return (1);
 		}
 		close(cmd->fd_file);
@@ -269,7 +268,6 @@ int	make_right_heredoc(t_cmds *cmd, char **input_split, int *i)
 		if (cmd->fd_file < 0)
 		{
 			printf("cannot open file : %s\n", cmd->outfile);
-			free_cmd(cmd);
 			return (1);
 		}
 	}
@@ -673,6 +671,7 @@ t_cmds	*parse_input(char *input, char **envp)
 	if (ft_check_redir(input) == 1 || input == NULL)
 	{
 		free(input);
+		free_cmd(cmd);
 		return (NULL);
 	}
 	pid = fork();
