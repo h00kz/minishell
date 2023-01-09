@@ -225,9 +225,7 @@ int	make_left_redir(t_cmds *cmd, char **input_split, int *i)
 		cmd->redir_in = L_REDIR;
 		if (cmd->fd_file < 0)
 		{
-			ft_putstr_fd("cannot open file : ", 2);
-			ft_putendl_fd(cmd->infile, 2);
-			free_cmd(cmd);
+			printf("cannot open file %s\n", cmd->infile);
 			return (1);
 		}
 		close(cmd->fd_file);
@@ -267,13 +265,13 @@ int	make_right_heredoc(t_cmds *cmd, char **input_split, int *i)
 		cmd->outfile = ft_strdup(input_split[*i + 1]);
 		cmd->fd_file = open(input_split[*i + 1],
 				O_CREAT | O_APPEND | O_WRONLY, 0644);
+		close(cmd->fd_file);
 		if (cmd->fd_file < 0)
 		{
 			printf("cannot open file : %s\n", cmd->outfile);
 			free_cmd(cmd);
 			return (1);
 		}
-		close(cmd->fd_file);
 	}
 	(*i) += 2;
 	return (0);
@@ -492,10 +490,9 @@ void	ft_free_some_shit(char **input_split, t_cmds *cmd)
 	free_cmd(cmd);
 }
 
-void	ft_free_some_shit4(char **input_split, t_cmds *cmd)
+void	ft_free_some_shit4(char **input_split)
 {
 	ft_free_split(input_split);
-	free_cmd(cmd);
 }
 
 int	ft_make_here_doc_next(char **input_split, t_cmds *cmd, int *i)
@@ -572,11 +569,11 @@ int	ft_parse_input_next(char **cmd_split, t_cmds *cmd,
 	int		j;
 	int		i;
 
-	i = 0;
+	i = -1;
 	while (cmd)
 	{
 		j = 0;
-		input_split = ft_split_input(cmd_split[i], ' ');
+		input_split = ft_split_input(cmd_split[++i], ' ');
 		while (input_split[j])
 			j++;
 		input_split = vars(envp, input_split);
@@ -587,7 +584,8 @@ int	ft_parse_input_next(char **cmd_split, t_cmds *cmd,
 		}
 		cmd = make_arg(input_split, j, cmd);
 		ft_nfree_split(input_split, j);
-		i++;
+		if (cmd == NULL)
+			return (1);
 		cmd = cmd->next;
 	}
 	ft_free_some_shit_3(input, cmd_split);
@@ -612,7 +610,7 @@ int	ft_get_heredoc_in_next(char **input_split, t_cmds *cmd, int *i)
 	{
 		if (ft_left_redir(input_split, i) == 1)
 		{
-			ft_free_some_shit4(input_split, cmd);
+			ft_free_some_shit4(input_split);
 			return (1);
 		}
 	}
@@ -638,7 +636,7 @@ t_cmds	*ft_get_heredoc_in(char *input, char **envp)
 			cmd = cmd->next;
 		}
 		if (ft_get_heredoc_in_next(input_split, cmd, &i) == 1)
-			return (NULL);
+			return (cmd);
 		i++;
 	}
 	ft_free_split(input_split);
@@ -654,6 +652,14 @@ void	ft_fork(t_cmds *cmd, char *input, char **envp)
 	free(input);
 	ft_free_split(envp);
 	exit(g_exit_code);
+}
+
+t_cmds	*get_some_shit(t_cmds *cmd, char *input, char **envp, int pid)
+{
+	free_cmd(cmd);
+	cmd = ft_get_heredoc_in(input, envp);
+	waitpid(pid, NULL, 0);
+	return (cmd);
 }
 
 t_cmds	*parse_input(char *input, char **envp)
@@ -673,13 +679,14 @@ t_cmds	*parse_input(char *input, char **envp)
 	if (pid == 0)
 		ft_fork(cmd, input, envp);
 	else
-	{
-		free_cmd(cmd);
-		cmd = ft_get_heredoc_in(input, envp);
-		waitpid(pid, NULL, 0);
-	}
+		cmd = get_some_shit(cmd, input, envp, pid);
 	cmd_split = ft_split_input(input, '|');
 	if (ft_parse_input_next(cmd_split, cmd, input, envp) == 1)
+	{
+		free(input);
+		ft_free_split(cmd_split);
+		free_cmd(cmd);
 		return (NULL);
+	}
 	return (cmd);
 }
