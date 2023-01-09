@@ -114,7 +114,6 @@ int	main(int ac, char **av, char **envp)
 				ft_print_lst(cmd);
 				env_cp = rebuild_envp(cmd->lst_envp);
 			}
-			ft_print_lst(cmd);
 			free(input);
 			free_cmd(cmd);
 		}
