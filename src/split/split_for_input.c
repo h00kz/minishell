@@ -30,6 +30,19 @@ void	ft_nfree_split(char **strs, int n)
 	free(strs);
 }
 
+int	ft_check_bool_split(const char *str, int i, int boolean)
+{
+	if (str[i] == '"' && boolean == 0)
+		boolean = 1;
+	else if (str[i] == '"' && boolean == 1)
+		boolean = 0;
+	else if (str[i] == '\'' && boolean == 0)
+		boolean = 3;
+	else if (str[i] == '\'' && boolean == 3)
+		boolean = 0;
+	return (boolean);
+}
+
 int	ft_count_word_split(char c, char const *str)
 {
 	int	count;
@@ -47,14 +60,7 @@ int	ft_count_word_split(char c, char const *str)
 			count++;
 		while ((str[i] != c || boolean == 1 || boolean == 3) && str[i])
 		{
-			if (str[i] == '"' && boolean == 0)
-				boolean = 1;
-			else if (str[i] == '"' && boolean == 1)
-				boolean = 0;
-			else if (str[i] == '\'' && boolean == 0)
-				boolean = 3;
-			else if (str[i] == '\'' && boolean == 3)
-				boolean = 0;
+			boolean = ft_check_bool_split(str, i, boolean);
 			i++;
 		}
 	}

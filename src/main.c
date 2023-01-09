@@ -27,30 +27,30 @@ char	*set_prompt(void)
 // 	}
 // }
 
-// void	ft_print_lst(t_cmds *cmd)
-// {
-// 	t_cmds	*tmp;
-// 	while (cmd != NULL)
-// 	{
-// 		tmp = cmd->next;
-// 		printf("cmd->cmd = %s", cmd->cmd);
-// 		printf("\ncmd->args = %s", cmd->args);
-// 		printf("\ncmd->redir_in = %d", cmd->redir_in);
-// 		printf("\ncmd->redir_out = %d", cmd->redir_out);
-// 		printf("\ncmd->infile = %s", cmd->infile);
-// 		printf("\ncmd->outfile = %s", cmd->outfile);
-// 		int i = 0;
-// 		printf("\nheredoc_in = %s", cmd->heredoc_in);
-// 		while (cmd->file_name[i])
-// 		{
-// 			printf("\ncmd->files = %s", cmd->file_name[i]);
-// 			i++;
-// 		}
-// 		ft_print_lst_e(cmd->lst_envp);
-// 		printf ("\n\n");
-// 		cmd = tmp;
-// 	}
-// }
+void	ft_print_lst(t_cmds *cmd)
+{
+	t_cmds	*tmp;
+	while (cmd != NULL)
+	{
+		tmp = cmd->next;
+		printf("cmd->cmd = %s", cmd->cmd);
+		printf("\ncmd->args = %s", cmd->args);
+		printf("\ncmd->redir_in = %d", cmd->redir_in);
+		printf("\ncmd->redir_out = %d", cmd->redir_out);
+		printf("\ncmd->infile = %s", cmd->infile);
+		printf("\ncmd->outfile = %s", cmd->outfile);
+		int i = 0;
+		printf("\nheredoc_in = %s", cmd->heredoc_in);
+		while (cmd->file_name[i])
+		{
+			printf("\ncmd->files = %s", cmd->file_name[i]);
+			i++;
+		}
+		// ft_print_lst_e(cmd->lst_envp);
+		printf ("\n\n");
+		cmd = tmp;
+	}
+}
 
 static void	sig_handler(int sig)
 {
@@ -112,6 +112,7 @@ int	main(int ac, char **av, char **envp)
 				ft_free_split(env_cp);
 				env_cp = rebuild_envp(cmd->lst_envp);
 			}
+			ft_print_lst(cmd);
 			free(input);
 			free_cmd(cmd);
 		}

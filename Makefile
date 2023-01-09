@@ -1,5 +1,3 @@
-
-
 SRC					= src/main.c \
 					  src/list_envp/process_envp.c \
 					  src/parsing/parse_input.c \

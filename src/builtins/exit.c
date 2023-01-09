@@ -9,14 +9,16 @@ static void	exit_free(t_cmds *cmd, int exit_code)
 
 static void	exit_opt_err(char **argv, char *opt, int i, t_cmds *cmd)
 {
-	if (!*argv && ((int)ft_strlen(opt) > 20 ||
-		ft_strncmp(opt, "-9223372036854775809", 20) >= 0 || !ft_str_isdigits(&opt[1])))
+	if (!*argv && ((int)ft_strlen(opt) > 20
+			|| ft_strncmp(opt, "-9223372036854775809", 20) >= 0
+			|| !ft_str_isdigits(&opt[1])))
 	{
 		ft_putendl_fd("NEED NUM ARG", 2);
 		exit_free(cmd, 2);
 	}
-	else if (!*opt && ((int)ft_strlen(*argv) > 19 ||
-		ft_strcmp(*argv, "9223372036854775807") >= 0 || !ft_str_isdigits(&argv[0][i])))
+	else if (!*opt && ((int)ft_strlen(*argv) > 19
+			|| ft_strcmp(*argv, "9223372036854775807") >= 0
+			|| !ft_str_isdigits(&argv[0][i])))
 	{
 		ft_putendl_fd("NEED NUM ARG", 2);
 		exit_free(cmd, 2);
