@@ -27,10 +27,9 @@ char	*set_prompt(void)
 // 	}
 // }
 
-void	ft_print_lst(t_cmds *cmd)
-{
-	t_cmds	*tmp;
-
+// void	ft_print_lst(t_cmds *cmd)
+// {
+// 	t_cmds	*tmp;
 // 	while (cmd != NULL)
 // 	{
 // 		tmp = cmd->next;
@@ -62,7 +61,7 @@ static void	sig_handler(int sig)
 		rl_replace_line("", 0);
 		rl_redisplay();
 		g_exit_code = 128 + sig;
-		close(0);
+		// close(0);
 	}
 }
 
@@ -112,11 +111,10 @@ int	main(int ac, char **av, char **envp)
 					ft_pwd(cmd->args);
 				ft_free_split(env_cp);
 				env_cp = rebuild_envp(cmd->lst_envp);
-				ft_print_lst(cmd);
 			}
 			free(input);
+			free_cmd(cmd);
 		}
-		free_cmd(cmd);
 	}
 	return (0);
 }

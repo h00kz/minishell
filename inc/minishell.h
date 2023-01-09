@@ -12,6 +12,7 @@
 # include "structs.h"
 # include "lists.h"
 # include "builtins.h"
+# include <sys/wait.h>
 
 extern int	g_exit_code;
 
