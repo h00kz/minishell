@@ -473,62 +473,71 @@ char	**ft_make_input_split(char *input, char **envp)
 	return (input_split);
 }
 
-void	ft_make_heredoc_in(char *tmp_in, t_cmds *cmd, \
-	char **input_split, int *i)
+void	ft_make_heredoc_in(t_cmds *cmd, char **input_split, int *i)
 {
-	if (tmp_in)
-	{
+	char	*tmp_in;
+
+	if (cmd->heredoc_in[0] != '\0')
 		unlink(cmd->heredoc_in);
-		free(tmp_in);
-	}
 	ft_create_heredoc_in(input_split[(*i) + 1], (*i));
-	tmp_in = ft_strjoin_free_choice(".heredoc", ft_itoa((*i)), 2);
 	free(cmd->heredoc_in);
+	tmp_in = ft_strjoin_free_choice(".heredoc", ft_itoa((*i)), 2);
 	cmd->heredoc_in = tmp_in;
 	(*i)++;
 }
 
-void	ft_free_some_shit(char *tmp_in, char **input_split, t_cmds *cmd)
+void	ft_free_some_shit(char **input_split, t_cmds *cmd)
 {
-	free(tmp_in);
 	ft_free_split(input_split);
 	free_cmd(cmd);
 }
 
-int	ft_make_here_doc_next(char **input_split, char *tmp_in, t_cmds *cmd, int *i)
+void	ft_free_some_shit4(char **input_split, t_cmds *cmd)
+{
+	ft_free_split(input_split);
+	free_cmd(cmd);
+}
+
+int	ft_make_here_doc_next(char **input_split, t_cmds *cmd, int *i)
 {
 	if (ft_strncmp(input_split[(*i)], "<<", 2) == 0)
-		ft_make_heredoc_in(tmp_in, cmd, input_split, i);
+		ft_make_heredoc_in(cmd, input_split, i);
 	else if (ft_strncmp(input_split[(*i)], "<", 1) == 0)
 	{
 		if (ft_left_redir(input_split, i) == 1)
 		{
-			ft_free_some_shit(tmp_in, input_split, cmd);
+			ft_free_some_shit(input_split, cmd);
 			return (1);
 		}
 	}
 	return (0);
 }
 
-void	ft_check_heredoc_in(t_cmds *cmd, char *tmp_in)
+static void	sig_handler_child(int sig)
 {
-	if (cmd->heredoc_in[0] == '\0')
-		free(tmp_in);
+	if (sig == SIGINT)
+	{
+		ft_putendl_fd("", 1);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+		g_exit_code = 128 + sig;
+		close(STDIN_FILENO);
+	}
 }
 
 t_cmds	*ft_make_here_doc(char *input, char **envp)
 {
 	int		i;
 	char	**input_split;
-	char	*tmp_in;
 	t_cmds	*cmd;
 	t_cmds	*save;
 
 	i = 0;
+	
 	input_split = ft_make_input_split(input, envp);
 	cmd = ft_lstnew_node(envp);
 	save = cmd;
-	tmp_in = ft_calloc(sizeof(char), 1);
 	while (input_split && input_split[i])
 	{
 		if (ft_strcmp(input_split[i], "|") == 0)
@@ -536,11 +545,10 @@ t_cmds	*ft_make_here_doc(char *input, char **envp)
 			ft_lstadd_back_cmd(&cmd, ft_lstnew_node(envp));
 			cmd = cmd->next;
 		}
-		if (ft_make_here_doc_next(input_split, tmp_in, cmd, &i) == 1)
+		if (ft_make_here_doc_next(input_split, cmd, &i) == 1)
 			return (NULL);
 		i++;
 	}
-	ft_check_heredoc_in(cmd, tmp_in);
 	ft_free_split(input_split);
 	return (save);
 }
@@ -587,11 +595,65 @@ int	ft_parse_input_next(char **cmd_split, t_cmds *cmd,
 	return (0);
 }
 
+void	ft_get_here_doc_in(t_cmds *cmd, int *i)
+{
+	char * tmp_in;
+
+	tmp_in = ft_strjoin_free_choice(".heredoc", ft_itoa((*i)), 2);
+	free(cmd->heredoc_in);
+	cmd->heredoc_in = tmp_in;
+	(*i)++;
+}
+
+int	ft_get_heredoc_in_next(char **input_split, t_cmds *cmd, int *i)
+{
+	if (ft_strncmp(input_split[(*i)], "<<", 2) == 0)
+		ft_get_here_doc_in(cmd, i);
+	else if (ft_strncmp(input_split[(*i)], "<", 1) == 0)
+	{
+		if (ft_left_redir(input_split, i) == 1)
+		{
+			ft_free_some_shit4(input_split, cmd);
+			return (1);
+		}
+	}
+	return (0);
+
+}
+
+t_cmds	*ft_get_heredoc_in(char *input, char **envp)
+{
+	int		i;
+	char	**input_split;
+	t_cmds	*cmd;
+	t_cmds	*save;
+
+	i = 0;
+	
+	input_split = ft_make_input_split(input, envp);
+	cmd = ft_lstnew_node(envp);
+	save = cmd;
+	while (input_split && input_split[i])
+	{
+		if (ft_strcmp(input_split[i], "|") == 0)
+		{
+			ft_lstadd_back_cmd(&cmd, ft_lstnew_node(envp));
+			cmd = cmd->next;
+		}
+		if (ft_get_heredoc_in_next(input_split, cmd, &i) == 1)
+			return (NULL);
+		i++;
+	}
+	ft_free_split(input_split);
+	return (save);
+}
+
 t_cmds	*parse_input(char *input, char **envp)
 {
 	char	**cmd_split;
 	t_cmds	*save;
 	t_cmds	*cmd;
+	int		pid;
 
 	input = ft_str_add_space(input);
 	if (ft_check_redir(input) == 1 || input == NULL)
@@ -599,7 +661,21 @@ t_cmds	*parse_input(char *input, char **envp)
 		free(input);
 		return (NULL);
 	}
-	cmd = ft_make_here_doc(input, envp);
+	pid = fork();
+	if (pid == 0)
+	{
+		signal(SIGINT, sig_handler_child);
+		cmd = ft_make_here_doc(input, envp);
+		if (cmd)
+			free_cmd(cmd);
+		free(input);
+		exit(g_exit_code);
+	}
+	else
+	{
+		cmd = ft_get_heredoc_in(input, envp);
+		waitpid(pid, NULL, 0);
+	}
 	save = cmd;
 	cmd_split = ft_split_input(input, '|');
 	if (ft_parse_input_next(cmd_split, cmd, input, envp) == 1)
