@@ -1,6 +1,7 @@
 SRC					= src/main.c \
 					  src/list_envp/process_envp.c \
 					  src/utils/list_utils.c \
+					  src/utils/list_utils_next.c \
 					  src/split/split_for_input.c \
 					  src/split/split_utils.c \
 					  src/builtins/echo.c \
@@ -14,6 +15,7 @@ SRC					= src/main.c \
 					  src/parsing/arguments.c \
 					  src/parsing/parse_input.c \
 					  src/parsing/env_interpretation.c \
+					  src/parsing/env_vars.c \
 					  src/parsing/exec/redir_check.c \
 					  src/parsing/exec/redir_utils.c \
 					  src/parsing/exec/heredocs.c \
