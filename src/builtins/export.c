@@ -58,12 +58,51 @@ static void print_env(t_envp *envp)
 	}
 }
 
-int ft_export(char **argv, char *opt, t_cmds *cmd)
+static void	ft_error(char **argv)
+{
+	g_exit_code = 2;
+	ft_putstr_fd("minishell: export: ", 2);
+	ft_putstr_fd(*argv, 2);
+	ft_putendl_fd(": not a valid identifier", 2);
+}
+
+void	ft_dans_le_cul(int sep_i, char **argv, int i, t_cmds *cmd)
+{
+	if (argv[i][sep_i - 1] == '+')
+		lstadd_back_envp(&cmd->lst_envp, lstnew_envp(ft_strndup(argv[i], sep_i - 1),
+				ft_strdup(&argv[i][sep_i + 1])));
+	else
+		lstadd_back_envp(&cmd->lst_envp, lstnew_envp(ft_strndup(argv[i], sep_i),
+				ft_strdup(&argv[i][sep_i + 1])));
+}
+
+static void	make_export(t_cmds *cmd, char **argv, int sep_i)
 {
 	int	i;
-	int	sep_i;
 
-	i = 0;
+	i = -1;
+	while (argv[++i])
+	{		
+		if (!ft_export_isalnum(argv[i]))
+		{
+			ft_error(argv);
+			break ;
+		}
+		if (ft_check_double_var(cmd->lst_envp, argv[i]) == 1)
+		{
+			if (ft_str_index_chr(argv[i], '=') < 0)
+				lstadd_back_envp(&cmd->lst_envp, lstnew_envp(ft_strdup(argv[i]), 0));
+			else
+			{
+				sep_i = ft_str_index_chr(argv[i], '=');
+				ft_dans_le_cul(sep_i, argv, i, cmd);
+			}
+		}
+	}
+}
+
+int ft_export(char **argv, char *opt, t_cmds *cmd)
+{
 	if (!*argv && !*opt)
 	{
 		print_env(cmd->lst_envp);
@@ -76,31 +115,6 @@ int ft_export(char **argv, char *opt, t_cmds *cmd)
 		ft_putendl_fd(": invalid option", 2);
 	}
 	else
-	{
-		while (argv[i])
-		{		
-			if (!ft_export_isalnum(argv[i]))
-			{
-				g_exit_code = 2;
-				ft_putstr_fd("minishell: export: ", 2);
-				ft_putstr_fd(*argv, 2);
-				ft_putendl_fd(": not a valid identifier", 2);
-				break ;
-			}
-			if (ft_check_double_var(cmd->lst_envp, argv[i]) == 1)
-			{
-				if (ft_str_index_chr(argv[i], '=') < 0)
-					lstadd_back_envp(&cmd->lst_envp, lstnew_envp(ft_strdup(argv[i]), 0));
-				else
-				{
-					sep_i = ft_str_index_chr(argv[i], '=');
-					lstadd_back_envp(&cmd->lst_envp, lstnew_envp(ft_strndup(argv[i], sep_i), \
-								ft_strdup(&argv[i][sep_i + 1])));
-				}
-			}
-			update_cmds_env(cmd);
-			i++;
-		}
-	}
+		make_export(cmd, argv, 0);
 	return (g_exit_code);
 }
