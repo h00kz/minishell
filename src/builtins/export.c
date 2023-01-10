@@ -50,9 +50,10 @@ static void print_env(t_envp *envp)
 		first_ascii = get_first_ascii(envp);
 		save = ft_find_node(first_ascii, envp);
 		if (save->value)
-			printf("%s=\"%s\"\n", save->variable, save->value);
+			printf("%s=\"%s\"", save->variable, save->value);
 		else
 			printf("%s", save->variable);
+		printf("\n");
 		save->print = 1;
 	}
 }
@@ -86,7 +87,7 @@ int ft_export(char **argv, char *opt, t_cmds *cmd)
 				ft_putendl_fd(": not a valid identifier", 2);
 				break ;
 			}
-			if (ft_check_double_var(cmd->lst_envp) == 0)
+			if (ft_check_double_var(cmd->lst_envp, argv[i]) == 1)
 			{
 				if (ft_str_index_chr(argv[i], '=') < 0)
 					lstadd_back_envp(&cmd->lst_envp, lstnew_envp(ft_strdup(argv[i]), 0));

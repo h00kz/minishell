@@ -1,19 +1,11 @@
 #include "../../inc/minishell.h"
  
-int	ft_check_double_var(t_envp *env)
+int	ft_check_double_var(t_envp *env, char *arg)
 {
-	t_envp *cur;
-
-	cur = env->next;
-	while (env && cur->next)
+	while (env)
 	{
-		if (!ft_strcmp(env->variable, cur->variable))
+		if (!ft_strncmp(env->variable, arg, (int)ft_strlen(env->variable)))
 			return (0);
-		else
-		{
-			cur = cur->next;
-			continue ;
-		}
 		env = env->next;
 	}
 	return (1);
