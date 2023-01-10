@@ -13,8 +13,12 @@ t_envp	*save_envp(char **envp)
 	while (envp[i])
 	{
 		sep_idx = ft_str_index_chr(envp[i], '=');
-		lstadd_back_envp(&lst, lstnew_envp(ft_strndup(envp[i], sep_idx), \
-										ft_strdup(&envp[i][sep_idx + 1])));
+		if (sep_idx >= 0)
+			lstadd_back_envp(&lst, lstnew_envp(ft_strndup(envp[i], sep_idx), \
+											ft_strdup(&envp[i][sep_idx + 1])));
+		else
+			lstadd_back_envp(&lst, lstnew_envp(ft_strdup(envp[i]), \
+											NULL));
 		i++;
 	}
 	return (lst);
@@ -55,10 +59,15 @@ char	**rebuild_envp(t_envp *lst_envp)
 	while (lst_envp)
 	{
 		if (lst_envp->value == NULL)
-			lst_envp = lst_envp->next;
-		tmp = ft_strjoin(lst_envp->variable, "=");
-		ret_envp[i] = ft_strjoin(tmp, lst_envp->value);
-		free(tmp);
+		{
+			ret_envp[i] = ft_strdup(lst_envp->variable);
+		}
+		else
+		{
+			tmp = ft_strjoin(lst_envp->variable, "=");
+			ret_envp[i] = ft_strjoin(tmp, lst_envp->value);
+			free(tmp);
+		}
 		lst_envp = lst_envp->next;
 		i++;
 	}

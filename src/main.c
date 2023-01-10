@@ -47,7 +47,7 @@ void	ft_print_lst(t_cmds *cmd)
 			printf("\ncmd->files = %s", cmd->file_name[i]);
 			i++;
 		}
-		// ft_print_lst_e(cmd->lst_envp);
+		ft_print_lst_e(cmd->lst_envp);
 		printf ("\n\n");
 		cmd = tmp;
 	}
@@ -116,6 +116,7 @@ int	main(int ac, char **av, char **envp)
 					ft_pwd(cmd->args);
 				ft_free_split(env_cp);
 				env_cp = rebuild_envp(cmd->lst_envp);
+				ft_print_lst(cmd);
 			}
 			free_cmd(cmd);
 			free(input);
