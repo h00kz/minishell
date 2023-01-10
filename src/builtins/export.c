@@ -98,6 +98,7 @@ int ft_export(char **argv, char *opt, t_cmds *cmd)
 								ft_strdup(&argv[i][sep_i + 1])));
 				}
 			}
+			update_cmds_env(cmd);
 			i++;
 		}
 	}
