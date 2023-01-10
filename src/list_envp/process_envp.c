@@ -54,6 +54,8 @@ char	**rebuild_envp(t_envp *lst_envp)
 		return (NULL);
 	while (lst_envp)
 	{
+		if (lst_envp->value == NULL)
+			lst_envp = lst_envp->next;
 		tmp = ft_strjoin(lst_envp->variable, "=");
 		ret_envp[i] = ft_strjoin(tmp, lst_envp->value);
 		free(tmp);

@@ -117,8 +117,8 @@ int	main(int ac, char **av, char **envp)
 				ft_free_split(env_cp);
 				env_cp = rebuild_envp(cmd->lst_envp);
 			}
-			free(input);
 			free_cmd(cmd);
+			free(input);
 		}
 	}
 	return (0);
