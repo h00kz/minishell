@@ -35,4 +35,7 @@ enum	e_parsing
 	FILES_OR_CMD = 4,
 };
 
+void	ft_print_lst_e(t_envp *envp);
+
+
 #endif

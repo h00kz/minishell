@@ -1,20 +1,22 @@
 #include "../../inc/minishell.h"
 
-t_envp	*get_first_ascii(t_envp *envp)
+char	*get_first_ascii(t_envp *envp)
 {
-	t_envp	*save;
+	char	*first_ascii;
 
-	save = envp;
+	first_ascii = ft_calloc(sizeof(char *), 2);
+	first_ascii[0] = 127;
 	while (envp)
 	{
-		if (ft_strcmp(save->variable, envp->variable) > 0 && envp->print == 0)
+		if (ft_strcmp(first_ascii, envp->variable) > 0 && envp->print == 0)
 		{
-			save = envp;
-			save->print = 1;
+			if (first_ascii[0] == 127)
+				free(first_ascii);
+			first_ascii = envp->variable;
 		}
 		envp = envp->next;
 	}
-	return (save);
+	return (first_ascii);
 }
 
 int	ft_check_print(t_envp *envp)
@@ -23,24 +25,35 @@ int	ft_check_print(t_envp *envp)
 	{
 		if (envp->print == 0)
 			return (0);
-		envp = envp->next;
+		else
+			envp = envp->next;
 	}
 	return (1);
+}
+
+t_envp	*ft_find_node(char *to_find, t_envp *envp)
+{
+	while (ft_strcmp(to_find, envp->variable) != 0 && envp)
+		envp = envp->next;
+	return (envp);
 }
 
 static void print_env(t_envp *envp)
 {
 	t_envp  *save;
+	char	*first_ascii;
 
 	save = envp;
 	while (ft_check_print(envp) == 0)
 	{
 		ft_putstr_fd("declare -x ", 1);
-		save = get_first_ascii(envp);
+		first_ascii = get_first_ascii(envp);
+		save = ft_find_node(first_ascii, envp);
 		if (save->value)
 			printf("%s=\"%s\"\n", save->variable, save->value);
 		else
 			printf("%s", save->variable);
+		save->print = 1;
 	}
 }
 
