@@ -1,36 +1,37 @@
 #ifndef PARSING_H
 # define PARSING_H
 
-int 	make_cmd(t_cmds *cmd, char **input_split, int *i);
-int 	make_file(t_cmds *cmd, char **input_split, int *i, int *n);
+int		make_cmd(t_cmds *cmd, char **input_split, int *i);
+int		make_file(t_cmds *cmd, char **input_split, int *i, int *n);
 char	**vars(char **envp, char **input_split);
-int	    ft_parse_input_next(char **cmd_split, t_cmds *cmd, \
-			char *input, char **envp);
+int		ft_parse_input_next(char **cmd_split, t_cmds *cmd, \
+		char *input, char **envp);
 t_cmds	*parse_input(char *input, char **envp);
 void	ft_fork(t_cmds *cmd, char *input, char **envp);
 t_cmds	*get_some_shit(t_cmds *cmd, char *input, char **envp, int pid);
-int	    make_args(t_cmds *cmd, char **input_split, int *i, int *n);
-int 	make_args_next(t_cmds *cmd, char **input_split, int *i, int *n);
+int		make_args(t_cmds *cmd, char **input_split, int *i, int *n);
+int		make_args_next(t_cmds *cmd, char **input_split, int *i, int *n);
 char	**ft_make_input_split(char *input, char **envp);
 void	ft_create_heredoc_in(char *str, int i);
 void	ft_create_heredoc_out(char *str, int i);
-int 	make_right_heredoc(t_cmds *cmd, char **input_split, int *i);
-int 	make_left_heredoc(t_cmds *cmd, char **input_split, int *i);
+int		make_right_heredoc(t_cmds *cmd, char **input_split, int *i);
+int		make_left_heredoc(t_cmds *cmd, char **input_split, int *i);
 void	ft_make_heredoc_in(t_cmds *cmd, char **input_split, int *i);
 t_cmds	*ft_make_here_doc(char *input, char **envp);
 t_cmds	*ft_get_heredoc_in(char *input, char **envp);
 void	ft_get_here_doc_in(t_cmds *cmd, int *i);
-int	    ft_get_heredoc_in_next(char **input_split, t_cmds *cmd, int *i);
-int	    ft_make_here_doc_next(char **input_split, t_cmds *cmd, int *i);
+int		ft_get_heredoc_in_next(char **input_split, t_cmds *cmd, int *i);
+int		ft_make_here_doc_next(char **input_split, t_cmds *cmd, int *i);
 void	ft_free_some_shit(char **input_split, t_cmds *cmd);
-void	ft_free_some_shit_2(char **input_split, int j, char *input, t_cmds *cmd);
+void	ft_free_some_shit_2(char **input_split, \
+		int j, char *input, t_cmds *cmd);
 void	ft_free_some_shit_3(char *input, char **cmd_split);
 void	ft_free_some_shit4(char **input_split);
-int	    ft_strlen_sep(char *str);
-int	    ft_check_bool(char *str, int i, int boolean);
+int		ft_strlen_sep(char *str);
+int		ft_check_bool(char *str, int i, int boolean);
 char	*add_space_heredoc(char *str, char *s, int *i, int *j);
 char	*add_space(char *str, char *s, int i, int *j);
-int	    ft_check_add_space(int j, char *str, int i, int boolean);
+int		ft_check_add_space(int j, char *str, int i, int boolean);
 int		ft_check_bool_redir(int boolean, int *i, char *input);
 int		ft_make_redir_pipe(char *input, int *i);
 int		ft_make_redir_left(char *input, int *i);
@@ -56,5 +57,9 @@ int		ft_count_word_split(char c, char const *str);
 int		ft_check_bool_split(const char *str, int i, int boolean);
 void	ft_skip_char(char const *s, size_t *i, int *boolean, char c);
 char	**ft_split_input(char const *s, char c);
+char	*ft_translate(char **envp, char *input);
+int		ft_check(char **input, int *i, char **str, int boolean);
+int		ft_last_check(char *input, int boolean, char **tmp, int *i);
+void	ft_translate_env_next(int *i, char *tmp, char *input, char **str);
 
 #endif

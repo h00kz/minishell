@@ -38,7 +38,6 @@ char	**vars(char **envp, char **input_split)
 	return (tmp);
 }
 
-
 int	ft_parse_input_next(char **cmd_split, t_cmds *cmd,
 	char *input, char **envp)
 {

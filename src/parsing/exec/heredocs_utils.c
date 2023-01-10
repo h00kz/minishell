@@ -77,7 +77,6 @@ int	ft_get_heredoc_in_next(char **input_split, t_cmds *cmd, int *i)
 	return (0);
 }
 
-
 int	ft_make_here_doc_next(char **input_split, t_cmds *cmd, int *i)
 {
 	if (ft_strncmp(input_split[(*i)], "<<", 2) == 0)

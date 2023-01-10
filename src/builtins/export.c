@@ -16,7 +16,7 @@ static t_envp *sort_ascii(t_envp *a, t_envp *b)
 		b = a->next;
 		while (b)
 		{
-			if (ft_strcmp(a->variable, b->variable) > 0)    
+			if (ft_strcmp(a->variable, b->variable) > 0)	
 			{
 				ft_swap(&a->variable, &b->variable);
 				ft_swap(&a->value, &b->value);

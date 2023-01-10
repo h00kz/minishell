@@ -19,7 +19,7 @@ static int	ft_echo_opt(char *opt)
 
 static void	ft_pecho(char **argv)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (argv[i])
@@ -31,7 +31,7 @@ static void	ft_pecho(char **argv)
 	}
 }
 
-int ft_echo(char **argv, char *opt)
+int	ft_echo(char **argv, char *opt)
 {
 	if (!*argv && !*opt)
 		ft_putendl_fd("", 1);
