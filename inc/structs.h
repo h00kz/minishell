@@ -5,6 +5,7 @@ typedef struct s_envp
 {
 	char			*variable;
 	char			*value;
+	int				print;
 	struct s_envp	*next;
 }			t_envp;
 

@@ -31,6 +31,7 @@ t_envp	*lstnew_envp(char *variable, char *value)
 		return (NULL);
 	new_node->variable = variable;
 	new_node->value = value;
+	new_node->print = 0;
 	new_node->next = NULL;
 	return (new_node);
 }
