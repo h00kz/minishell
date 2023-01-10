@@ -86,13 +86,16 @@ int ft_export(char **argv, char *opt, t_cmds *cmd)
 				ft_putendl_fd(": not a valid identifier", 2);
 				break ;
 			}
-			if (ft_str_index_chr(argv[i], '=') < 0)
-				lstadd_back_envp(&cmd->lst_envp, lstnew_envp(ft_strdup(argv[i]), NULL));
-			else
+			if (ft_check_double_var(cmd->lst_envp) == 0)
 			{
-				sep_i = ft_str_index_chr(argv[i], '=');
-				lstadd_back_envp(&cmd->lst_envp, lstnew_envp(ft_strndup(argv[i], sep_i), \
-							&argv[i][sep_i + 1]));
+				if (ft_str_index_chr(argv[i], '=') < 0)
+					lstadd_back_envp(&cmd->lst_envp, lstnew_envp(ft_strdup(argv[i]), 0));
+				else
+				{
+					sep_i = ft_str_index_chr(argv[i], '=');
+					lstadd_back_envp(&cmd->lst_envp, lstnew_envp(ft_strndup(argv[i], sep_i), \
+								&argv[i][sep_i + 1]));
+				}
 			}
 			i++;
 		}
