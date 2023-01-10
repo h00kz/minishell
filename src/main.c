@@ -17,15 +17,16 @@ char	*set_prompt(void)
 	return (prompt);
 }
 
-// static void	ft_print_lst_e(t_envp *envp)
-// {
-// 	while (envp != NULL)
-// 	{
-// 		printf("\ncmd->envp->variable = %s", envp->variable);
-// 		printf("\ncmd->envp->value = %s\n", envp->value);
-// 		envp = envp->next;
-// 	}
-// }
+void	ft_print_lst_e(t_envp *envp)
+{
+	while (envp != NULL)
+	{
+		printf("\nenvp->variable = %s", envp->variable);
+		printf("\nenvp->print = %d", envp->print);
+		printf("\nenvp->value = %s\n", envp->value);
+		envp = envp->next;
+	}
+}
 
 void	ft_print_lst(t_cmds *cmd)
 {
