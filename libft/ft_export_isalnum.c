@@ -12,6 +12,8 @@ int	ft_export_isalnum(const char *s)
 			return (0);
 		if (s[i] == '+' && s[i + 1] != '=')
 			return (0);
+		if (s[i] == '+' && s[i + 1] == '=' && !s[i + 2])
+			return (0);
 		i++;
 	}
 	return (1);
