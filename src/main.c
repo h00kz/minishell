@@ -17,41 +17,41 @@ char	*set_prompt(void)
 	return (prompt);
 }
 
-void	ft_print_lst_e(t_envp *envp)
-{
-	while (envp != NULL)
-	{
-		printf("\nenvp->variable = %s", envp->variable);
-		printf("\nenvp->print = %d", envp->print);
-		printf("\nenvp->value = %s\n", envp->value);
-		envp = envp->next;
-	}
-}
+// void	ft_print_lst_e(t_envp *envp)
+// {
+// 	while (envp != NULL)
+// 	{
+// 		printf("\nenvp->variable = %s", envp->variable);
+// 		printf("\nenvp->print = %d", envp->print);
+// 		printf("\nenvp->value = %s\n", envp->value);
+// 		envp = envp->next;
+// 	}
+// }
 
-void	ft_print_lst(t_cmds *cmd)
-{
-	t_cmds	*tmp;
-	while (cmd != NULL)
-	{
-		tmp = cmd->next;
-		printf("cmd->cmd = %s", cmd->cmd);
-		printf("\ncmd->args = %s", cmd->args);
-		printf("\ncmd->redir_in = %d", cmd->redir_in);
-		printf("\ncmd->redir_out = %d", cmd->redir_out);
-		printf("\ncmd->infile = %s", cmd->infile);
-		printf("\ncmd->outfile = %s", cmd->outfile);
-		int i = 0;
-		printf("\nheredoc_in = %s", cmd->heredoc_in);
-		while (cmd->file_name[i])
-		{
-			printf("\ncmd->files = %s", cmd->file_name[i]);
-			i++;
-		}
-		// ft_print_lst_e(cmd->lst_envp);
-		printf ("\n\n");
-		cmd = tmp;
-	}
-}
+// void	ft_print_lst(t_cmds *cmd)
+// {
+// 	t_cmds	*tmp;
+// 	while (cmd != NULL)
+// 	{
+// 		tmp = cmd->next;
+// 		printf("cmd->cmd = %s", cmd->cmd);
+// 		printf("\ncmd->args = %s", cmd->args);
+// 		printf("\ncmd->redir_in = %d", cmd->redir_in);
+// 		printf("\ncmd->redir_out = %d", cmd->redir_out);
+// 		printf("\ncmd->infile = %s", cmd->infile);
+// 		printf("\ncmd->outfile = %s", cmd->outfile);
+// 		int i = 0;
+// 		printf("\nheredoc_in = %s", cmd->heredoc_in);
+// 		while (cmd->file_name[i])
+// 		{
+// 			printf("\ncmd->files = %s", cmd->file_name[i]);
+// 			i++;
+// 		}
+// 		// ft_print_lst_e(cmd->lst_envp);
+// 		printf ("\n\n");
+// 		cmd = tmp;
+// 	}
+// }
 
 static void	sig_handler(int sig)
 {
