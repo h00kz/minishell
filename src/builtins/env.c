@@ -39,7 +39,8 @@ int	ft_env(char **argv, char *opt, t_cmds *cmd)
 	{
 		while (cmd->envp[i] != NULL)
 		{
-			ft_putendl_fd(cmd->envp[i], 1);
+			if (ft_str_index_chr(cmd->envp[i], '=') != -1)
+				ft_putendl_fd(cmd->envp[i], 1);
 			i++;
 		}
 		return (0);

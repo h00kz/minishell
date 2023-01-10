@@ -95,7 +95,7 @@ int ft_export(char **argv, char *opt, t_cmds *cmd)
 				{
 					sep_i = ft_str_index_chr(argv[i], '=');
 					lstadd_back_envp(&cmd->lst_envp, lstnew_envp(ft_strndup(argv[i], sep_i), \
-								&argv[i][sep_i + 1]));
+								ft_strdup(&argv[i][sep_i + 1])));
 				}
 			}
 			i++;
