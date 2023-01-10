@@ -1,48 +1,46 @@
 #include "../../inc/minishell.h"
 
-static void ft_swap(char **a, char **b)
+t_envp	*get_first_ascii(t_envp *envp)
 {
-	char	*tmp;
+	t_envp	*save;
 
-	tmp = *a;
-	*a = *b;
-	*b = tmp;
+	save = envp;
+	while (envp)
+	{
+		if (ft_strcmp(save->variable, envp->variable) > 0 && envp->print == 0)
+		{
+			save = envp;
+			save->print = 1;
+		}
+		envp = envp->next;
+	}
+	return (save);
 }
 
-static t_envp *sort_ascii(t_envp *a, t_envp *b)
+int	ft_check_print(t_envp *envp)
 {
-	while (a)
+	while (envp)
 	{
-		b = a->next;
-		while (b)
-		{
-			if (ft_strcmp(a->variable, b->variable) > 0)    
-			{
-				ft_swap(&a->variable, &b->variable);
-				ft_swap(&a->value, &b->value);
-			}
-			b = b->next;
-		}
-		a = a->next;
+		if (envp->print == 0)
+			return (0);
+		envp = envp->next;
 	}
-	return (a);
+	return (1);
 }
 
 static void print_env(t_envp *envp)
 {
-	t_envp  *a;
-	t_envp  *b;
 	t_envp  *save;
 
-	a = envp;
-	b = envp;
 	save = envp;
-	envp = sort_ascii(a, b);
-	while (save)
+	while (ft_check_print(envp) == 0)
 	{
 		ft_putstr_fd("declare -x ", 1);
-		printf("%s=\"%s\"\n", save->variable, save->value);
-		save = save->next;
+		save = get_first_ascii(envp);
+		if (save->value)
+			printf("%s=\"%s\"\n", save->variable, save->value);
+		else
+			printf("%s", save->variable);
 	}
 }
 
