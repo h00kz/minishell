@@ -44,11 +44,15 @@ static void print_env(t_envp *envp)
 	}
 }
 
-int ft_export(char **argv, char *opt, t_cmds *cmds)
+int ft_export(char **argv, char *opt, t_cmds *cmd)
 {
+	int	i;
+	int	sep_i;
+
+	i = 0;
 	if (!*argv && !*opt)
 	{
-		print_env(cmds->lst_envp);
+		print_env(cmd->lst_envp);
 	}
 	else if (*opt)
 	{
@@ -59,9 +63,9 @@ int ft_export(char **argv, char *opt, t_cmds *cmds)
 	}
 	else
 	{
-		while (*argv)
+		while (argv[i])
 		{		
-			if (!ft_export_isalnum(*argv))
+			if (!ft_export_isalnum(argv[i]))
 			{
 				g_exit_code = 2;
 				ft_putstr_fd("minishell: export: ", 2);
@@ -69,7 +73,15 @@ int ft_export(char **argv, char *opt, t_cmds *cmds)
 				ft_putendl_fd(": not a valid identifier", 2);
 				break ;
 			}
-			argv++;
+			if (ft_str_index_chr(argv[i], '=') < 0)
+				lstadd_back_envp(&cmd->lst_envp, lstnew_envp(ft_strdup(argv[i]), NULL));
+			else
+			{
+				sep_i = ft_str_index_chr(argv[i], '=');
+				lstadd_back_envp(&cmd->lst_envp, lstnew_envp(ft_strndup(argv[i], sep_i), \
+							&argv[i][sep_i + 1]));
+			}
+			i++;
 		}
 	}
 	return (g_exit_code);

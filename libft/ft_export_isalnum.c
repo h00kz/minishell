@@ -19,7 +19,7 @@ int	ft_export_isalnum(const char *s)
 	i = 0;
 	while (i < (int)ft_strlen(s))
 	{
-		if ((!ft_isalpha(s[i]) && !ft_isdigit(s[i]) && s[i] != '_'))
+		if ((!ft_isalpha(s[i]) && !ft_isdigit(s[i]) && s[i] != '_' && s[i] != '='))
 			return (0);
 		i++;
 	}
