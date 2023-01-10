@@ -3,19 +3,11 @@
 void	free_cmd(t_cmds *cmd)
 {
 	t_cmds	*tmp;
-	int		jul;
 
-	jul = 0;
 	while (cmd != NULL)
 	{
 		tmp = cmd;
 		cmd = cmd->next;
-		if (ft_strcmp(tmp->cmd, "export") != 0)
-		{
-			jul = 1;
-			ft_free_split(tmp->file_name);
-			ft_lst_free(tmp->lst_envp);
-		}
 		if (tmp->args)
 			free(tmp->args);
 		if (tmp->cmd)
@@ -29,8 +21,9 @@ void	free_cmd(t_cmds *cmd)
 		if (tmp->heredoc_out)
 			free(tmp->heredoc_out);
 		ft_free_split(tmp->envp);
-		if (jul == 0)
-			free(tmp);
+		ft_free_split(tmp->file_name);
+		ft_lst_free(tmp->lst_envp);
+		free(tmp);
 	}
 }
 
