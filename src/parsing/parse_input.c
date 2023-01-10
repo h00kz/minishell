@@ -90,8 +90,7 @@ t_cmds	*parse_input(char *input, char **envp)
 	cmd_split = ft_split_input(input, '|');
 	if (ft_parse_input_next(cmd_split, cmd, input, envp) == 1)
 	{
-		free(input);
-		ft_free_split(cmd_split);
+		ft_free_some_shit_3(input, cmd_split);
 		free_cmd(cmd);
 		return (NULL);
 	}
