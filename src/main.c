@@ -99,7 +99,7 @@ int	main(int ac, char **av, char **envp)
 			{
 				pipe(cmd->pipe);
 				ft_fork_execution(cmd);
-				ft_print_lst(cmd);
+				ft_close(cmd);
 				ft_free_split(env_cp);
 				env_cp = rebuild_envp(cmd->lst_envp);
 			}

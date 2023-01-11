@@ -89,7 +89,6 @@ void	ft_fork_execution(t_cmds *cmd)
 {
 	pid_t	pid;
 
-	// ft_first_close(cmd);
 	while (cmd)
 	{
 		ft_make_pipe(cmd);
@@ -102,9 +101,7 @@ void	ft_fork_execution(t_cmds *cmd)
 			ft_no_execve(cmd);
 		}
 		else
-		{
 			cmd = cmd->next;
-		}
 		waitpid(pid, NULL, 0);
 	}
 }

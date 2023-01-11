@@ -42,27 +42,28 @@ void	ft_dup(t_cmds *cmd)
 	t_cmds	*next;
 
 	next = cmd->next;
-	if (cmd->redir_in == PIPE)
+	if (cmd->redir_in == PIPE && cmd->file_name[0] == NULL)
+	{
 		dup2(cmd->pipe[0], STDIN_FILENO);
-	if (cmd->file_name[0] != NULL)
+	}
+	else if (cmd->file_name[0] != NULL && cmd->redir_in == PIPE)
 	{
 		fd[0] = open(cmd->file_name[0], O_RDONLY);
 		dup2(fd[0], STDIN_FILENO);
 	}
-	else if (cmd->infile != NULL)
+	else if (cmd->infile != NULL && cmd->redir_in == L_REDIR)
 	{
-		fd[0] = open(cmd->infile, O_RDONLY, 0644);
+		fd[0] = open(cmd->infile, O_RDONLY);
 		dup2(fd[0], STDIN_FILENO);
+	}
+	if (cmd->redir_out == PIPE && next)
+	{
+		dup2(next->pipe[1], STDOUT_FILENO);
 	}
 	if (cmd->outfile[0] != '\0')
 	{
 		fd[1] = open(cmd->outfile, O_TRUNC | O_WRONLY | O_CREAT, 0644);
 		dup2(fd[1], STDOUT_FILENO);
-	}
-	if (cmd->redir_out == PIPE)
-	{
-		close(cmd->pipe[1]);
-		dup2(next->pipe[1], STDOUT_FILENO);
 	}
 }
 
