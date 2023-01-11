@@ -97,6 +97,7 @@ int	main(int ac, char **av, char **envp)
 			cmd = parse_input(input, env_cp);
 			if (cmd != NULL)
 			{
+				
 				pipe(cmd->pipe);
 				ft_fork_execution(cmd);
 				ft_close(cmd);

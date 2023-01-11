@@ -67,3 +67,18 @@ void	ft_lstadd_back_cmd(t_cmds **lst, t_cmds *new)
 		current->next = new;
 	}
 }
+
+int	ft_lst_size_cmd(t_cmds *cmd)
+{
+	int	i;
+
+	i = 0;
+	if (!cmd)
+		return (i);
+	while (cmd)
+	{
+		i++;
+		cmd = cmd->next;
+	}
+	return (i);
+}

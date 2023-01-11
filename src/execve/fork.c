@@ -86,6 +86,10 @@ void	ft_no_execve(t_cmds *cmd)
 	exit(1);
 }
 
+// static void	ft_good_close(t_cmds *cmd)
+// {
+// 	close(cmd->pipe[0]);
+// }
 
 void	ft_fork_execution(t_cmds *cmd)
 {
@@ -99,13 +103,39 @@ void	ft_fork_execution(t_cmds *cmd)
 		pid = fork();
 		if (pid == 0)
 		{
-			ft_dup(cmd, i);
-			ft_close(cmd);
-			ft_execve(cmd);
-			ft_no_execve(cmd);
+			if (ft_is_builtins(cmd->cmd, cmd, cmd->envp) < 0)
+			{
+				ft_dup(cmd, i);
+				ft_close(cmd);
+				ft_execve(cmd);
+				ft_no_execve(cmd);
+			}
+			else
+			{
+				ft_dup(cmd, i);
+				if (!ft_strncmp(cmd->cmd, "export", 6))
+					ft_export(cmd->file_name, cmd->args, cmd);
+				if (!ft_strncmp(cmd->cmd, "cd", 2))
+					ft_cd(cmd->file_name[0], cmd->args, cmd);
+				if (!ft_strncmp(cmd->cmd, "echo", 4))
+					ft_echo(cmd->file_name, cmd->args);
+				if (!ft_strncmp(cmd->cmd, "env", 3))
+					ft_env(cmd->file_name, cmd->args, cmd);
+				if (!ft_strncmp(cmd->cmd, "unset", 5))
+					ft_unset(cmd->file_name, cmd->args, cmd);
+				if (!ft_strncmp(cmd->cmd, "pwd", 3))
+					ft_pwd(cmd->args);
+				ft_close(cmd);
+				if (cmd->next)
+					close(cmd->next->pipe[1]);
+				ft_no_execve(cmd);
+			}
 		}
 		else
+		{
+			close(cmd->pipe[0]);
 			cmd = cmd->next;
+		}
 		waitpid(pid, NULL, 0);
 		i++;
 	}
