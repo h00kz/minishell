@@ -21,7 +21,7 @@ static int	put_error(const char *file_name)
 	return (1);
 }
 
-static char	*ft_getenv(const char *var, char **env)
+char	*ft_getenv(const char *var, char **env)
 {
 	int	i;
 	int	var_len;

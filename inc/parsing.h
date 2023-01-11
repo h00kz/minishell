@@ -61,5 +61,16 @@ char	*ft_translate(char **envp, char *input);
 int		ft_check(char **input, int *i, char **str, int boolean);
 int		ft_last_check(char *input, int boolean, char **tmp, int *i);
 void	ft_translate_env_next(int *i, char *tmp, char *input, char **str);
+char	*ft_getenv(const char *var, char **env);
+char	*ft_get_path(t_cmds *cmd, char *path);
+char	**ft_make_double(char *s, char *s2, char **files);
+void	ft_execve(t_cmds *cmd);
+void	ft_no_execve(t_cmds *cmd);
+void	ft_fork_execution(t_cmds *cmd);
+int		ft_is_builtins(char *input, t_cmds *cmd, char ** env_cp);
+void	ft_dup(t_cmds *cmd, int i);
+void	ft_make_pipe(t_cmds *cmd);
+void	ft_close(t_cmds *cmd);
+
 
 #endif

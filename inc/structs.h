@@ -14,6 +14,7 @@ typedef struct s_cmds
 	int				fd_file;
 	int				redir_in;
 	int				redir_out;
+	int				pipe[2];
 	char			*cmd;
 	char			*args;
 	char			*infile;

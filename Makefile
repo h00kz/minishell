@@ -22,7 +22,9 @@ SRC					= src/main.c \
 					  src/parsing/exec/heredoc_fork.c \
 					  src/parsing/exec/heredocs_utils.c \
 					  src/parsing/exec/r_utils.c \
-					  src/parsing/exec/free_some_s.c
+					  src/parsing/exec/free_some_s.c \
+					  src/execve/execve.c \
+					  src/execve/fork.c
 
 LIBFT				= libft/
 CFLAGS				=  -g -lreadline -Werror -Wextra -Wall

@@ -15,7 +15,10 @@
 void	ft_free_str(char *s1, char *s2, int who_free)
 {
 	if (who_free == 1)
+	{
 		free(s1);
+		s1 = NULL;
+	}
 	if (who_free == 2)
 		free(s2);
 	if (who_free == 3)
