@@ -26,14 +26,16 @@ char	*ft_get_path(t_cmds *cmd, char *path)
 	return (NULL);
 }
 
-char	**ft_make_double(char *s, char *s2)
+char	**ft_make_double(char *s, char *s2, char **files)
 {
 	char	**str;
 	char	**s2_split;
 	int		i;
+	int		j;
 
+	j = 0;
 	i = 0;
-	str = ft_calloc(sizeof(char *), 64);
+	str = ft_calloc(sizeof(char *), 1024);
 	str[0] = s;
 	if (!*s2)
 		str[1] = NULL;
@@ -46,7 +48,12 @@ char	**ft_make_double(char *s, char *s2)
 			i++;
 		}
 	}
-	str[i + 2] = NULL;
+	while (files[j])
+	{
+		str[i + j + 1] = files[j];
+		j++;
+	}
+	str[i + j + 2] = NULL;
 	return (str);
 }
 
@@ -64,9 +71,9 @@ void	ft_execve(t_cmds *cmd)
 		return ;
 	}
 	else if (!access(path, X_OK))
-		execve(path, ft_make_double(cmd->cmd, cmd->args), cmd->envp);
+		execve(path, ft_make_double(cmd->cmd, cmd->args, cmd->file_name), cmd->envp);
 	else if (!access(cmd->cmd, X_OK))
-		execve(cmd->cmd, ft_make_double(cmd->cmd, cmd->args), cmd->envp);
+		execve(cmd->cmd, ft_make_double(cmd->cmd, cmd->args, cmd->file_name), cmd->envp);
 	free(path);
 }
 
@@ -79,23 +86,20 @@ void	ft_no_execve(t_cmds *cmd)
 	exit(1);
 }
 
-void	ft_first_close(t_cmds *cmd)
-{
-	close(cmd->pipe[0]);
-	close(cmd->pipe[1]);
-}
 
 void	ft_fork_execution(t_cmds *cmd)
 {
 	pid_t	pid;
+	int		i;
 
+	i = 0;
 	while (cmd)
 	{
 		ft_make_pipe(cmd);
 		pid = fork();
 		if (pid == 0)
 		{
-			ft_dup(cmd);
+			ft_dup(cmd, i);
 			ft_close(cmd);
 			ft_execve(cmd);
 			ft_no_execve(cmd);
@@ -103,5 +107,6 @@ void	ft_fork_execution(t_cmds *cmd)
 		else
 			cmd = cmd->next;
 		waitpid(pid, NULL, 0);
+		i++;
 	}
 }

@@ -1,0 +1,5 @@
+CFLAGS				=  -g -lreadline -Werror -Wextra -Wall
+all: $(NAME)
+	@make -sC $(LIBFT) all
+re: fclean all
+.PHONY: all clean fclean re

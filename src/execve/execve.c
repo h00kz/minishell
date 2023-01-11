@@ -22,46 +22,31 @@ int	ft_is_builtins(char *input, t_cmds *cmd, char ** env_cp)
 	return (-1);
 }
 
-// static void	ft_dup_next(t_cmds *cmd)
-// {
-// 	if (cmd->index_cmd % 2 == 0)
-// 	{
-// 		dup2(cmd->pipe2[0], 0);
-// 		dup2(cmd->pipe[1], 1);
-// 	}
-// 	else
-// 	{
-// 		dup2(cmd->pipe[0], 0);
-// 		dup2(cmd->pipe2[1], 1);
-// 	}
-// }
-
-void	ft_dup(t_cmds *cmd)
+void	ft_dup(t_cmds *cmd, int i)
 {
 	int		fd[2];
 	t_cmds	*next;
 
 	next = cmd->next;
-	if (cmd->redir_in == PIPE && cmd->file_name[0] == NULL)
+	if (cmd->redir_in == PIPE && i != 0)
 	{
+		ft_putendl_fd("\nPIPE\n\n", 2);
 		dup2(cmd->pipe[0], STDIN_FILENO);
-	}
-	else if (cmd->file_name[0] != NULL && cmd->redir_in == PIPE)
-	{
-		fd[0] = open(cmd->file_name[0], O_RDONLY);
-		dup2(fd[0], STDIN_FILENO);
 	}
 	else if (cmd->infile != NULL && cmd->redir_in == L_REDIR)
 	{
+		ft_putendl_fd("\nINFILE\n\n", 2);
 		fd[0] = open(cmd->infile, O_RDONLY);
 		dup2(fd[0], STDIN_FILENO);
 	}
 	if (cmd->redir_out == PIPE && next)
 	{
+		ft_putendl_fd("\nNEXT\n\n", 2);
 		dup2(next->pipe[1], STDOUT_FILENO);
 	}
 	if (cmd->outfile[0] != '\0')
 	{
+		ft_putendl_fd("\nOUTFILE\n\n", 2);
 		fd[1] = open(cmd->outfile, O_TRUNC | O_WRONLY | O_CREAT, 0644);
 		dup2(fd[1], STDOUT_FILENO);
 	}
