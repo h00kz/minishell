@@ -3,11 +3,17 @@
 int	ft_is_builtins(char *input, t_cmds *cmd, char ** env_cp)
 {
 	if (!ft_strncmp(input, "export", 6))
+	{
 		return (0);
+	}
 	if (!ft_strncmp(input, "cd", 2))
+	{
 		return (1);
+	}
 	if (!ft_strncmp(input, "echo", 4))
+	{
 		return (2);
+	}
 	if (!ft_strncmp(input, "exit", 4))
 	{
 		ft_free_split(env_cp);
@@ -66,10 +72,6 @@ void	ft_make_pipe(t_cmds *cmd)
 
 void	ft_close(t_cmds *cmd)
 {
-	if (cmd->pipe[0] != -1)
-		close(cmd->pipe[0]);
-	if (cmd->pipe[1] != -1)
-		close(cmd->pipe[1]);
 	if (cmd->pipe[0] != -1)
 		close(cmd->pipe[0]);
 	if (cmd->pipe[1] != -1)
