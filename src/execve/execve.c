@@ -10,10 +10,6 @@ int	ft_is_builtins(char *input, t_cmds *cmd, char ** env_cp)
 	{
 		return (1);
 	}
-	if (!ft_strncmp(input, "echo", 4))
-	{
-		return (2);
-	}
 	if (!ft_strncmp(input, "exit", 4))
 	{
 		ft_free_split(env_cp);
@@ -64,16 +60,20 @@ void	ft_make_pipe(t_cmds *cmd)
 
 	next = cmd->next;
 	if (cmd->redir_in != PIPE)
+	{
+		ft_putendl_fd("jkahwsdjkhakskdhwaudhukwad",2);
 		close(cmd->pipe[0]);
+	}
 	close(cmd->pipe[1]);
 	if (next != NULL)
+	{
+		ft_putstr_fd("Make_next_pipe\n\n", 2);
 		pipe(next->pipe);
+	}
 }
 
 void	ft_close(t_cmds *cmd)
 {
-	if (cmd->pipe[0] != -1)
-		close(cmd->pipe[0]);
 	if (cmd->pipe[1] != -1)
 		close(cmd->pipe[1]);
 }
