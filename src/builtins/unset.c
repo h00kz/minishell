@@ -43,7 +43,7 @@ t_envp	*ft_unset(char **argv, char *opt, t_cmds *cmd)
 	save = cmd->lst_envp;
 	if (*opt)
 	{
-		g_exit_code = 2;
+		g_exit_code[0] = 2;
 		ft_putstr_fd("unset: ", 2);
 		ft_putstr_fd(opt, 2);
 		ft_putendl_fd(": invalid option", 2);
@@ -51,7 +51,7 @@ t_envp	*ft_unset(char **argv, char *opt, t_cmds *cmd)
 	}
 	else if (argv[i])
 	{
-		g_exit_code = 0;
+		g_exit_code[0] = 0;
 		cur = cmd->lst_envp;
 		while (argv[i])
 		{

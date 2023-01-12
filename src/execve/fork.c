@@ -67,14 +67,15 @@ void	ft_execve(t_cmds *cmd)
 	if (path == NULL)
 	{
 		free(path);
-		ft_putendl_fd("TAMER CA MARCH PO", 2);
+		ft_putstr_fd(cmd->cmd, 2);
+		g_exit_code[0] = 127;
+		ft_putendl_fd(": invalid command", 2);
 		return ;
 	}
 	else if (!access(path, X_OK))
 		execve(path, ft_make_double(cmd->cmd, cmd->args, cmd->file_name), cmd->envp);
 	else if (!access(cmd->cmd, X_OK))
 		execve(cmd->cmd, ft_make_double(cmd->cmd, cmd->args, cmd->file_name), cmd->envp);
-	free(path);
 }
 
 void	ft_no_execve(t_cmds *cmd)
@@ -83,35 +84,27 @@ void	ft_no_execve(t_cmds *cmd)
 	close(1);
 	close(2);
 	close(cmd->pipe[0]);	
+	if (cmd->next)
+		close(cmd->next->pipe[0]); // dernier close rajoute de la hess
 	free_cmd(cmd);
-	exit(1);
+	exit(127);
 }
-
-// static void	ft_good_close(t_cmds *cmd)
-// {
-// 	close(cmd->pipe[0]);
-// }
 
 int	ft_no_dup(t_cmds *cmd)
 {
 	int fd;
 	fd = 1;
 	if (cmd->redir_out == PIPE && cmd->next)
-	{
-		ft_putendl_fd("\nNEXT\n\n", 2);
 		return (cmd->next->pipe[1]);
-	}
 	if (cmd->outfile[0] != '\0')
-	{
-		ft_putendl_fd("\nOUTFILE\n\n", 2);
 		fd = open(cmd->outfile, O_TRUNC | O_WRONLY | O_CREAT, 0644);
-	}
 	return (fd);
 }
 
 void	ft_fork_execution(t_cmds *cmd)
 {
 	pid_t	pid;
+	// int		status;
 	int		i;
 	t_cmds	*save;
 
@@ -128,7 +121,7 @@ void	ft_fork_execution(t_cmds *cmd)
 				ft_dup(cmd, i);
 				ft_close(cmd);
 				ft_execve(cmd);
-				ft_no_execve(cmd);
+				ft_no_execve(save);
 			}
 			else
 			{
@@ -136,7 +129,8 @@ void	ft_fork_execution(t_cmds *cmd)
 					close(cmd->pipe[0]);
 				cmd = cmd->next;
 			}
-			waitpid(pid, NULL, 0);
+			waitpid(pid, &g_exit_code[0], 0);
+			g_exit_code[0] >>= 8;
 		}
 		else
 		{

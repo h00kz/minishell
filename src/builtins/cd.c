@@ -15,7 +15,7 @@ static void	update_pwd(t_cmds *cmds)
 
 static int	put_error(const char *file_name)
 {
-	g_exit_code = 1;
+	g_exit_code[0] = 1;
 	ft_putstr_fd("minishell: ", 2);
 	perror(file_name);
 	return (1);
@@ -47,7 +47,7 @@ static int	ch_dir(char *argv, t_cmds *cmds)
 		if (!home)
 		{
 			ft_putendl_fd("minishell: cd: HOME not set", 2);
-			g_exit_code = 1;
+			g_exit_code[0] = 1;
 			return (1);
 		}
 		if (chdir(home) < 0)
@@ -77,7 +77,7 @@ int	ft_cd(char *argv, char *opt, t_cmds *cmds)
 	update_cmds_env(cmds);
 	if (*opt)
 	{
-		g_exit_code = 2;
+		g_exit_code[0] = 2;
 		ft_putstr_fd("minishell: cd: ", 2);
 		ft_putstr_fd(opt, 2);
 		ft_putendl_fd(": invalid option", 2);

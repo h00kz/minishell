@@ -15,7 +15,7 @@
 # include "builtins.h"
 # include <sys/wait.h>
 
-extern int	g_exit_code;
+extern int	g_exit_code[2];
 
 enum	e_redir
 {

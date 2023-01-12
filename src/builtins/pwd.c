@@ -6,7 +6,7 @@ int	ft_pwd(char *opt)
 
 	if (*opt)
 	{
-		g_exit_code = 2;
+		g_exit_code[0] = 2;
 		ft_putstr_fd("minishell: pwd: ", 2);
 		ft_putstr_fd(opt, 2);
 		ft_putendl_fd(": invalid option", 2);
@@ -14,7 +14,7 @@ int	ft_pwd(char *opt)
 	}
 	else
 	{
-		g_exit_code = 0;
+		g_exit_code[0] = 0;
 		pwd = NULL;
 		pwd = getcwd(pwd, 0);
 		ft_putendl_fd(pwd, 1);

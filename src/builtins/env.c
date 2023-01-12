@@ -2,7 +2,7 @@
 
 static int	ft_exit_perror(char *msg, char *av, int exit_code)
 {
-	g_exit_code = exit_code;
+	g_exit_code[0] = exit_code;
 	ft_putstr_fd("env: ", 2);
 	ft_putstr_fd(av, 2);
 	ft_putendl_fd(msg, 2);
@@ -33,7 +33,7 @@ int	ft_env(char **argv, char *opt, t_cmds *cmd, int fd)
 	int	i;
 
 	i = 0;
-	g_exit_code = 0;
+	g_exit_code[0] = 0;
 	update_cmds_env(cmd);
 	if (!*argv && !*opt)
 	{
