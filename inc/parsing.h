@@ -81,6 +81,6 @@ void	ft_fork_exec(t_cmds *cmd, int i, t_cmds *save);
 void	ft_no_fork(t_cmds *cmd, int pid);
 int		ft_no_dup(t_cmds *cmd);
 char	*ft_get_path(t_cmds *cmd, char *path);
-void	ft_copy(char **files, int *j, int i, char ***str);
+char	**ft_copy(char **files, int *j, int i, char **str);
 
 #endif
