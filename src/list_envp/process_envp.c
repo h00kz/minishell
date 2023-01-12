@@ -59,9 +59,7 @@ char	**rebuild_envp(t_envp *lst_envp)
 	while (lst_envp)
 	{
 		if (lst_envp->value == NULL)
-		{
 			ret_envp[i] = ft_strdup(lst_envp->variable);
-		}
 		else
 		{
 			tmp = ft_strjoin(lst_envp->variable, "=");

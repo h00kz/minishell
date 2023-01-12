@@ -32,7 +32,7 @@ int	ft_check(char **input, int *i, char **str, int boolean)
 	}
 	else if (ft_strncmp(&(*input)[(*i)], "$?", 2) == 0 && boolean != 2)
 	{
-		(*str) = ft_strjoin_free_choice((*str), ft_itoa(g_exit_code), 3);
+		(*str) = ft_strjoin_free_choice((*str), ft_itoa(g_exit_code[0]), 3);
 		(*i) += 2;
 		check = 1;
 	}

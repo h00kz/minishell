@@ -1,21 +1,6 @@
 #include "../inc/minishell.h"
 
-int	g_exit_code = 0;
-
-char	*set_prompt(void)
-{
-	char	*prompt;
-	char	*tmp;
-	char	*cwd;
-
-	cwd = NULL;
-	cwd = getcwd(cwd, 0);
-	tmp = ft_strjoin("\033[0;36m[\033[0;32m", cwd);
-	prompt = ft_strjoin(tmp, "\033[0;36m]\033[0m> ");
-	free(tmp);
-	free(cwd);
-	return (prompt);
-}
+int	g_exit_code[2] = {0, 0};
 
 void	ft_print_lst_e(t_envp *envp)
 {
@@ -53,7 +38,7 @@ void	ft_print_lst(t_cmds *cmd)
 	}
 }
 
-static void	sig_handler(int sig)
+void	sig_handler(int sig)
 {
 	if (sig == SIGINT)
 	{
@@ -61,7 +46,9 @@ static void	sig_handler(int sig)
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
-		g_exit_code = 128 + sig;
+		g_exit_code[0] = 130;
+		g_exit_code[1] = 1;
+		return ;
 	}
 }
 
@@ -69,7 +56,6 @@ int	main(int ac, char **av, char **envp)
 {
 	char	*input;
 	t_cmds	*cmd;
-	char	*prompt;
 	char	**env_cp;
 
 	(void)**av;
@@ -80,9 +66,7 @@ int	main(int ac, char **av, char **envp)
 		exit(1);
 	while (1)
 	{
-		prompt = set_prompt();
-		input = readline(prompt);
-		free(prompt);
+		input = readline("Minishell > ");
 		add_history(input);
 		if (input == NULL)
 		{
@@ -90,21 +74,22 @@ int	main(int ac, char **av, char **envp)
 			rl_clear_history();
 			ft_free_split(env_cp);
 			free(input);
-			exit(g_exit_code); 
+			exit(g_exit_code[0]); 
 		}
 		if (input && input[0])
 		{
 			cmd = parse_input(input, env_cp);
-			if (cmd != NULL)
+			if (cmd != NULL  && g_exit_code[1] == 0)
 			{
-				
+				printf("jlashd\n\n\n\n");
 				pipe(cmd->pipe);
+				ft_free_split(env_cp);
 				ft_fork_execution(cmd);
 				ft_close(cmd);
-				ft_print_lst(cmd);
-				ft_free_split(env_cp);
 				env_cp = rebuild_envp(cmd->lst_envp);
 			}
+			g_exit_code[1] = 0;
+			ft_print_lst(cmd);
 			free_cmd(cmd);
 			free(input);
 		}

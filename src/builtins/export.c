@@ -63,7 +63,7 @@ static void print_env(t_envp *envp, int fd)
 
 static void	ft_error(char **argv)
 {
-	g_exit_code = 2;
+	g_exit_code[0] = 2;
 	ft_putstr_fd("minishell: export: ", 2);
 	ft_putstr_fd(*argv, 2);
 	ft_putendl_fd(": not a valid identifier", 2);
@@ -112,12 +112,12 @@ int ft_export(char **argv, char *opt, t_cmds *cmd, int fd)
 	}
 	else if (*opt)
 	{
-		g_exit_code = 1;
+		g_exit_code[0] = 1;
 		ft_putstr_fd("minishell: export: ", 2);
 		ft_putstr_fd(opt, 2);
 		ft_putendl_fd(": invalid option", 2);
 	}
 	else
 		make_export(cmd, argv, 0);
-	return (g_exit_code);
+	return (g_exit_code[0]);
 }
