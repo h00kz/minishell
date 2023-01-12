@@ -81,7 +81,6 @@ int	main(int ac, char **av, char **envp)
 			cmd = parse_input(input, env_cp);
 			if (cmd != NULL  && g_exit_code[1] == 0)
 			{
-				printf("jlashd\n\n\n\n");
 				pipe(cmd->pipe);
 				ft_free_split(env_cp);
 				ft_fork_execution(cmd);
@@ -92,7 +91,6 @@ int	main(int ac, char **av, char **envp)
 				if (cmd->heredoc_in[0] != '\0')
 					unlink(cmd->heredoc_in);
 			g_exit_code[1] = 0;
-			ft_print_lst(cmd);
 			free_cmd(cmd);
 			free(input);
 		}

@@ -54,11 +54,12 @@ char	*ft_get_path(t_cmds *cmd, char *path)
 	return (NULL);
 }
 
-void	ft_copy(char **files, int *j, int i, char ***str)
+char	**ft_copy(char **files, int *j, int i, char **str)
 {
 	while (files[*j])
 	{
-		*str[i + (*j) + 1] = files[(*j)];
+		str[i + (*j) + 1] = files[(*j)];
 		(*j)++;
 	}
+	return (str);
 }

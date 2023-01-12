@@ -22,7 +22,7 @@ char	**ft_make_double(char *s, char *s2, char **files)
 			i++;
 		}
 	}
-	ft_copy(files, &j, i, &str);
+	str = ft_copy(files, &j, i, str);
 	str[i + j + 2] = NULL;
 	return (str);
 }
