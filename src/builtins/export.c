@@ -1,46 +1,8 @@
 #include "../../inc/minishell.h"
 
-char	*get_first_ascii(t_envp *envp)
+static void	print_env(t_envp *envp, int fd)
 {
-	char	*first_ascii;
-
-	first_ascii = ft_calloc(sizeof(char *), 2);
-	first_ascii[0] = 127;
-	while (envp)
-	{
-		if (ft_strcmp(first_ascii, envp->variable) > 0 && envp->print == 0)
-		{
-			if (first_ascii[0] == 127)
-				free(first_ascii);
-			first_ascii = envp->variable;
-		}
-		envp = envp->next;
-	}
-	return (first_ascii);
-}
-
-int	ft_check_print(t_envp *envp)
-{
-	while (envp)
-	{
-		if (envp->print == 0)
-			return (0);
-		else
-			envp = envp->next;
-	}
-	return (1);
-}
-
-t_envp	*ft_find_node(char *to_find, t_envp *envp)
-{
-	while (ft_strcmp(to_find, envp->variable) != 0 && envp)
-		envp = envp->next;
-	return (envp);
-}
-
-static void print_env(t_envp *envp, int fd)
-{
-	t_envp  *save;
+	t_envp	*save;
 	char	*first_ascii;
 
 	save = envp;
@@ -72,8 +34,8 @@ static void	ft_error(char **argv)
 void	ft_dans_le_cul(int sep_i, char **argv, int i, t_cmds *cmd)
 {
 	if (argv[i][sep_i - 1] == '+')
-		lstadd_back_envp(&cmd->lst_envp, lstnew_envp(ft_strndup(argv[i], sep_i - 1),
-				ft_strdup(&argv[i][sep_i + 1])));
+		lstadd_back_envp(&cmd->lst_envp, lstnew_envp(\
+			ft_strndup(argv[i], sep_i - 1), ft_strdup(&argv[i][sep_i + 1])));
 	else
 		lstadd_back_envp(&cmd->lst_envp, lstnew_envp(ft_strndup(argv[i], sep_i),
 				ft_strdup(&argv[i][sep_i + 1])));
@@ -94,7 +56,8 @@ static void	make_export(t_cmds *cmd, char **argv, int sep_i)
 		if (ft_check_double_var(cmd->lst_envp, argv[i]) == 1)
 		{
 			if (ft_str_index_chr(argv[i], '=') < 0)
-				lstadd_back_envp(&cmd->lst_envp, lstnew_envp(ft_strdup(argv[i]), 0));
+				lstadd_back_envp(&cmd->lst_envp, \
+					lstnew_envp(ft_strdup(argv[i]), 0));
 			else
 			{
 				sep_i = ft_str_index_chr(argv[i], '=');
@@ -104,12 +67,10 @@ static void	make_export(t_cmds *cmd, char **argv, int sep_i)
 	}
 }
 
-int ft_export(char **argv, char *opt, t_cmds *cmd, int fd)
+int	ft_export(char **argv, char *opt, t_cmds *cmd, int fd)
 {
 	if (!*argv && !*opt)
-	{
 		print_env(cmd->lst_envp, fd);
-	}
 	else if (*opt)
 	{
 		g_exit_code[0] = 1;

@@ -53,3 +53,34 @@ int	ft_check_double_var(t_envp *env, char *arg)
 	}
 	return (1);
 }
+
+char	*get_first_ascii(t_envp *envp)
+{
+	char	*first_ascii;
+
+	first_ascii = ft_calloc(sizeof(char *), 2);
+	first_ascii[0] = 127;
+	while (envp)
+	{
+		if (ft_strcmp(first_ascii, envp->variable) > 0 && envp->print == 0)
+		{
+			if (first_ascii[0] == 127)
+				free(first_ascii);
+			first_ascii = envp->variable;
+		}
+		envp = envp->next;
+	}
+	return (first_ascii);
+}
+
+int	ft_check_print(t_envp *envp)
+{
+	while (envp)
+	{
+		if (envp->print == 0)
+			return (0);
+		else
+			envp = envp->next;
+	}
+	return (1);
+}

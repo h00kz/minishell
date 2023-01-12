@@ -71,3 +71,10 @@ char	**rebuild_envp(t_envp *lst_envp)
 	}
 	return (ret_envp);
 }
+
+t_envp	*ft_find_node(char *to_find, t_envp *envp)
+{
+	while (ft_strcmp(to_find, envp->variable) != 0 && envp)
+		envp = envp->next;
+	return (envp);
+}
