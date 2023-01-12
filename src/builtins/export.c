@@ -38,7 +38,7 @@ t_envp	*ft_find_node(char *to_find, t_envp *envp)
 	return (envp);
 }
 
-static void print_env(t_envp *envp)
+static void print_env(t_envp *envp, int fd)
 {
 	t_envp  *save;
 	char	*first_ascii;
@@ -46,14 +46,17 @@ static void print_env(t_envp *envp)
 	save = envp;
 	while (ft_check_print(envp) == 0)
 	{
-		ft_putstr_fd("declare -x ", 1);
+		ft_putstr_fd("declare -x ", fd);
 		first_ascii = get_first_ascii(envp);
 		save = ft_find_node(first_ascii, envp);
 		if (save->value)
-			printf("%s=\"%s\"", save->variable, save->value);
+		{
+			ft_putstr_fd(save->variable, fd);
+			ft_putchar_fd('=', fd);
+			ft_putendl_fd(save->value, fd);
+		}
 		else
-			printf("%s", save->variable);
-		printf("\n");
+			ft_putendl_fd(save->variable, fd);
 		save->print = 1;
 	}
 }
@@ -101,11 +104,11 @@ static void	make_export(t_cmds *cmd, char **argv, int sep_i)
 	}
 }
 
-int ft_export(char **argv, char *opt, t_cmds *cmd)
+int ft_export(char **argv, char *opt, t_cmds *cmd, int fd)
 {
 	if (!*argv && !*opt)
 	{
-		print_env(cmd->lst_envp);
+		print_env(cmd->lst_envp, fd);
 	}
 	else if (*opt)
 	{
