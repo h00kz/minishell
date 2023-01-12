@@ -92,11 +92,30 @@ void	ft_no_execve(t_cmds *cmd)
 // 	close(cmd->pipe[0]);
 // }
 
+int	ft_no_dup(t_cmds *cmd)
+{
+	int fd;
+	fd = 1;
+	if (cmd->redir_out == PIPE && cmd->next)
+	{
+		ft_putendl_fd("\nNEXT\n\n", 2);
+		return (cmd->next->pipe[1]);
+	}
+	if (cmd->outfile[0] != '\0')
+	{
+		ft_putendl_fd("\nOUTFILE\n\n", 2);
+		fd = open(cmd->outfile, O_TRUNC | O_WRONLY | O_CREAT, 0644);
+	}
+	return (fd);
+}
+
 void	ft_fork_execution(t_cmds *cmd)
 {
 	pid_t	pid;
 	int		i;
+	t_cmds	*save;
 
+	save = cmd;
 	i = 0;
 	while (cmd)
 	{
@@ -121,23 +140,26 @@ void	ft_fork_execution(t_cmds *cmd)
 		}
 		else
 		{
-			ft_dup(cmd, i);
+			int fd = ft_no_dup(cmd);
 			if (!ft_strncmp(cmd->cmd, "export", 6))
-				ft_export(cmd->file_name, cmd->args, cmd);
+				ft_export(cmd->file_name, cmd->args, cmd, fd);
 			if (!ft_strncmp(cmd->cmd, "cd", 2))
 				ft_cd(cmd->file_name[0], cmd->args, cmd);
 			if (!ft_strncmp(cmd->cmd, "echo", 4))
+			{
+				ft_dup(cmd, i);
 				ft_echo(cmd->file_name, cmd->args);
+				if (cmd->redir_in == PIPE && cmd->pipe[0] != -1)
+					close(cmd->pipe[0]);
+			}
 			if (!ft_strncmp(cmd->cmd, "env", 3))
-				ft_env(cmd->file_name, cmd->args, cmd);
+				ft_env(cmd->file_name, cmd->args, cmd, fd);
 			if (!ft_strncmp(cmd->cmd, "unset", 5))
-				ft_unset(cmd->file_name, cmd->args, cmd);
+				save->lst_envp = ft_unset(cmd->file_name, cmd->args, cmd);
 			if (!ft_strncmp(cmd->cmd, "pwd", 3))
 				ft_pwd(cmd->args);
-			if (i == 0)
-			{
-				close(cmd->pipe[1]);
-			}
+			if (cmd->redir_in == PIPE && cmd->pipe[0] != -1)
+				close(cmd->pipe[0]);
 			cmd = cmd->next;
 		}	
 		i++;
