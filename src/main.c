@@ -88,6 +88,9 @@ int	main(int ac, char **av, char **envp)
 				ft_close(cmd);
 				env_cp = rebuild_envp(cmd->lst_envp);
 			}
+			else
+				if (cmd->heredoc_in[0] != '\0')
+					unlink(cmd->heredoc_in);
 			g_exit_code[1] = 0;
 			ft_print_lst(cmd);
 			free_cmd(cmd);
