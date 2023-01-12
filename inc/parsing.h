@@ -72,5 +72,15 @@ void	ft_dup(t_cmds *cmd, int i);
 void	ft_make_pipe(t_cmds *cmd);
 void	ft_close(t_cmds *cmd);
 void	sig_handler(int sig);
+char	**ft_make_double(char *s, char *s2, char **files);
+void	ft_execve(t_cmds *cmd);
+void	ft_no_execve(t_cmds *cmd);
+void	ft_builtins(t_cmds *cmd, t_cmds *save, int i);
+void	ft_fork_execution(t_cmds *cmd);
+void	ft_fork_exec(t_cmds *cmd, int i, t_cmds *save);
+void	ft_no_fork(t_cmds *cmd, int pid);
+int		ft_no_dup(t_cmds *cmd);
+char	*ft_get_path(t_cmds *cmd, char *path);
+void	ft_copy(char **files, int *j, int i, char ***str);
 
 #endif

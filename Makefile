@@ -24,7 +24,8 @@ SRC					= src/main.c \
 					  src/parsing/exec/r_utils.c \
 					  src/parsing/exec/free_some_s.c \
 					  src/execve/execve.c \
-					  src/execve/fork.c
+					  src/execve/fork.c \
+					  src/execve/fork_utils.c
 
 LIBFT				= libft/
 CFLAGS				=  -g -lreadline -Werror -Wextra -Wall
