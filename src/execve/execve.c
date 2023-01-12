@@ -1,6 +1,6 @@
 #include "../../inc/minishell.h"
 
-int	ft_is_builtins(char *input, t_cmds *cmd, char ** env_cp)
+int	ft_is_builtins(char *input, t_cmds *cmd, char **env_cp)
 {
 	if (!ft_strncmp(input, "export", 6))
 		return (0);
@@ -20,12 +20,8 @@ int	ft_is_builtins(char *input, t_cmds *cmd, char ** env_cp)
 	return (-1);
 }
 
-void	ft_dup(t_cmds *cmd, int i)
+static void	ft_start_dup(t_cmds *cmd, int fd[2], int i)
 {
-	int		fd[2];
-	t_cmds	*next;
-
-	next = cmd->next;
 	if (cmd->redir_in == PIPE && i != 0)
 		dup2(cmd->pipe[0], STDIN_FILENO);
 	else if (cmd->infile != NULL && cmd->redir_in == L_REDIR)
@@ -39,6 +35,15 @@ void	ft_dup(t_cmds *cmd, int i)
 		unlink(cmd->heredoc_in);
 		dup2(fd[0], STDIN_FILENO);
 	}
+}
+
+void	ft_dup(t_cmds *cmd, int i)
+{
+	int		fd[2];
+	t_cmds	*next;
+
+	next = cmd->next;
+	ft_start_dup(cmd, fd, i);
 	if (cmd->redir_out == PIPE && next)
 		dup2(next->pipe[1], STDOUT_FILENO);
 	if (cmd->redir_out == R_REDIR && cmd->outfile[0] != 0)

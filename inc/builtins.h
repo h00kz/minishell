@@ -10,6 +10,8 @@ int		ft_cd(char *argv, char *opt, t_cmds *cmds);
 /**************************** EXPORT *****************************/
 int		ft_export(char **argv, char *opt, t_cmds *cmds, int fd);
 int		ft_check_double_var(t_envp *env, char *arg);
+char	*get_first_ascii(t_envp *envp);
+int	ft_check_print(t_envp *envp);
 
 /*********************** EXIT ************************/
 int		ft_exit(char **argv, char *opt, t_cmds *cmd);

@@ -12,5 +12,6 @@ int		ft_lst_size_env(t_envp *lst_envp);
 t_envp	*ch_var_lst_envp(t_envp *lst_envp, char *var, char *value);
 char	**rebuild_envp(t_envp *lst_envp);
 void	update_cmds_env(t_cmds *cmds);
+t_envp	*ft_find_node(char *to_find, t_envp *envp);
 
 #endif
