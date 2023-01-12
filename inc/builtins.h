@@ -21,6 +21,6 @@ int		ft_pwd(char *opt);
 t_envp	*ft_unset(char **argv, char *opt, t_cmds *cmd);
 
 /******************** ENV ************************/
-int		ft_env(char **argv, char *opt, t_cmds *cmd);
+int		ft_env(char **argv, char *opt, t_cmds *cmd, int fd);
 
 #endif

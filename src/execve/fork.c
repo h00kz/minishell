@@ -95,7 +95,7 @@ void	ft_no_execve(t_cmds *cmd)
 int	ft_no_dup(t_cmds *cmd)
 {
 	int fd;
-
+	fd = 1;
 	if (cmd->redir_out == PIPE && cmd->next)
 	{
 		ft_putendl_fd("\nNEXT\n\n", 2);
@@ -113,7 +113,9 @@ void	ft_fork_execution(t_cmds *cmd)
 {
 	pid_t	pid;
 	int		i;
+	t_cmds	*save;
 
+	save = cmd;
 	i = 0;
 	while (cmd)
 	{
@@ -151,9 +153,9 @@ void	ft_fork_execution(t_cmds *cmd)
 					close(cmd->pipe[0]);
 			}
 			if (!ft_strncmp(cmd->cmd, "env", 3))
-				ft_env(cmd->file_name, cmd->args, cmd);
+				ft_env(cmd->file_name, cmd->args, cmd, fd);
 			if (!ft_strncmp(cmd->cmd, "unset", 5))
-				ft_unset(cmd->file_name, cmd->args, cmd);
+				save->lst_envp = ft_unset(cmd->file_name, cmd->args, cmd);
 			if (!ft_strncmp(cmd->cmd, "pwd", 3))
 				ft_pwd(cmd->args);
 			if (cmd->redir_in == PIPE && cmd->pipe[0] != -1)

@@ -28,7 +28,7 @@ char	**ft_cpy_envp(char **envp)
 	return (new_envp);
 }
 
-int	ft_env(char **argv, char *opt, t_cmds *cmd)
+int	ft_env(char **argv, char *opt, t_cmds *cmd, int fd)
 {
 	int	i;
 
@@ -40,7 +40,7 @@ int	ft_env(char **argv, char *opt, t_cmds *cmd)
 		while (cmd->envp[i] != NULL)
 		{
 			if (ft_str_index_chr(cmd->envp[i], '=') != -1)
-				ft_putendl_fd(cmd->envp[i], 1);
+				ft_putendl_fd(cmd->envp[i], fd);
 			i++;
 		}
 		return (0);

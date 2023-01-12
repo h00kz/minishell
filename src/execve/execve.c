@@ -41,15 +41,28 @@ void	ft_dup(t_cmds *cmd, int i)
 		fd[0] = open(cmd->infile, O_RDONLY);
 		dup2(fd[0], STDIN_FILENO);
 	}
+	else if (cmd->redir_in == L_HEREDOC)
+	{
+		ft_putendl_fd("\nHEREDOC_IN\n\n", 2);
+		fd[0] = open(cmd->heredoc_in, O_RDONLY);
+		unlink(cmd->heredoc_in);
+		dup2(fd[0], STDIN_FILENO);
+	}
 	if (cmd->redir_out == PIPE && next)
 	{
 		ft_putendl_fd("\nNEXT\n\n", 2);
 		dup2(next->pipe[1], STDOUT_FILENO);
 	}
-	if (cmd->outfile[0] != '\0')
+	if (cmd->redir_out == R_REDIR && cmd->outfile[0] != 0)
 	{
 		ft_putendl_fd("\nOUTFILE\n\n", 2);
 		fd[1] = open(cmd->outfile, O_TRUNC | O_WRONLY | O_CREAT, 0644);
+		dup2(fd[1], STDOUT_FILENO);
+	}
+	if (cmd->redir_out == R_HEREDOC)
+	{
+		ft_putendl_fd("\nHEREDOC_OUT\n\n", 2);
+		fd[1] = open(cmd->outfile, O_APPEND | O_CREAT | O_WRONLY, 0644);
 		dup2(fd[1], STDOUT_FILENO);
 	}
 }
