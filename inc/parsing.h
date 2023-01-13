@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pdubacqu <pdubacqu@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/13 11:24:24 by pdubacqu          #+#    #+#             */
+/*   Updated: 2023/01/13 11:24:27 by pdubacqu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PARSING_H
 # define PARSING_H
 
@@ -67,7 +79,7 @@ char	**ft_make_double(char *s, char *s2, char **files);
 void	ft_execve(t_cmds *cmd);
 void	ft_no_execve(t_cmds *cmd);
 void	ft_fork_execution(t_cmds *cmd);
-int		ft_is_builtins(char *input, t_cmds *cmd, char **env_cp);
+int		ft_is_builtins(char *input);
 void	ft_dup(t_cmds *cmd, int i);
 void	ft_make_pipe(t_cmds *cmd);
 void	ft_close(t_cmds *cmd);

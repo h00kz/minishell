@@ -1,36 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   redir_check_next.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pdubacqu <pdubacqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/13 11:24:39 by pdubacqu          #+#    #+#             */
-/*   Updated: 2023/01/13 11:24:40 by pdubacqu         ###   ########.fr       */
+/*   Created: 2023/01/13 12:53:50 by pdubacqu          #+#    #+#             */
+/*   Updated: 2023/01/13 13:02:02 by pdubacqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/minishell.h"
+#include "../../../inc/minishell.h"
 
-int	ft_pwd(char *opt)
+int	ft_make_redir_right(char *input, int *i)
 {
-	char	*pwd;
-
-	if (*opt)
+	(*i)++;
+	while (input && input[(*i)] && (input[(*i)] == ' ' || input[(*i)] == '\t'))
 	{
-		g_exit_code[0] = 2;
-		ft_putstr_fd("minishell: pwd: ", 2);
-		ft_putstr_fd(opt, 2);
-		ft_putendl_fd(": invalid option", 2);
-		return (2);
+		(*i)++;
+		if (input && input[(*i)] && input[(*i)] == '>')
+		{
+			printf("minishell: syntax error near unexpected token `>'\n");
+			return (1);
+		}
 	}
-	else
+	if (!(input[(*i)]))
 	{
-		g_exit_code[0] = 0;
-		pwd = NULL;
-		pwd = getcwd(pwd, 0);
-		ft_putendl_fd(pwd, 1);
-		free(pwd);
+		printf("minishell: syntax error near unexpected token `>'\n");
+		return (1);
 	}
 	return (0);
 }

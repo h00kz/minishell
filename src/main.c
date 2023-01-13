@@ -1,42 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pdubacqu <pdubacqu@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/13 11:23:58 by pdubacqu          #+#    #+#             */
+/*   Updated: 2023/01/13 12:59:47 by pdubacqu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/minishell.h"
 
 int	g_exit_code[2] = {0, 0};
-
-void	ft_print_lst_e(t_envp *envp)
-{
-	while (envp != NULL)
-	{
-		printf("\nenvp->variable = %s", envp->variable);
-		printf("\nenvp->print = %d", envp->print);
-		printf("\nenvp->value = %s\n", envp->value);
-		envp = envp->next;
-	}
-}
-
-void	ft_print_lst(t_cmds *cmd)
-{
-	t_cmds	*tmp;
-	while (cmd != NULL)
-	{
-		tmp = cmd->next;
-		printf("cmd->cmd = %s", cmd->cmd);
-		printf("\ncmd->args = %s", cmd->args);
-		printf("\ncmd->redir_in = %d", cmd->redir_in);
-		printf("\ncmd->redir_out = %d", cmd->redir_out);
-		printf("\ncmd->infile = %s", cmd->infile);
-		printf("\ncmd->outfile = %s", cmd->outfile);
-		int i = 0;
-		printf("\nheredoc_in = %s", cmd->heredoc_in);
-		while (cmd->file_name[i])
-		{
-			printf("\ncmd->files = %s", cmd->file_name[i]);
-			i++;
-		}
-		// ft_print_lst_e(cmd->lst_envp);
-		printf ("\n\n");
-		cmd = tmp;
-	}
-}
 
 void	sig_handler(int sig)
 {
@@ -52,6 +28,43 @@ void	sig_handler(int sig)
 	}
 }
 
+static void	free_exit(char **env_cp, char *input)
+{
+	ft_free_split(env_cp);
+	free(input);
+	exit(g_exit_code[0]);
+}
+
+static int	minishell(char ***env_cp, char **input, t_cmds **cmd)
+{
+	if ((*input) == NULL)
+	{
+		ft_putendl_fd("exit", 1);
+		rl_clear_history();
+		free_exit((*env_cp), (*input));
+	}
+	if ((*input) && (*input)[0])
+	{
+		(*cmd) = parse_input((*input), (*env_cp));
+		if (*cmd && !ft_strcmp((*cmd)->cmd, "exit") && !((*cmd)->next))
+			ft_exit((*cmd)->file_name, (*cmd)->args, *cmd);
+		if ((*cmd) != NULL && g_exit_code[1] == 0)
+		{
+			pipe((*cmd)->pipe);
+			ft_free_split((*env_cp));
+			ft_fork_execution((*cmd));
+			ft_close((*cmd));
+			(*env_cp) = rebuild_envp((*cmd)->lst_envp);
+		}
+		else if ((*cmd) != NULL && g_exit_code[1] == 1)
+			if ((*cmd)->heredoc_in[0] != '\0')
+				unlink((*cmd)->heredoc_in);
+		g_exit_code[1] = 0;
+		free_cmd((*cmd));
+	}
+	return (g_exit_code[0]);
+}
+
 int	main(int ac, char **av, char **envp)
 {
 	char	*input;
@@ -59,41 +72,18 @@ int	main(int ac, char **av, char **envp)
 	char	**env_cp;
 
 	(void)**av;
+	if (ac != 1)
+		exit(1);
+	cmd = NULL;
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, SIG_IGN);
 	env_cp = ft_cpy_envp(envp);
-	if (ac != 1)
-		exit(1);
 	while (1)
 	{
 		input = readline("Minishell > ");
 		add_history(input);
-		if (input == NULL)
-		{
-			ft_putendl_fd("exit", 1);
-			rl_clear_history();
-			ft_free_split(env_cp);
-			free(input);
-			exit(g_exit_code[0]); 
-		}
-		if (input && input[0])
-		{
-			cmd = parse_input(input, env_cp);
-			if (cmd != NULL  && g_exit_code[1] == 0)
-			{
-				pipe(cmd->pipe);
-				ft_free_split(env_cp);
-				ft_fork_execution(cmd);
-				ft_close(cmd);
-				env_cp = rebuild_envp(cmd->lst_envp);
-			}
-			else
-				if (cmd->heredoc_in[0] != '\0')
-					unlink(cmd->heredoc_in);
-			g_exit_code[1] = 0;
-			free_cmd(cmd);
-			free(input);
-		}
+		g_exit_code[0] = minishell(&env_cp, &input, &cmd);
+		free(input);
 	}
-	return (0);
+	return (g_exit_code[0]);
 }

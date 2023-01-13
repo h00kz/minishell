@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fork.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pdubacqu <pdubacqu@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/13 11:24:06 by pdubacqu          #+#    #+#             */
+/*   Updated: 2023/01/13 12:49:35 by pdubacqu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/minishell.h"
 
 char	**ft_make_double(char *s, char *s2, char **files)
@@ -71,6 +83,11 @@ void	ft_builtins(t_cmds *cmd, t_cmds *save, int i)
 		ft_export(cmd->file_name, cmd->args, cmd, fd);
 	if (!ft_strncmp(cmd->cmd, "cd", 2))
 		ft_cd(cmd->file_name[0], cmd->args, cmd);
+	if (!ft_strcmp(cmd->cmd, "exit"))
+	{
+		close(cmd->next->pipe[0]);
+		close(cmd->next->pipe[1]);
+	}
 	if (!ft_strncmp(cmd->cmd, "echo", 4))
 	{
 		ft_dup(cmd, i);
@@ -99,7 +116,7 @@ void	ft_fork_execution(t_cmds *cmd)
 	while (cmd)
 	{
 		ft_make_pipe(cmd);
-		if (ft_is_builtins(cmd->cmd, cmd, cmd->envp) < 0)
+		if (ft_is_builtins(cmd->cmd) < 0)
 		{
 			pid = fork();
 			if (pid == 0)

@@ -1,16 +1,25 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execve.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: pdubacqu <pdubacqu@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/13 11:24:33 by pdubacqu          #+#    #+#             */
+/*   Updated: 2023/01/13 12:48:26 by pdubacqu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/minishell.h"
 
-int	ft_is_builtins(char *input, t_cmds *cmd, char **env_cp)
+int	ft_is_builtins(char *input)
 {
 	if (!ft_strncmp(input, "export", 6))
 		return (0);
 	if (!ft_strncmp(input, "cd", 2))
 		return (1);
 	if (!ft_strncmp(input, "exit", 4))
-	{
-		ft_free_split(env_cp);
-		ft_exit(cmd->file_name, cmd->args, cmd);
-	}
+		return (2);
 	if (!ft_strncmp(input, "env", 3))
 		return (3);
 	if (!ft_strncmp(input, "unset", 5))
@@ -63,9 +72,10 @@ void	ft_make_pipe(t_cmds *cmd)
 	t_cmds	*next;
 
 	next = cmd->next;
-	if (cmd->redir_in != PIPE)
+	if (cmd->redir_in != PIPE && cmd->pipe[0] != -1)
 		close(cmd->pipe[0]);
-	close(cmd->pipe[1]);
+	if (cmd->pipe[1] != -1)
+		close(cmd->pipe[1]);
 	if (next != NULL)
 		pipe(next->pipe);
 }

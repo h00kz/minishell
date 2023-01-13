@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: pdubacqu <pdubacqu@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/01/13 11:24:09 by pdubacqu          #+#    #+#              #
+#    Updated: 2023/01/13 12:54:35 by pdubacqu         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 SRC					= src/main.c \
 					  src/list_envp/process_envp.c \
 					  src/utils/list_utils.c \
@@ -17,6 +29,7 @@ SRC					= src/main.c \
 					  src/parsing/env_interpretation.c \
 					  src/parsing/env_vars.c \
 					  src/parsing/exec/redir_check.c \
+					  src/parsing/exec/redir_check_next.c \
 					  src/parsing/exec/redir_utils.c \
 					  src/parsing/exec/heredocs.c \
 					  src/parsing/exec/heredoc_fork.c \
@@ -28,7 +41,7 @@ SRC					= src/main.c \
 					  src/execve/fork_utils.c
 
 LIBFT				= libft/
-CFLAGS				=  -g -lreadline -Werror -Wextra -Wall
+CFLAGS				=  -g -lreadline #-Werror -Wextra -Wall
 NAME				= minishell
 LIB					= libft/libft.a
 INCLUDE				= inc/
